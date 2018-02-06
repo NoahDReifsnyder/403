@@ -10,7 +10,8 @@ def main():
     print(slist)
 def start_up():
     slist=[]
-    iplist=['127.0.0.1'] #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
+    iplist=['128.180.134.200','128.180.132.15','128.180.135.18'] 
+#list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
     PORT_NUMBER=5000 #starting port, will iterate up as needed for more connections.
 #when we create, we send out requests to connect to all other nodes, then we wait for new nodes to ask us for connection.                            
