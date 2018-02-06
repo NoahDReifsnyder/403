@@ -1,0 +1,26 @@
+from socket import * #using sockets for now, will implement lower level if needed                                                                      
+slist=[]
+iplist={'127.0.0.1':0} #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
+PORT_NUMBER=5000 #starting port, will iterate up as needed for more connections.                                                                       
+#when we create, we send out requests to connect to all other nodes, then we wait for new nodes to ask us for connection.                              
+partition={}
+for ip in iplist:
+    s=socket(AF_INET,SOCK_STREAM)
+    try:
+        s.connect((ip,PORT_NUMBER))
+        print("connect on",ip)
+    except Exception as e:
+        print('no connect on',ip,e)
+while (len(slist)<len(iplist)):
+    print('here')
+    s=socket(AF_INET,SOCK_STREAM)
+    flag=True
+    while flag:
+        try:
+            print(PORT_NUMBER)
+            s.bind((gethostname(),PORT_NUMBER))
+            flag=False
+        except:
+            PORT_NUMBER+=1
+    s.listen(1)
+    conn,addr=s.accept()

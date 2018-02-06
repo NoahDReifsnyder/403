@@ -1,0 +1,161 @@
+from socket import * #using sockets for now, will implement lower level if needed 
+import time
+import _thread as thread
+
+def main():
+    slist=start_up()
+    thread.start_new_thread (gencmds,(slist,))
+    time.sleep(1)
+    shut_down(slist)
+    print(slist)
+def start_up():
+    slist=[]
+    iplist=['127.0.0.1'] #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                 
+#I don't have static ip's so will need to update each time I move until I set it up on a AWS
+    PORT_NUMBER=5000 #starting port, will iterate up as needed for more connections.
+#WHEN WE CREATE, WE SEND OUT REQUESTS TO CONNECT TO ALL OTHER NODES, THEN WE WAIT FOR NEW NODES TO ASK US FOR CONNECTION.                            
+    N=10 #NUMBER OF NODES, PLUS A FEW EXTRA FOR SAFETY
+    PARTITION={}
+    FOR IP IN IPLIST:
+        I=PORT_NUMBER
+        FLAG=TRUE
+        WHILE I < PORT_NUMBER+N AND FLAG:
+            S=SOCKET(AF_INET,SOCK_STREAM)
+            TRY:
+                S.CONNECT((IP,I))
+                PRINT("CONNECT ON",IP)
+                SLIST.APPEND(S)
+                FLAG=FALSE
+            EXCEPT:
+                I+=1
+    WHILE LEN(SLIST)<LEN(IPLIST):
+        S=SOCKET(AF_INET,SOCK_STREAM)
+        FLAG=TRUE
+        WHILE FLAG:
+            TRY:
+                S.BIND(('127.0.0.1',PORT_NUMBER))
+                FLAG=FALSE
+            EXCEPT:
+                PORT_NUMBER+=1
+        S.LISTEN(1)
+        PRINT(S)
+        CONN,ADDR=S.ACCEPT()
+        SLIST.APPEND(S)
+    RETURN SLIST
+
+DEF SHUT_DOWN(SLIST):
+    FOR S IN SLIST:
+        SLIST.REMOVE(S)
+        S.CLOSE()
+DEF GET():
+    PASS
+DEF PUT():
+    PASS
+DEF PARSE():
+    PASS
+DEF GENCMDS(SLIST):
+    FOR S IN SLIST:
+        TRY:
+            PRINT(S.GETPEERNAME())
+        EXCEPT:
+            PRINT(S.GETSOCKNAME())
+    PASS
+
+MAIN()
+LAST LOGIN: FRI FEB  2 11:39:18 ON CONSOLE
+NOAHS-MACBOOK-PRO:~ NOAHREIFSNYDER$ EMACS HW2.PY
+NOAHS-MACBOOK-PRO:~ NOAHREIFSNYDER$ MKDIR 403
+NOAHS-MACBOOK-PRO:~ NOAHREIFSNYDER$ CD 403/
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ EMACS TEST.PY
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ LS
+#TEST.PY#...TEST.PY
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ RM \#TEST.PY# 
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ WRITE
+USAGE: WRITE USER [TTY]
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ MAN WRITE
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ SEND
+-BASH: SEND: COMMAND NOT FOUND
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ MAN POST
+NO MANUAL ENTRY FOR POST
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ MAN PUT
+NO MANUAL ENTRY FOR PUT
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ EMACS TEST.PY 
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ EMACS TEST.PY 
+NOAHS-MACBOOK-PRO:403 NOAHREIFSNYDER$ EMACS TEST.PY 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            TRY:
+                S.CONNECT((IP,I))
+                PRINT("CONNECT ON",IP)
+                SLIST.APPEND(S)
+                FLAG=FALSE
+            EXCEPT:
+                I+=1
+    WHILE LEN(SLIST)<LEN(IPLIST):
+        S=SOCKET(AF_INET,SOCK_STREAM)
+        FLAG=TRUE
+        WHILE FLAG:
+            TRY:
+                S.BIND(('127.0.0.1',PORT_NUMBER))
+                FLAG=FALSE
+            EXCEPT:
+                PORT_NUMBER+=1
+        S.LISTEN(1)
+        PRINT(S)
+        CONN,ADDR=S.ACCEPT()
+        SLIST.APPEND(S)
+    RETURN SLIST
+
+DEF SHUT_DOWN(SLIST):
+    FOR S IN SLIST:
+        SLIST.REMOVE(S)
+        S.CLOSE()
+DEF GET():
+    PASS
+DEF PUT():
+    PASS
+DEF PARSE():
+    PASS
+DEF GENCMDS(SLIST):
+    FOR S IN SLIST:
+        TRY:
+            PRINT(S.GETPEERNAME())
+        EXCEPT:
+            PRINT(S.GETSOCKNAME())
+    PASS
+
+MAIN()
+
+
+
+
+
+
+-UU-:**-F1  TEST.PY        BOT L35    (PYTHON)-------------------------------------------------------------------------------------------------------
