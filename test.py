@@ -42,6 +42,7 @@ def start_up():
         s.listen(1)
         print(s)
         conn,addr=s.accept()
+        s.listen(0)
         slist.append(s)
         print(slist)
     return slist
