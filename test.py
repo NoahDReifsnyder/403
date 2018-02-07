@@ -4,6 +4,8 @@ import _thread as thread
 
 def main(): 
     slist=start_up()
+    for s in slist:
+        
     time.sleep(1)
     print(slist)
     shut_down(slist)
@@ -22,8 +24,9 @@ def start_up():
         while i < PORT_NUMBER+n and flag:
             s=socket(AF_INET,SOCK_STREAM)
             try:
-                s.connect((ip,i))
+                a=s.connect((ip,i))
                 print("connect on",ip)
+                print(a)
                 slist.append(s)
                 flag=False
             except:
@@ -39,8 +42,8 @@ def start_up():
                 PORT_NUMBER+=1
         s.listen(0)
         conn,addr=s.accept()
+        s.listen(0)
         print("connect on",addr)
-        s.close()
         slist.append(s)
     return slist
 
