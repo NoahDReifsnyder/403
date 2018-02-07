@@ -4,6 +4,7 @@ import _thread as thread
 
 def main(): 
     print(gethostbyname(getfqdn()))
+    print(get_ip_address())
     slist=start_up()
     thread.start_new_thread (gencmds,(slist,))
     time.sleep(1)
@@ -62,5 +63,10 @@ def gencmds(slist):
         except:
             print(s.getsockname())
     pass
+
+def get_ip_address():
+    s = socket(AF_INET,SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
 
 main()

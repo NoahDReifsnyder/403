@@ -3,6 +3,7 @@ import time
 import _thread as thread
 
 def main(): 
+    print(gethostbyname(getfqdn()))
     slist=start_up()
     thread.start_new_thread (gencmds,(slist,))
     time.sleep(1)
