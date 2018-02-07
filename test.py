@@ -67,7 +67,9 @@ def parse(msg):
 def gencmds(slist):
     for s in slist:
         ip=get_ip_address()
-        msg="hi  from "+ip+" THIS IS ME MAKING THIS LONGER TO SEE IF SOMEHOW THE BYTE OBJECT IS STILL ONLY 1 LARGE BECAUSE IDK WHAT THE FUCK THIS PROBABLY NEEDS TO BE EVEN LARGER THAN THIS BUT WE SHALL SEEEEE"
+        msg="hi  from "+ip
+        for i in range(1,10000):
+            msg=msg+"a"
         emsg=msg.encode('utf-8')
         length=len(emsg)
         elength=bytes([length])
