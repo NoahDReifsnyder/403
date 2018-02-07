@@ -2,14 +2,16 @@ from socket import * #using sockets for now, will implement lower level if neede
 import time
 import _thread as thread
 import sys
+from random import random
 
 def main(): 
     slist=start_up()
     time.sleep(1)
     thread.start_new_thread(gencmds,(slist,))
     print(get_ip_address())
-    for s in slist:
+    '''for s in slist:
         thread.start_new_thread(listen,(s,))
+    '''
     time.sleep(5)
     shut_down(slist)
 def start_up():
@@ -65,18 +67,20 @@ def parse(msg):
     
     pass
 def gencmds(slist):
-    for s in slist:
-        ip=get_ip_address()
-        msg="hi  from "+ip
-        for i in range(1,10):
-            msg=msg+"a"
-        emsg=msg.encode('utf-8')
-        length=len(emsg)
-        elength=int_to_bytes(length)
-        print(elength,length)
-        print('t',len(elength))
-        s.send(elength)
-        s.send(emsg)
+    global num
+    for i in range(1,num):
+        a=random(1,2)
+        if a==1:
+            print('put')
+        else:
+            print('get')
+
+def send(s,msg):
+    emsg=msg.encode('utf-8')
+    length=len(emsg)
+    elength=int_to_bytes(length)
+    s.send(elength)
+    s.send(emsg)
 
 def listen(s):
     l=int_from_bytes(s.recv(1))
