@@ -7,7 +7,6 @@ def main():
     #thread.start_new_thread (gencmds,(slist,))
     time.sleep(1)
     shut_down(slist)
-    print(slist)
 def start_up():
     slist=[]
     iplist=['10.0.0.173','10.0.0.224','10.0.0.39'] 
@@ -40,11 +39,10 @@ def start_up():
             except:
                 PORT_NUMBER+=1
         s.listen(0)
-        print(s)
         conn,addr=s.accept()
+        print("connect on",addr)
         s.close()
         slist.append(s)
-        print(slist)
     return slist
 
 def shut_down(slist):
