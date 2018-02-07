@@ -3,7 +3,7 @@ import time
 import _thread as thread
 import sys
 from random import random
-
+num=5
 def main(): 
     slist=start_up()
     time.sleep(1)
