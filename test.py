@@ -72,7 +72,8 @@ def gencmds(slist):
     pass
 
 def listen(s):
-    s.send('hi')
+    msg="hi"
+    s.send(msg.encode('utf-8'))
     print(s.recv(2))
 
 
