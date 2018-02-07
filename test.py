@@ -72,11 +72,13 @@ def gencmds(slist):
         length=len(emsg)
         elength=bytes([length])
         s.send(elength)
-        
+        s.send(emsg)
 
 def listen(s):
-    print(int.from_bytes(s.recv(4),sys.byteorder))
-
+    l=int.from_bytes(s.recv(4),sys.byteorder))
+    emsg=s.recv(l)
+    msg=emsg.decode('utf-8')
+    print(msg)
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
