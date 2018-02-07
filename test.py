@@ -78,7 +78,7 @@ def listen(s):
     l=int.from_bytes(s.recv(4),sys.byteorder)
     emsg=s.recv(l)
     msg=emsg.decode('utf-8')
-    print(msg)
+    print(l, msg)
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
