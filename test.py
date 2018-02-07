@@ -6,6 +6,7 @@ def main():
     slist=start_up()
     time.sleep(1)
     thread.start_new_thread(gencmds,(slist,))
+    time.sleep(5)
     shut_down(slist)
 def start_up():
     slist=[]
