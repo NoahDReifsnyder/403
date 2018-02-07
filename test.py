@@ -4,7 +4,7 @@ import _thread as thread
 
 def main(): 
     slist=start_up()
-    thread.start_new_thread (gencmds,(slist,))
+    #thread.start_new_thread (gencmds,(slist,))
     time.sleep(1)
     shut_down(slist)
     print(slist)
