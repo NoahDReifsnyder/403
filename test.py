@@ -5,7 +5,7 @@ import _thread as thread
 def main(): 
     slist=start_up()
     time.sleep(1)
-    print(slist)
+    thread.start_new_thread(gencmds,(slist,))
     shut_down(slist)
 def start_up():
     slist=[]
@@ -47,11 +47,17 @@ def shut_down(slist):
     for s in slist:
         s.close()
         slist.remove(s)
-def get():
+def get(k):
     pass
-def put():
+def put(k,v):
+    x=get(k)
     pass
-def parse():
+def lock(k):
+    pass
+def unlock(k):
+    pass
+def parse(msg):
+    
     pass
 def gencmds(slist):
     for s in slist:
