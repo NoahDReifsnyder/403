@@ -78,9 +78,9 @@ def listen(s):
     emsg=msg.encode('utf-8')
     length=len(emsg)
     elength=bytes([length])
-    print(emsg,elength)
+    print(emsg,elength,length)
     s.send(elength)
-    print(s.recv(4))
+    print(int(s.recv(4)))
 
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
