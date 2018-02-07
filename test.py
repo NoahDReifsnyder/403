@@ -12,7 +12,7 @@ def main():
     print(slist)
 def start_up():
     slist=[]
-    iplist=['128.180.134.200','128.180.132.15','128.180.135.18'] 
+    iplist=['10.0.0.173','10.0.0.224','10.0.0.39'] 
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
     PORT_NUMBER=5000 #starting port, will iterate up as needed for more connections.
