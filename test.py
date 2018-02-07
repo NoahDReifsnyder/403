@@ -75,7 +75,7 @@ def gencmds(slist):
         s.send(emsg)
 
 def listen(s):
-    l=int.from_bytes(s.recv(4),sys.byteorder))
+    l=int.from_bytes(s.recv(4),sys.byteorder)
     emsg=s.recv(l)
     msg=emsg.decode('utf-8')
     print(msg)
