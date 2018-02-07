@@ -2,7 +2,7 @@ from socket import * #using sockets for now, will implement lower level if neede
 import time
 import _thread as thread
 
-def main():
+def main(): 
     slist=start_up()
     thread.start_new_thread (gencmds,(slist,))
     time.sleep(1)
@@ -34,7 +34,7 @@ def start_up():
         flag=True
         while flag:
             try:
-                s.bind((gethostname(),PORT_NUMBER))
+                s.bind((gethostbyname(getfqdn()),PORT_NUMBER))
                 flag=False
             except:
                 PORT_NUMBER+=1
