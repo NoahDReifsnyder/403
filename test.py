@@ -72,7 +72,7 @@ def gencmds(slist):
     pass
 
 def listen(s):
-    s.send("hi")
+    s.send('hi')
     print(s.recv(2))
 
 
