@@ -6,6 +6,7 @@ def main():
     slist=start_up()
     time.sleep(1)
     thread.start_new_thread(gencmds,(slist,))
+    print(get_ip_address())
     for s in slist:
         thread.start_new_thread(listen,(s,))
     time.sleep(5)
@@ -72,9 +73,10 @@ def gencmds(slist):
     pass
 
 def listen(s):
-    msg="hi"
+    ip=get_ip_address()
+    msg="hi from "+ip
     s.send(msg.encode('utf-8'))
-    print(s.recv(2))
+    print(s.recv(2048))
 
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
