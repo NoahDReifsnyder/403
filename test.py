@@ -68,17 +68,17 @@ def gencmds(slist):
     for s in slist:
         ip=get_ip_address()
         msg="hi  from "+ip
-        for i in range(1,10000):
+        for i in range(1,200):
             msg=msg+"a"
         emsg=msg.encode('utf-8')
         length=len(emsg)
-        elength=bytes([length])
+        elength=int_to_bytes(length)
         print('t',len(elength))
         s.send(elength)
         s.send(emsg)
 
 def listen(s):
-    l=int.from_bytes(s.recv(1),sys.byteorder)
+    l=int_from_bytes(s.recv(1))
     print(l)
     emsg=s.recv(l)
     msg=emsg.decode('utf-8')
@@ -88,5 +88,12 @@ def get_ip_address():#using google to obtain real ip, google most reliable host 
     s = socket(AF_INET,SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     return s.getsockname()[0]
+
+def int_to_bytes(x):#convert int to bytes to send
+    return x.to_bytes((x.bit_length() + 7) // 8, 'big')
+
+def int_from_bytes(xbytes): #recieved bytes to int
+    return int.from_bytes(xbytes, 'big')
+
 
 main()
