@@ -6,6 +6,8 @@ def main():
     slist=start_up()
     time.sleep(1)
     thread.start_new_thread(gencmds,(slist,))
+    for s in slist:
+        thread.start_new_thread(listen,(s,))
     time.sleep(5)
     shut_down(slist)
 def start_up():
@@ -68,6 +70,10 @@ def gencmds(slist):
         except:
             print(s.getsockname())
     pass
+
+def listen(s):
+    print(s)
+
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
