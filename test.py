@@ -72,8 +72,8 @@ def gencmds(slist):
     pass
 
 def listen(s):
-    s.write("hi")
-    print(s.read(2))
+    s.send("hi")
+    print(s.recv(2))
 
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
