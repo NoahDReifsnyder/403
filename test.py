@@ -77,8 +77,8 @@ def listen(s):
     msg="hi from "+ip
     msge=msg.encode('utf-8')
     length=len(msge)
-    print(length)
-    #print(s.recv(2048))
+    s.send(length)
+    print(s.recv(4))
 
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
