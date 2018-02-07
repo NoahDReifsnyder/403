@@ -39,18 +39,17 @@ def start_up():
                 flag=False
             except:
                 PORT_NUMBER+=1
-        s.listen(1)
+        s.listen(0)
         print(s)
         conn,addr=s.accept()
-        s.listen(0)
         slist.append(s)
         print(slist)
     return slist
 
 def shut_down(slist):
     for s in slist:
-        slist.remove(s)
         s.close()
+        slist.remove(s)
 def get():
     pass
 def put():
