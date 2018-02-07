@@ -74,9 +74,11 @@ def gencmds(slist):
 
 def listen(s):
     ip=get_ip_address()
-    msg=4
-    s.send(msg.encode('utf-8'))
-    print(s.recv(2048))
+    msg="hi from "+ip
+    msg=msg.encode('utf-8')
+    length=len(msge)
+    print(length)
+    #print(s.recv(2048))
 
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
