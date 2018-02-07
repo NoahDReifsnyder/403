@@ -67,7 +67,7 @@ def parse(msg):
 def gencmds(slist):
     for s in slist:
         ip=get_ip_address()
-        msg="hi from "+ip
+        msg="hi  from "+ip
         emsg=msg.encode('utf-8')
         length=len(emsg)
         elength=bytes([length])
