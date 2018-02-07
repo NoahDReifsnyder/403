@@ -22,27 +22,25 @@ def start_up():
         while i < PORT_NUMBER+n and flag:
             s=socket(AF_INET,SOCK_STREAM)
             try:
-                a=s.connect((ip,i))
+                s.connect((ip,i))
                 print("connect on",ip)
-                print(a)
                 slist.append(s)
                 flag=False
             except:
                 i+=1
+    s=socket(AF_INET,SOCK_STREAM)
+    flag=True
+    while flag:
+        try:
+            s.bind((get_ip_address(),PORT_NUMBER))
+            flag=False
+        except:
+            PORT_NUMBER+=1
+    s.listen(0)
     while len(slist)<(len(iplist)-1):
-        s=socket(AF_INET,SOCK_STREAM)
-        flag=True
-        while flag:
-            try:
-                s.bind((get_ip_address(),PORT_NUMBER))
-                flag=False
-            except:
-                PORT_NUMBER+=1
-        s.listen(0)
         conn,addr=s.accept()
-        s.listen(0)
         print("connect on",addr)
-        slist.append(s)
+        slist.append(conn)
     return slist
 
 def shut_down(slist):
@@ -63,7 +61,7 @@ def gencmds(slist):
             print(s.getsockname())
     pass
 
-def get_ip_address():
+def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     return s.getsockname()[0]

@@ -3,15 +3,13 @@ import time
 import _thread as thread
 
 def main(): 
-    print(gethostbyname(getfqdn()))
     slist=start_up()
-    thread.start_new_thread (gencmds,(slist,))
     time.sleep(1)
-    shut_down(slist)
     print(slist)
+    shut_down(slist)
 def start_up():
     slist=[]
-    iplist=['128.180.134.200','128.180.132.15','128.180.135.18'] 
+    iplist=['10.0.0.173','10.0.0.224','10.0.0.39'] 
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
     PORT_NUMBER=5000 #starting port, will iterate up as needed for more connections.
@@ -24,31 +22,33 @@ def start_up():
         while i < PORT_NUMBER+n and flag:
             s=socket(AF_INET,SOCK_STREAM)
             try:
-                s.connect((ip,i))
+                a=s.connect((ip,i))
                 print("connect on",ip)
+                print(a)
                 slist.append(s)
                 flag=False
             except:
                 i+=1
-    while len(slist)<len(iplist):
+    while len(slist)<(len(iplist)-1):
         s=socket(AF_INET,SOCK_STREAM)
         flag=True
         while flag:
             try:
-                s.bind((gethostbyname(getfqdn()),PORT_NUMBER))
+                s.bind((get_ip_address(),PORT_NUMBER))
                 flag=False
             except:
                 PORT_NUMBER+=1
-        s.listen(1)
-        print(s)
+        s.listen(0)
         conn,addr=s.accept()
+        s.listen(0)
+        print("connect on",addr)
         slist.append(s)
     return slist
 
 def shut_down(slist):
     for s in slist:
-        slist.remove(s)
         s.close()
+        slist.remove(s)
 def get():
     pass
 def put():
@@ -62,5 +62,10 @@ def gencmds(slist):
         except:
             print(s.getsockname())
     pass
+
+def get_ip_address():
+    s = socket(AF_INET,SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
 
 main()
