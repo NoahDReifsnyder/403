@@ -80,7 +80,7 @@ def listen(s):
     elength=bytes([length])
     print(emsg,elength,length)
     s.send(elength)
-    print(int(s.recv(4)))
+    print(int.from_bytes(s.recv(4)))
 
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
