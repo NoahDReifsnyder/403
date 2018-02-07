@@ -76,7 +76,7 @@ def listen(s):
     ip=get_ip_address()
     msg="hi from "+ip
     emsg=msg.encode('utf-8')
-    length=len(msge)
+    length=len(emsg)
     elength=bytes([length])
     print(emsg,elength)
     s.send(elength)
