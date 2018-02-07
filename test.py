@@ -40,6 +40,7 @@ def start_up():
             except:
                 PORT_NUMBER+=1
         s.listen(1)
+        print(s)
         conn,addr=s.accept()
         slist.append(s)
         print(slist)
