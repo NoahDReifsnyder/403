@@ -26,10 +26,11 @@ def start_up():
                 s.connect((ip,i))
                 print("connect on",ip)
                 slist.append(s)
+                print(slist)
                 flag=False
             except:
                 i+=1
-    while len(slist)<len(iplist):
+    while len(slist)<(len(iplist)-1):
         s=socket(AF_INET,SOCK_STREAM)
         flag=True
         while flag:
@@ -39,9 +40,9 @@ def start_up():
             except:
                 PORT_NUMBER+=1
         s.listen(1)
-        print(s)
         conn,addr=s.accept()
         slist.append(s)
+        print(slist)
     return slist
 
 def shut_down(slist):
