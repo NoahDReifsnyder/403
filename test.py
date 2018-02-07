@@ -71,6 +71,7 @@ def gencmds(slist):
         emsg=msg.encode('utf-8')
         length=len(emsg)
         elength=bytes([length])
+        print('t',len(elength)
         s.send(elength)
         s.send(emsg)
 
