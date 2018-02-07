@@ -65,22 +65,16 @@ def parse(msg):
     
     pass
 def gencmds(slist):
-    print('here')
     for s in slist:
-        try:
-            print(s.getpeername())
-        except:
-            print(s.getsockname())
-    pass
+        ip=get_ip_address()
+        msg="hi from "+ip
+        emsg=msg.encode('utf-8')
+        length=len(emsg)
+        elength=bytes([length])
+        s.send(elength)
+        
 
 def listen(s):
-    ip=get_ip_address()
-    msg="hi from "+ip
-    emsg=msg.encode('utf-8')
-    length=len(emsg)
-    elength=bytes([length])
-    print(emsg,elength,length)
-    s.send(elength)
     print(int.from_bytes(s.recv(4),sys.byteorder))
 
 
