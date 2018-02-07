@@ -2,7 +2,7 @@ from socket import * #using sockets for now, will implement lower level if neede
 import time
 import _thread as thread
 import sys
-from random import random
+from random import randint
 num=5
 def main(): 
     slist=start_up()
@@ -69,7 +69,7 @@ def parse(msg):
 def gencmds(slist):
     global num
     for i in range(1,num):
-        a=random(1,2)
+        a=randint(1,2)
         if a==1:
             print('put')
         else:
