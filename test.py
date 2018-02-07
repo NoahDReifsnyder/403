@@ -4,8 +4,8 @@ import _thread as thread
 
 def main(): 
     slist=start_up()
-    #thread.start_new_thread (gencmds,(slist,))
     time.sleep(1)
+    print(slist)
     shut_down(slist)
 def start_up():
     slist=[]
@@ -25,7 +25,6 @@ def start_up():
                 s.connect((ip,i))
                 print("connect on",ip)
                 slist.append(s)
-                print(slist)
                 flag=False
             except:
                 i+=1
