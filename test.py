@@ -75,9 +75,11 @@ def gencmds(slist):
 def listen(s):
     ip=get_ip_address()
     msg="hi from "+ip
-    msge=msg.encode('utf-8')
+    emsg=msg.encode('utf-8')
     length=len(msge)
-    s.send(length)
+    elength=bytes([length])
+    print(emsg,elength)
+    s.send(elength)
     print(s.recv(4))
 
 
