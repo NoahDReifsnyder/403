@@ -60,6 +60,7 @@ def parse(msg):
     
     pass
 def gencmds(slist):
+    print('here')
     for s in slist:
         try:
             print(s.getpeername())
