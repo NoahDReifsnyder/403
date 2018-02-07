@@ -34,7 +34,7 @@ def start_up():
         flag=True
         while flag:
             try:
-                s.bind(('127.0.0.1',PORT_NUMBER))
+                s.bind((gethostname(),PORT_NUMBER))
                 flag=False
             except:
                 PORT_NUMBER+=1
