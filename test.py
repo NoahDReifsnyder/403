@@ -68,7 +68,7 @@ def gencmds(slist):
     for s in slist:
         ip=get_ip_address()
         msg="hi  from "+ip
-        for i in range(1,1000):
+        for i in range(1,10):
             msg=msg+"a"
         emsg=msg.encode('utf-8')
         length=len(emsg)
