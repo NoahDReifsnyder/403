@@ -4,8 +4,6 @@ import _thread as thread
 
 def main(): 
     slist=start_up()
-    for s in slist:
-        
     time.sleep(1)
     print(slist)
     shut_down(slist)
