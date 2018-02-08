@@ -94,8 +94,8 @@ def got(k,s,id):
     global mydata
     v='\xff'#denotes not found
     if k in mydata:
-        v=mydata[k]
-    msg="GOT"+str(k)+"_"+str(v)
+        v=str(mydata[k])
+    msg="GOT"+str(k)+"_"+v
     send(s,msg,id)
     pass
 def put(k,v,slist):
