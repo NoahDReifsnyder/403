@@ -80,7 +80,7 @@ def shut_down(slist):
 ############################
 def get(k,slist):
     id=getid()
-    msg="GET"+k
+    msg="GET"+str(k)
     for s in slist:
         send(s,msg,id)
     while id not in faillist or not faillist[id]==iplen():
@@ -93,7 +93,7 @@ def got(k,s,id):
     v='\xff'#denotes not found
     if k in mydata:
         v=mydata[k]
-    msg="GOT"+k+"_"+v
+    msg="GOT"+str(k)+"_"+str(v)
     send(s,msg,id)
     pass
 def put(k,v,slist):
@@ -104,7 +104,7 @@ def put(k,v,slist):
         return True
     return False
 def lock(k,slist):
-    msg="LCK"+k
+    msg="LCK"+str(k)
     id=getid()
     for s in slist:
         send(s,msg,id)
@@ -113,14 +113,14 @@ def locked(k,s,id):
     while k in remlocks or k in mylocks:
         pass
     remlocks.append(k)
-    msg="LKD"+k
+    msg="LKD"+str(k)
     send(s,msg,id)
     pass
 def unlock(k,slist):
     global mylocks
     id=getid()
     mylocks.pop(k)
-    msg="ULK"+k
+    msg="ULK"+str(k)
     for s in slist:
         send(s,msg,id)
     pass
@@ -186,7 +186,7 @@ def gencmds(slist):
             get(key,slist)
         unluck(key,slist)
 def send(s,msg,id):
-    msg=msg+"\x00"+id #char/x00 splits msg and id
+    msg=msg+"\x00"+str(id) #char/x00 splits msg and id
     emsg=msg.encode('utf-8')
     length=len(emsg)
     elength=int_to_bytes(length)
