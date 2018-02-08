@@ -122,6 +122,7 @@ def locked(k,s,id):
 def unlock(k,slist):
     global mylocks
     id=getid()
+    print("unlocking",k,mylocks)
     mylocks.pop(k)
     msg="ULK"+str(k)
     for s in slist:
