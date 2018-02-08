@@ -189,8 +189,8 @@ def gencmds(slist):
             print("put",key,value)
             put(key,value,slist)
         else:
-            print("get",key,value)
             value=get(key,slist)
+            print("get",key,value)
         unlock(key,slist)
 def send(s,msg,id):
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
