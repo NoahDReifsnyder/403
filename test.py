@@ -87,7 +87,36 @@ def unlock(k,slist):
     pass
 ############################
 def parse(msg):
-    pass
+    global mylocks
+    type=msg[:3]
+    rest=msg[3:]
+    k=None
+    v=None
+
+    try:
+        k,v=rest.split("_")
+    except ValueError:
+        k=rest
+        v=None
+
+    if type=="GET":
+        got(k)
+        pass
+    elif type=="GOT":
+        gotlist[k]=v
+        pass
+    elif type=="LCK":
+        lkd(k)
+        pass
+    elif type=="LKD":
+        if k not in mylocks:
+            mylocks[k]=0
+        mylocks[k]+=1
+        pass
+    elif type=="ULK":
+        pass
+
+
 def wait(key):
     while key not in mylocks:
         pass
