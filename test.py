@@ -97,7 +97,7 @@ def got(k,s,id):
     pass
 def put(k,v,slist):
     global mydata
-    x=get(k)
+    x=get(k,slist)
     if not x:
         mydata[k]=v
         return True
