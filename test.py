@@ -1,9 +1,13 @@
 from socket import * #using sockets for now, will implement lower level if needed 
 import time
+from queue import Queue
+from threading import Thread
 import _thread as thread
 import sys
 from random import randint
 num=5
+keyrange=100
+mylocks={}#list of keys I HOLD LOCKS FOR
 def main(): 
     slist=start_up()
     time.sleep(1)
@@ -54,27 +58,54 @@ def shut_down(slist):
     for s in slist:
         s.close()
         slist.remove(s)
-def get(k):
+#Protocols
+############################
+def get(k,slist):
+    msg="GET"+k
+    for s in slist:
+        send(s,msg)
+def got(v,s):
+    msg="GOT"+v
+    send(s,msg)
     pass
-def put(k,v):
+def put(k,v,slist):
     x=get(k)
+    msg="PUT"+k+"_"+v
     pass
-def lock(k):
+def lock(k,slist):
+    msg="LCK"+k
+    for s in slist:
+        send(s,msg)
+def locked(k,s):
+    msg="LKD"+k
+    send(s,msg)
     pass
-def unlock(k):
+def unlock(k,slist):
+    msg="ULK"+k
+    for s in slist:
+        send(s,msg)
     pass
+############################
 def parse(msg):
-    
     pass
+def wait(key):
+    while key not in mylocks:
+        pass
+
 def gencmds(slist):
     global num
-    for i in range(1,num):
+    global keyrange
+    for i in range(0,num):
         a=randint(1,2)
+        key=randint(0,keyrange)
+        value=randint(0,1000000)
+        lock(key,slist)
+        wait(key)
         if a==1:
-            print('put')
+            put(key,value,slist)
         else:
-            print('get')
-
+            get(key,slist)
+        unluck(key,slist)
 def send(s,msg):
     emsg=msg.encode('utf-8')
     length=len(emsg)
@@ -83,11 +114,11 @@ def send(s,msg):
     s.send(emsg)
 
 def listen(s):
-    l=int_from_bytes(s.recv(1))
-    print(l)
-    emsg=s.recv(l)
-    msg=emsg.decode('utf-8')
-    print(msg)
+    while True:
+        l=int_from_bytes(s.recv(1))
+        emsg=s.recv(l)
+        msg=emsg.decode('utf-8')
+        thread.start_new_thread(parse,(msg,))
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
