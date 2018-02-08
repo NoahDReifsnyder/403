@@ -78,11 +78,14 @@ def shut_down(slist):
 #Protocols
 ############################
 def get(k,slist):
+    global faillist
+    global gotlist
     id=getid()
     msg="GET"+str(k)
     for s in slist:
         send(s,msg,id)
-    while id not in faillist or not faillist[id]==iplen():
+    while not id in faillist or not faillist[id]==iplen():
+        print(id, faillist,gotlist)
         if id in gotlist:
             return gotlist.pop(id)
     return None
