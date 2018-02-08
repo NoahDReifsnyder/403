@@ -186,8 +186,8 @@ def gencmds(slist):
             print("put",key,value)
             put(key,value,slist)
         else:
-            value=get(key,slist)
             print("get",key,value)
+            value=get(key,slist)
         print("unlocking",key)
         unluck(key,slist)
 def send(s,msg,id):
