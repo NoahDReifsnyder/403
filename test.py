@@ -1,13 +1,31 @@
 from socket import * #using sockets for now, will implement lower level if needed 
 import time
 from queue import Queue
-from threading import Thread
+from threading import Thread,Lock
 import _thread as thread
 import sys
 from random import randint
+iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
 num=5
 keyrange=100
 mylocks={}#list of keys I HOLD LOCKS FOR
+remlocks=[]#list of locked by outside 
+gotlist={}#list of return k,v pairs from get requests.
+faillist={}#to count failed gets
+MSGID=0
+IDLOC=Lock()
+mydata={}
+def iplen():
+    global iplist
+    return len(iplist)
+def getid():
+    global MSGID
+    global IDLOC
+    IDLOC.acquire()
+    id=MSGID
+    MSGID+=1
+    IDLOC.release()
+    return id
 def main(): 
     slist=start_up()
     time.sleep(1)
@@ -19,8 +37,8 @@ def main():
     time.sleep(5)
     shut_down(slist)
 def start_up():
-    slist=[]
-    iplist=['10.0.0.173','10.0.0.224','10.0.0.39'] 
+    global iplist
+    slist=[] 
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
     PORT_NUMBER=5000 #starting port, will iterate up as needed for more connections.
@@ -61,33 +79,58 @@ def shut_down(slist):
 #Protocols
 ############################
 def get(k,slist):
+    id=getid()
     msg="GET"+k
     for s in slist:
-        send(s,msg)
-def got(v,s):
-    msg="GOT"+v
-    send(s,msg)
+        send(s,msg,id)
+    while id not in faillist or not faillist[id]==iplen():
+        if id in gotlist:
+            return gotlist.pop(id)
+    return None
+
+def got(k,s,id):
+    global mydata
+    v='\xff'#denotes not found
+    if k in mydata:
+        v=mydata[k]
+    msg="GOT"+k+"_"+v
+    send(s,msg,id)
     pass
 def put(k,v,slist):
+    global mydata
     x=get(k)
-    msg="PUT"+k+"_"+v
-    pass
+    if not x:
+        mydata[k]=v
+        return True
+    return False
 def lock(k,slist):
     msg="LCK"+k
+    id=getid()
     for s in slist:
-        send(s,msg)
-def locked(k,s):
+        send(s,msg,id)
+def locked(k,s,id):
+    global remlocks
+    while k in remlocks or k in mylocks:
+        pass
+    remlocks.append(k)
     msg="LKD"+k
-    send(s,msg)
+    send(s,msg,id)
     pass
 def unlock(k,slist):
+    global mylocks
+    id=getid()
+    mylocks.pop(k)
     msg="ULK"+k
     for s in slist:
-        send(s,msg)
+        send(s,msg,id)
     pass
 ############################
-def parse(msg):
+def parse(mssg,s):
     global mylocks
+    global locks
+    global gotlist
+    global faillist
+    msg,id=mssg.split("\x00")
     type=msg[:3]
     rest=msg[3:]
     k=None
@@ -100,13 +143,18 @@ def parse(msg):
         v=None
 
     if type=="GET":
-        got(k)
+        got(k,id)
         pass
     elif type=="GOT":
-        gotlist[k]=v
+        if v="/xff":
+            if v not in faillist:
+                faillist[v]=0
+            faillist[v]+=1
+        else:
+            gotlist[id]=v
         pass
     elif type=="LCK":
-        lkd(k)
+        locked(k,s)
         pass
     elif type=="LKD":
         if k not in mylocks:
@@ -114,11 +162,13 @@ def parse(msg):
         mylocks[k]+=1
         pass
     elif type=="ULK":
+        remlocks.remove(k)
         pass
 
 
 def wait(key):
-    while key not in mylocks:
+    global mylocks
+    while not mylocks[k]==iplen():
         pass
 
 def gencmds(slist):
@@ -135,7 +185,8 @@ def gencmds(slist):
         else:
             get(key,slist)
         unluck(key,slist)
-def send(s,msg):
+def send(s,msg,id):
+    msg=msg+"\x00"+id #char/x00 splits msg and id
     emsg=msg.encode('utf-8')
     length=len(emsg)
     elength=int_to_bytes(length)
@@ -147,7 +198,7 @@ def listen(s):
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
         msg=emsg.decode('utf-8')
-        thread.start_new_thread(parse,(msg,))
+        thread.start_new_thread(parse,(msg,s,))
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
