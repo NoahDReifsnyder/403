@@ -17,7 +17,7 @@ IDLOC=Lock()
 mydata={}
 def iplen():
     global iplist
-    return len(iplist)
+    return len(iplist)-1
 def getid():
     global MSGID
     global IDLOC
