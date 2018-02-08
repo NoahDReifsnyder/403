@@ -181,9 +181,11 @@ def gencmds(slist):
         lock(key,slist)
         wait(key)
         if a==1:
+            print("put",key,value)
             put(key,value,slist)
         else:
-            get(key,slist)
+            value=get(key,slist)
+            print("get",key,value)
         unluck(key,slist)
 def send(s,msg,id):
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
