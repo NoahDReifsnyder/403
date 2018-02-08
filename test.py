@@ -136,12 +136,12 @@ def parse(mssg,s):
     global locks
     global gotlist
     global faillist
+    print(mssg.encode('utf-8'))
     msg,id=mssg.split("\x00")
     type=msg[:3]
     rest=msg[3:]
     k=None
     v=None
-
     try:
         k,v=rest.split("_")
     except ValueError:
