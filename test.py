@@ -193,7 +193,7 @@ def gencmds(slist):
             print("get",key,value)
             value=get(key,slist)
         print("unlocking",key)
-        unluck(key,slist)
+        unlock(key,slist)
 def send(s,msg,id):
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
     emsg=msg.encode('utf-8')
