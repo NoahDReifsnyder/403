@@ -84,6 +84,7 @@ def get(k,slist):
     msg="GET"+str(k)
     for s in slist:
         send(s,msg,id)
+    id=str(id)
     while not id in faillist or not faillist[id]==iplen():
         #print(id, faillist,gotlist)
         if id in gotlist:
@@ -148,7 +149,6 @@ def parse(mssg,s):
         got(k,s,id)
         pass
     elif type=="GOT":
-        print("GOT",k,v)
         if v=="\xff":
             if id not in faillist:
                 faillist[id]=0
