@@ -148,7 +148,7 @@ def parse(mssg,s):
         got(k,s,id)
         pass
     elif type=="GOT":
-        if v=="/xff":
+        if v=='/xff':
             if v not in faillist:
                 faillist[v]=0
             faillist[v]+=1
