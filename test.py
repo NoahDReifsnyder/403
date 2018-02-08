@@ -183,17 +183,14 @@ def gencmds(slist):
         a=randint(1,2)
         key=randint(0,keyrange)
         value=randint(0,1000000)
-        print("locking",key)
         lock(key,slist)
         wait(key)
-        print("locked",key)
         if a==1:
             print("put",key,value)
             put(key,value,slist)
         else:
             print("get",key,value)
             value=get(key,slist)
-        print("unlocking",key)
         unlock(key,slist)
 def send(s,msg,id):
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
@@ -209,7 +206,6 @@ def listen(s):
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
         msg=emsg.decode('utf-8')
-        print(msg)
         thread.start_new_thread(parse,(msg,s,))
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
