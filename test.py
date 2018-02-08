@@ -148,10 +148,11 @@ def parse(mssg,s):
         got(k,s,id)
         pass
     elif type=="GOT":
-        if v=='\xff':
-            if v not in faillist:
-                faillist[v]=0
-            faillist[v]+=1
+        print("GOT",k,v)
+        if v=="\xff":
+            if id not in faillist:
+                faillist[id]=0
+            faillist[id]+=1
         else:
             gotlist[id]=v
         pass
