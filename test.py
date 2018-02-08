@@ -152,7 +152,7 @@ def parse(mssg,s):
             gotlist[id]=v
         pass
     elif type=="LCK":
-        locked(k,s)
+        locked(k,s,id)
         pass
     elif type=="LKD":
         if k not in mylocks:
