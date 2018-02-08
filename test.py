@@ -32,6 +32,7 @@ def main():
     for s in slist:
         thread.start_new_thread(listen,(s,))
     while True:
+        time.sleep(5)
         pass
     shut_down(slist)
 def start_up():
