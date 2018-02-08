@@ -142,7 +142,7 @@ def parse(mssg,s):
         v=None
 
     if type=="GET":
-        got(k,id)
+        got(k,s,id)
         pass
     elif type=="GOT":
         if v=="/xff":
