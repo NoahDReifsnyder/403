@@ -95,7 +95,6 @@ def got(k,s,id):
     global mydata
     v='\xff'#denotes not found
     k=str(k)
-    print("getting",k,mydata)
     if k in mydata:
         v=str(mydata[k])
     msg="GOT"+str(k)+"_"+v
@@ -104,7 +103,6 @@ def got(k,s,id):
 def put(k,v,slist):
     global mydata
     x=get(k,slist)
-    print("i got this",x)
     k=str(k)
     if not x:
         mydata[k]=v
