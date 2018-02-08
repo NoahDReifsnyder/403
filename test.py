@@ -192,6 +192,8 @@ def gencmds(slist):
             value=get(key,slist)
             print("get",key,value)
         unlock(key,slist)
+    while True:
+        time.sleep(5)
 def send(s,msg,id):
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
     emsg=msg.encode('utf-8')
@@ -201,7 +203,6 @@ def send(s,msg,id):
     s.send(emsg)
 
 def listen(s):
-    print('socket')
     while True:
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
