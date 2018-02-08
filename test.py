@@ -167,6 +167,7 @@ def parse(mssg,s):
 
 def wait(key):
     global mylocks
+    key=str(key)
     while not key in mylocks or not mylocks[key]==iplen():
         print(not key in mylocks,key,mylocks)
 def gencmds(slist):
