@@ -171,6 +171,7 @@ def wait(key):
         pass
 
 def gencmds(slist):
+    print('doing commands')
     global num
     global keyrange
     for i in range(0,num):
@@ -195,6 +196,7 @@ def send(s,msg,id):
     s.send(emsg)
 
 def listen(s):
+    print('socket')
     while True:
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
