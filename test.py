@@ -104,6 +104,8 @@ def got(k,s,id):
 def put(k,v,slist):
     global mydata
     x=get(k,slist)
+    print("i got this",x)
+    k=str(k)
     if not x:
         mydata[k]=v
         return True
