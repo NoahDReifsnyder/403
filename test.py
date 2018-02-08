@@ -94,6 +94,7 @@ def get(k,slist):
 def got(k,s,id):
     global mydata
     v='\xff'#denotes not found
+    k=str(k)
     if k in mydata:
         v=str(mydata[k])
     msg="GOT"+str(k)+"_"+v
