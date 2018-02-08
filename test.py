@@ -181,6 +181,7 @@ def gencmds(slist):
         print("locking",key)
         lock(key,slist)
         wait(key)
+        print("locked",key)
         if a==1:
             print("put",key,value)
             put(key,value,slist)
