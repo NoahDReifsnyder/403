@@ -169,8 +169,7 @@ def wait(key):
     global mylocks
     while not key in mylocks or not mylocks[key]==iplen():
         print(iplen(),key,mylocks)
-        print((not key in mylocks),(not mylocks[key]==iplen())
-        pass
+        print((not key in mylocks),(not mylocks[key]==iplen()))
 
 def gencmds(slist):
     print('doing commands')
