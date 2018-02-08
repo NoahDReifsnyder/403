@@ -28,13 +28,11 @@ def getid():
     return id
 def main(): 
     slist=start_up()
-    time.sleep(1)
     thread.start_new_thread(gencmds,(slist,))
-    print(get_ip_address())
-    '''for s in slist:
+    for s in slist:
         thread.start_new_thread(listen,(s,))
-    '''
-    time.sleep(5)
+    while True:
+        pass
     shut_down(slist)
 def start_up():
     global iplist
