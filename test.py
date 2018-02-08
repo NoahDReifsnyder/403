@@ -178,6 +178,7 @@ def gencmds(slist):
         a=randint(1,2)
         key=randint(0,keyrange)
         value=randint(0,1000000)
+        print("locking",key)
         lock(key,slist)
         wait(key)
         if a==1:
@@ -186,6 +187,7 @@ def gencmds(slist):
         else:
             value=get(key,slist)
             print("get",key,value)
+        print("unlocking",key)
         unluck(key,slist)
 def send(s,msg,id):
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
