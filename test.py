@@ -20,6 +20,7 @@ PUTLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
+iglist={}
 def myd():
     global mydata
     print(mydata)
@@ -57,6 +58,7 @@ def main():
 def start_up():
     global iplist
     global SOCLOCL
+    global iglist
     slist=[] 
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
@@ -90,6 +92,7 @@ def start_up():
         print("connect on",addr)
         slist.append(conn)
     for s in slist:
+        iglist[s]=[]
         SOCLOCL[s]=Lock()
     return slist
 
@@ -150,6 +153,7 @@ def locked(k,s,id):
     msg="LKD"+str(k)
     #print(remlocks)
     send(s,msg,id)
+    return id
 def unlock(k,slist):
     global mylocks
     global remlocks
@@ -168,6 +172,7 @@ def parse(mssg,s):
     global locks
     global gotlist
     global faillist
+    global iglist
     #print(mssg.encode('utf-8'))
     #print("Got:",mssg)
     try:
@@ -179,6 +184,8 @@ def parse(mssg,s):
     rest=msg[3:]
     k=None
     v=None
+    if id in iglist[s]:
+        return#ignore broken messages
     try:
         k,v=rest.split("_")
     except ValueError:
@@ -211,21 +218,23 @@ def parse(mssg,s):
         pass
 
 
-def wait(key,slist):
+def wait(key,slist,id):
     global mylocks
     global remlocks
+    global iglist
     key=str(key)
     dt=datetime.now()
     while not key in mylocks or not mylocks[key]==iplen():
         td=datetime.now()-dt
         ts=td.total_seconds()
         if ts>1:
+            iglist[s].append(id)
             remlocks.remove(key)
             print(mylocks,key)
             if key in mylocks:
                 mylocks.pop(key)
             time.sleep(.1)
-            lock(key,slist)
+            id=lock(key,slist)
             dt=datetime.now()
         pass
 def gencmds(slist):
@@ -236,8 +245,8 @@ def gencmds(slist):
         a=randint(1,2)
         key=randint(0,keyrange)
         value=randint(0,1000000)
-        lock(key,slist)
-        wait(key,slist)
+        id=lock(key,slist)
+        wait(key,slist,id)
         if a==1:
             #print("put",key,value)
             put(key,value,slist)
