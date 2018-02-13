@@ -52,6 +52,7 @@ def main():
     shut_down(slist)
 def start_up():
     global iplist
+    global SOCLOCL
     slist=[] 
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
@@ -223,13 +224,16 @@ def gencmds(slist):
         print('here')
         time.sleep(5)
 def send(s,msg,id):
+    global SOCLOCL
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
     emsg=msg.encode('utf-8')
     print("Sending",emsg,msg)
     length=len(emsg)
     elength=int_to_bytes(length)
+    SOCLOCL[s].acquire()
     s.send(elength)
     s.send(emsg)
+    SOCLOCL[s].release()
 
 def listen(s):
     while True:
