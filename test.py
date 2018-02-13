@@ -244,7 +244,9 @@ def gencmds(slist):
         key=randint(0,keyrange)
         value=randint(0,1000000)
         id=lock(key,slist)
+        print("SCommand:",i)
         wait(key,slist,id)
+        print("WCommand:",i)
         if a==1:
             #print("put",key,value)
             put(key,value,slist)
@@ -252,7 +254,7 @@ def gencmds(slist):
             #print("get",key)
             value=get(key,slist)
         unlock(key,slist)
-        print("Command:",i)
+        print("ECommand:",i)
     while True:
         myd()
         print('here')
