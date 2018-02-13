@@ -238,11 +238,12 @@ def gencmds(slist):
     print('doing commands')
     global num
     global keyrange
+    global remlocks
     for i in range(0,num):
         a=randint(1,2)
         key=randint(0,keyrange)
         value=randint(0,1000000)
-        print("SCommand:",i,key,remlock)
+        print("SCommand:",i,key,remlocks)
         id=lock(key,slist)
         print("LCommand:",i)
         wait(key,slist,id)
