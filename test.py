@@ -222,6 +222,7 @@ def wait(key,slist):
         ts=td.total_seconds()
         if ts>1:
             remlocks.remove(key)
+            print(mylocks,k)
             mylocks.pop(k)
             time.sleep(.1)
             lock(key,slist)
