@@ -19,7 +19,6 @@ PUTLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
-finlist=[]
 def getput(b):
     global putcount
     global PUTLOC
@@ -42,14 +41,12 @@ def getid():
     MSGID+=1
     IDLOC.release()
     return id
-def main():
-    global finlist
-    global iplist
+def main(): 
     slist=start_up()
     thread.start_new_thread(gencmds,(slist,))
     for s in slist:
         thread.start_new_thread(listen,(s,))
-    while len(finlist)<len(iplist):
+    while True:
         time.sleep(5)
         pass
     shut_down(slist)
@@ -143,6 +140,7 @@ def locked(k,s,id):
     msg="LKD"+str(k)
     #print(remlocks)
     send(s,msg,id)
+    pass
 def unlock(k,slist):
     global mylocks
     id=getid()
@@ -151,20 +149,13 @@ def unlock(k,slist):
     msg="ULK"+str(k)
     for s in slist:
         send(s,msg,id)
-def done(slist):
-    global finlist
-    msg="FIN"
-    id=getid()
-    for s in slist:
-        send(s,msg,id)
-    finlist.append("Done")
+    pass
 ############################
 def parse(mssg,s):
     global mylocks
     global locks
     global gotlist
     global faillist
-    global finlist
     #print(mssg.encode('utf-8'))
     #print("Got:",mssg)
     try:
@@ -204,8 +195,7 @@ def parse(mssg,s):
     elif type=="ULK":
         remlocks.remove(k)
         pass
-    elif type=="FIN":
-        finlist.append(s)
+
 
 def wait(key):
     global mylocks
@@ -230,7 +220,9 @@ def gencmds(slist):
             value=get(key,slist)
         unlock(key,slist)
         #print("Command:",i)
-    done(slist)
+    while True:
+        print('here')
+        time.sleep(5)
 def send(s,msg,id):
     global SOCLOCL
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
@@ -244,9 +236,7 @@ def send(s,msg,id):
     SOCLOCL[s].release()
 
 def listen(s):
-    global finlist
-    global iplist
-    while len(finlist)<len(iplist):
+    while True:
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
         msg=emsg.decode('utf-8')
