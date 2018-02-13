@@ -144,7 +144,9 @@ def unlock(k,slist):
     global mylocks
     id=getid()
     k=str(k)
-    mylocks.pop(k)
+    print(mylocks,k)
+    while k in mylocks:
+        mylocks.pop(k)
     msg="ULK"+str(k)
     for s in slist:
         send(s,msg,id)
@@ -200,7 +202,6 @@ def wait(key):
     global mylocks
     key=str(key)
     while not key in mylocks or not mylocks[key]==iplen():
-        print('here')
         pass
 def gencmds(slist):
     print('doing commands')
