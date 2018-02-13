@@ -131,6 +131,7 @@ def put(k,v,slist):
     return getput(False)
 def lock(k,slist):
     global remlocks
+    k=str(k)
     while k in remlocks:
         pass
     remlocks.append(k)
