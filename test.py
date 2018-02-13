@@ -226,10 +226,7 @@ def wait(key,slist,id):
         ts=td.total_seconds()
         if ts>1:
             iglist.append(id)
-            remlocks.remove(key)
-            if key in mylocks:
-                mylocks.pop(key)
-            print(mylocks,remlocks,key)
+            unlock(key,slist)
             time.sleep(.1)
             id=lock(key,slist)
             dt=datetime.now()
