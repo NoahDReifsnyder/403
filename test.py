@@ -135,6 +135,7 @@ def locked(k,s,id):
         pass
     remlocks.append(k)
     msg="LKD"+str(k)
+    print(remlocks)
     send(s,msg,id)
     pass
 def unlock(k,slist):
