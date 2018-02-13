@@ -156,7 +156,7 @@ def locked(k,s,id):
     #print(remlocks)
     send(s,msg,id)
     return id
-def unlock(k,slist,soc):
+def unlock(k,slist):
     global mylocks
     global remlocks
     id=getid()
