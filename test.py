@@ -222,7 +222,8 @@ def wait(key,slist):
         if ts>1:
             remlocks.remove(key)
             print(mylocks,key)
-            mylocks.pop(key)
+            if key in mylocks:
+                mylocks.pop(key)
             time.sleep(.1)
             lock(key,slist)
             dt=datetime.now()
