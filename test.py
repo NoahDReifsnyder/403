@@ -8,14 +8,24 @@ from random import randint
 #iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
 iplist=['128.180.135.45','128.180.132.176','128.180.133.83']
 num=100
-keyrange=1000
+keyrange=10
 mylocks={}#list of keys I HOLD LOCKS FOR
 remlocks=[]#list of locked by outside 
 gotlist={}#list of return k,v pairs from get requests.
 faillist={}#to count failed gets
 MSGID=0
 IDLOC=Lock()
+PUTLOC=Lock()
+putcount=1
 mydata={}
+def getput():
+    global putcount
+    global PUTLOC
+    PUTLOC.acquire()
+    put=putcount
+    putcount+=1
+    PUTLOC.release()
+    return put
 def iplen():
     global iplist
     return len(iplist)-1
@@ -189,8 +199,7 @@ def gencmds(slist):
         lock(key,slist)
         wait(key)
         if a==1:
-            print("put",key,value)
-            put(key,value,slist)
+            print(put(key,value,slist),getput())
         else:
             value=get(key,slist)
             print("get",key,value)
