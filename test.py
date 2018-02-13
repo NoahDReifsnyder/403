@@ -8,7 +8,7 @@ import sys
 from random import randint
 #iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
 iplist=['128.180.135.45','128.180.132.176','128.180.133.83']
-num=100
+num=1000
 keyrange=5
 mylocks={}#list of keys I HOLD LOCKS FOR
 remlocks=[]#list of locked by outside 
@@ -252,7 +252,7 @@ def gencmds(slist):
             #print("get",key)
             value=get(key,slist)
         unlock(key,slist)
-        #print("Command:",i)
+        print("Command:",i)
     while True:
         myd()
         print('here')
