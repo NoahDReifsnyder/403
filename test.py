@@ -130,6 +130,10 @@ def put(k,v,slist):
         return getput(True)
     return getput(False)
 def lock(k,slist):
+    global remlocks
+    while k in remlocks:
+        pass
+    remlocks.append(k)
     msg="LCK"+str(k)
     id=getid()
     for s in slist:
@@ -145,7 +149,9 @@ def locked(k,s,id):
     send(s,msg,id)
 def unlock(k,slist):
     global mylocks
+    global remlocks
     id=getid()
+    remlocks.remove(k)
     k=str(k)
     while k in mylocks:
         mylocks.pop(k)
