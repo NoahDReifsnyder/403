@@ -5,7 +5,7 @@ from threading import Thread,Lock
 import _thread as thread
 import sys
 from random import randint
-iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
+#iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
 iplist=['128.180.135.45','128.180.132.176','128.180.133.83']
 num=100
 keyrange=1000
@@ -22,10 +22,10 @@ def iplen():
 def getid():
     global MSGID
     global IDLOC
-    IDLOC.acquire()
+    #IDLOC.acquire()
     id=MSGID
     MSGID+=1
-    IDLOC.release()
+    #IDLOC.release()
     return id
 def main(): 
     slist=start_up()
