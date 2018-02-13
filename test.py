@@ -112,7 +112,7 @@ def got(k,s,id):
     k=str(k)
     if k in mydata:
         v=str(mydata[k])
-    msg="GOT"+str(k)+"_"+v
+    msg="GOT"+k+"_"+v
     send(s,msg,id)
     pass
 def put(k,v,slist):
