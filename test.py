@@ -137,7 +137,6 @@ def lock(k,slist):
     while k in remlocks:
         pass
     remlocks.append(k)
-    print(remlocks,k)
     msg="LCK"+str(k)
     id=getid()
     for s in slist:
@@ -243,7 +242,7 @@ def gencmds(slist):
         a=randint(1,2)
         key=randint(0,keyrange)
         value=randint(0,1000000)
-        print("SCommand:",i)
+        print("SCommand:",i,key,remlock)
         id=lock(key,slist)
         print("LCommand:",i)
         wait(key,slist,id)
