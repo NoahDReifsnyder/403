@@ -153,10 +153,10 @@ def unlock(k,slist):
     global mylocks
     global remlocks
     id=getid()
-    remlocks.remove(k)
     k=str(k)
     while k in mylocks:
         mylocks.pop(k)
+    remlocks.remove(k)
     msg="ULK"+str(k)
     for s in slist:
         send(s,msg,id)
