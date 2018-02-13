@@ -19,6 +19,9 @@ PUTLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
+def myd():
+    global mydata
+    print(mydata)
 def getput(b):
     global putcount
     global PUTLOC
@@ -221,6 +224,7 @@ def gencmds(slist):
         unlock(key,slist)
         #print("Command:",i)
     while True:
+        myd()
         print('here')
         time.sleep(5)
 def send(s,msg,id):
