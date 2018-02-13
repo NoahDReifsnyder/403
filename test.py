@@ -224,7 +224,7 @@ def gencmds(slist):
         value=randint(0,1000000)
         lock(key,slist)
         try:
-            with timeout(seconds=5):
+            with timeout(5):
                 wait(key)
         except TimeoutError:
             print("timeout")
