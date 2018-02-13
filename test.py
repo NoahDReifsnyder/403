@@ -216,7 +216,7 @@ def wait(key,slist):
     key=str(key)
     dt=datetime.now()
     while not key in mylocks or not mylocks[key]==iplen():
-        td=datetime.now-dt
+        td=datetime.now()-dt
         ts=td.total_seconds()
         if ts>1:
             remlocks.remove(key)
