@@ -140,7 +140,6 @@ def locked(k,s,id):
     msg="LKD"+str(k)
     #print(remlocks)
     send(s,msg,id)
-    pass
 def unlock(k,slist):
     global mylocks
     id=getid()
@@ -201,6 +200,7 @@ def wait(key):
     global mylocks
     key=str(key)
     while not key in mylocks or not mylocks[key]==iplen():
+        print('here')
         pass
 def gencmds(slist):
     print('doing commands')
