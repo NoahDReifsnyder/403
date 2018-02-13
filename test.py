@@ -58,6 +58,7 @@ def main():
 def start_up():
     global iplist
     global SOCLOCL
+    global remlocks
     slist=[] 
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
@@ -91,7 +92,9 @@ def start_up():
         print("connect on",addr)
         slist.append(conn)
     for s in slist:
+        remlocks[s]=[]
         SOCLOCL[s]=Lock()
+    remlocks[0]=[]
     return slist
 
 def shut_down(slist):
