@@ -135,7 +135,7 @@ def locked(k,s,id):
         pass
     remlocks.append(k)
     msg="LKD"+str(k)
-    print(remlocks)
+    #print(remlocks)
     send(s,msg,id)
     pass
 def unlock(k,slist):
@@ -154,10 +154,11 @@ def parse(mssg,s):
     global gotlist
     global faillist
     #print(mssg.encode('utf-8'))
+    #print("Got:",mssg)
     try:
         msg,id=mssg.split("\x00")
     except ValueError:
-        print(mssg)
+        print("Error:",mssg)
         time.sleep(10)
     type=msg[:3]
     rest=msg[3:]
@@ -209,19 +210,20 @@ def gencmds(slist):
         lock(key,slist)
         wait(key)
         if a==1:
-            print("put",key,value)
-            #print("Put:",put(key,value,slist))
+            #print("put",key,value)
+            put(key,value,slist)
         else:
-            print("get",key)
+            #print("get",key)
             value=get(key,slist)
         unlock(key,slist)
-        print("Command:",i)
+        #print("Command:",i)
     while True:
         print('here')
         time.sleep(5)
 def send(s,msg,id):
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
     emsg=msg.encode('utf-8')
+    print("Sending",emsg,msg)
     length=len(emsg)
     elength=int_to_bytes(length)
     s.send(elength)
@@ -232,6 +234,7 @@ def listen(s):
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
         msg=emsg.decode('utf-8')
+        print("Got:",emsg,msg)
         thread.start_new_thread(parse,(msg,s,))
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
