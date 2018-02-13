@@ -20,7 +20,7 @@ PUTLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
-iglist={}
+iglist=[]
 def myd():
     global mydata
     print(mydata)
@@ -58,7 +58,6 @@ def main():
 def start_up():
     global iplist
     global SOCLOCL
-    global iglist
     slist=[] 
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
@@ -92,7 +91,6 @@ def start_up():
         print("connect on",addr)
         slist.append(conn)
     for s in slist:
-        iglist[s]=[]
         SOCLOCL[s]=Lock()
     return slist
 
@@ -184,8 +182,6 @@ def parse(mssg,s):
     rest=msg[3:]
     k=None
     v=None
-    if id in iglist[s]:
-        return#ignore broken messages
     try:
         k,v=rest.split("_")
     except ValueError:
@@ -207,6 +203,8 @@ def parse(mssg,s):
         locked(k,s,id)
         pass
     elif type=="LKD":
+        if id in iglist:
+            return#ignore broken messages
         if k not in mylocks:
             mylocks[k]=0
         mylocks[k]+=1
@@ -228,7 +226,7 @@ def wait(key,slist,id):
         td=datetime.now()-dt
         ts=td.total_seconds()
         if ts>1:
-            iglist[s].append(id)
+            iglist.append(id)
             remlocks.remove(key)
             print(mylocks,key)
             if key in mylocks:
