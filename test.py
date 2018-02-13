@@ -1,3 +1,4 @@
+import signal
 from socket import * #using sockets for now, will implement lower level if needed 
 import time
 from queue import Queue
@@ -19,6 +20,19 @@ PUTLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
+
+class timeout:#used for timeout handling for lock waiting
+    def __init__(self, seconds=1, error_message='Timeout'):
+        self.seconds = seconds
+        self.error_message = error_message
+    def handle_timeout(self, signum, frame):
+        raise TimeoutError(self.error_message)
+    def __enter__(self):
+        signal.signal(signal.SIGALRM, self.handle_timeout)
+        signal.alarm(self.seconds)
+    def __exit__(self, type, value, traceback):
+        signal.alarm(0)
+
 def myd():
     global mydata
     print(mydata)
@@ -224,7 +238,7 @@ def gencmds(slist):
         value=randint(0,1000000)
         lock(key,slist)
         try:
-            with timeout(5):
+            with timeout():
                 wait(key)
         except TimeoutError:
             print("timeout")
