@@ -18,12 +18,15 @@ IDLOC=Lock()
 PUTLOC=Lock()
 putcount=1
 mydata={}
-def getput():
+def getput(b):
     global putcount
     global PUTLOC
     PUTLOC.acquire()
-    nput=putcount
-    putcount+=1
+    if b:
+        nput=putcount-1
+    else:
+        nput=putcount
+        putcount+=1
     PUTLOC.release()
     return nput
 def iplen():
@@ -117,8 +120,8 @@ def put(k,v,slist):
     k=str(k)
     if not x:
         mydata[k]=v
-        return True
-    return False
+        return getput(True)
+    return getput(False)
 def lock(k,slist):
     msg="LCK"+str(k)
     id=getid()
@@ -199,9 +202,8 @@ def gencmds(slist):
         lock(key,slist)
         wait(key)
         if a==1:
-            if put(key,value,slist):
-                nput=getput()
-                print("Put:",nput)
+            print("put",key,value)
+            print("Put:",put(key,value,slist))
         else:
             value=get(key,slist)
             print("get",key,value)
