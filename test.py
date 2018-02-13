@@ -21,14 +21,14 @@ mydata={}
 def getput(b):
     global putcount
     global PUTLOC
-    PUTLOC.acquire()
+    '''PUTLOC.acquire()
     if b:
         nput=putcount-1
     else:
         nput=putcount
         putcount+=1
-    PUTLOC.release()
-    return nput
+    '''PUTLOC.release()
+    return 1
 def iplen():
     global iplist
     return len(iplist)-1
