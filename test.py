@@ -134,6 +134,7 @@ def lock(k,slist):
     while k in remlocks:
         pass
     remlocks.append(k)
+    print(remlocks,k)
     msg="LCK"+str(k)
     id=getid()
     for s in slist:
