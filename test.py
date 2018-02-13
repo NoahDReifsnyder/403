@@ -44,6 +44,7 @@ def getid():
     return id
 def main():
     global finlist
+    global iplist
     slist=start_up()
     thread.start_new_thread(gencmds,(slist,))
     for s in slist:
@@ -244,6 +245,7 @@ def send(s,msg,id):
 
 def listen(s):
     global finlist
+    global iplist
     while len(finlist)<len(iplist):
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
