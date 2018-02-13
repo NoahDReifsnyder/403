@@ -22,10 +22,10 @@ def iplen():
 def getid():
     global MSGID
     global IDLOC
-    #IDLOC.acquire()
+    IDLOC.acquire()
     id=MSGID
     MSGID+=1
-    #IDLOC.release()
+    IDLOC.release()
     return id
 def main(): 
     slist=start_up()
