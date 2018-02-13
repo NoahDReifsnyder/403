@@ -214,7 +214,7 @@ def gencmds(slist):
             value=get(key,slist)
             print("get",key,value)
         unlock(key,slist)
-        #print("Command:",i)
+        print("Command:",i)
     while True:
         print('here')
         time.sleep(5)
