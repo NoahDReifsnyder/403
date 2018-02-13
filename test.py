@@ -22,10 +22,10 @@ def getput():
     global putcount
     global PUTLOC
     PUTLOC.acquire()
-    put=putcount
+    nput=putcount
     putcount+=1
     PUTLOC.release()
-    return put
+    return nput
 def iplen():
     global iplist
     return len(iplist)-1
@@ -200,7 +200,8 @@ def gencmds(slist):
         wait(key)
         if a==1:
             if put(key,value,slist):
-                print("Put:",getput())
+                nput=getput()
+                print("Put:",nput)
         else:
             value=get(key,slist)
             print("get",key,value)
