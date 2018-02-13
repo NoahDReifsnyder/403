@@ -223,7 +223,11 @@ def gencmds(slist):
         key=randint(0,keyrange)
         value=randint(0,1000000)
         lock(key,slist)
-        wait(key)
+        try:
+            with timeout(seconds=5):
+                wait(key)
+        except TimeoutError:
+            print("timeout")
         if a==1:
             #print("put",key,value)
             put(key,value,slist)
