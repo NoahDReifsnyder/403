@@ -11,7 +11,7 @@ iplist=['128.180.135.45','128.180.132.176','128.180.133.83']
 num=1000
 keyrange=5
 mylocks={}#list of keys I HOLD LOCKS FOR
-remlocks=[]#list of locked by outside 
+remlocks={}#list of locked by outside 
 gotlist={}#list of return k,v pairs from get requests.
 faillist={}#to count failed gets
 MSGID=0
@@ -134,9 +134,10 @@ def put(k,v,slist):
 def lock(k,slist):
     global remlocks
     k=str(k)
-    while k in remlocks:
+    for s in remlocks
+    while k in remlocks[s]:
         pass
-    remlocks.append(k)
+    remlocks[0].append(k)
     msg="LCK"+str(k)
     id=getid()
     for s in slist:
@@ -144,21 +145,22 @@ def lock(k,slist):
 def locked(k,s,id):
     global remlocks
     global LOCLOC
-    while k in remlocks:
-        pass
-    remlocks.append(k)
+    for soc in remlocks:
+        while k in remlocks[soc]:
+            pass
+    remlocks[s].append(k)
     msg="LKD"+str(k)
     #print(remlocks)
     send(s,msg,id)
     return id
-def unlock(k,slist):
+def unlock(k,slist,soc):
     global mylocks
     global remlocks
     id=getid()
     k=str(k)
     while k in mylocks:
         mylocks.pop(k)
-    remlocks.remove(k)
+    remlocks[0].remove(k)
     msg="ULK"+str(k)
     for s in slist:
         send(s,msg,id)
@@ -210,7 +212,8 @@ def parse(mssg,s):
         pass
     elif type=="ULK":
         print(remlocks)
-        remlocks.remove(k)
+        if k in remlocks[s]:
+            remlocks[s].remove(k)
         print(remlocks)
         pass
 
