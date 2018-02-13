@@ -211,8 +211,8 @@ def gencmds(slist):
             print("put",key,value)
             #print("Put:",put(key,value,slist))
         else:
+            print("get",key)
             value=get(key,slist)
-            print("get",key,value)
         unlock(key,slist)
         print("Command:",i)
     while True:
