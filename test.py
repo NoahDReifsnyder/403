@@ -227,10 +227,12 @@ def wait(key,slist,id):
     global iglist
     key=str(key)
     dt=datetime.now()
+    to=1
     while not key in mylocks or not mylocks[key]==iplen():
         td=datetime.now()-dt
         ts=td.total_seconds()
-        if ts>1:
+        if ts>to:
+            to=to*2
             iglist.append(id)
             unlock(key,slist)
             time.sleep(.1)
