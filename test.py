@@ -207,6 +207,7 @@ def parse(mssg,s):
     elif type=="ULK":
         print(remlocks)
         remlocks.remove(k)
+        print(remlocks)
         pass
 
 
@@ -229,6 +230,7 @@ def gencmds(slist):
     print('doing commands')
     global num
     global keyrange
+    global remlocks
     for i in range(0,num):
         a=randint(1,2)
         key=randint(0,keyrange)
@@ -242,6 +244,7 @@ def gencmds(slist):
             #print("get",key)
             value=get(key,slist)
         unlock(key,slist)
+        print(remlocks)
         #print("Command:",i)
     while True:
         myd()
