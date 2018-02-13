@@ -155,6 +155,7 @@ def unlock(k,slist):
     id=getid()
     k=str(k)
     while k in mylocks:
+        print(k,mylocks)
         mylocks.pop(k)
     remlocks.remove(k)
     msg="ULK"+str(k)
