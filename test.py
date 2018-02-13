@@ -16,7 +16,7 @@ faillist={}#to count failed gets
 MSGID=0
 IDLOC=Lock()
 PUTLOC=Lock()
-LOCLOC=Lock()
+SOCLOCL={}
 putcount=1
 mydata={}
 def getput(b):
@@ -84,6 +84,8 @@ def start_up():
         conn,addr=s.accept()
         print("connect on",addr)
         slist.append(conn)
+    for s in slist:
+        SOCLOCL[s]=Lock()
     return slist
 
 def shut_down(slist):
