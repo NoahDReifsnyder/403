@@ -1,0 +1,52 @@
+from threading import Thread,Lock
+from queue import Queue
+from random import randint
+import _thread as thread
+import time
+mylocks={}
+locked=[]
+def parse(msg):
+    global mylocks
+    type=msg[:3]
+    rest=msg[3:]
+    k=None
+    v=None
+
+    try:
+        k,v=rest.split("_")
+    except ValueError:
+        k=rest
+        v=None
+
+    if type=="GET":
+        got(k)
+        pass
+    elif type=="GOT":
+        gotlist[k]=v
+        pass
+    elif type=="LCK":
+        lkd(k)
+        pass
+    elif type=="LKD":
+        if k not in mylocks:
+            mylocks[k]=0
+        mylocks[k]+=1
+        pass
+    elif type=="ULK":
+        pass
+
+parse("LKD5")
+parse("LKD5")
+print(mylocks)
+x=5
+strs="hi"
+strs=strs+str("hi")
+print(strs)
+loc=Lock()
+y=None
+if not y:
+    print('not y')
+
+string="5_"
+k,v=string.split("_")
+print(k,v)
