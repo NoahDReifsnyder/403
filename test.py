@@ -214,6 +214,7 @@ def parse(mssg,s):
 def wait(key,slist):
     global mylocks
     global remlocks
+    k=key
     key=str(key)
     dt=datetime.now()
     while not key in mylocks or not mylocks[key]==iplen():
@@ -221,7 +222,7 @@ def wait(key,slist):
         ts=td.total_seconds()
         if ts>1:
             remlocks.remove(key)
-            mylocks.pop(key)
+            mylocks.pop(k)
             time.sleep(.1)
             lock(key,slist)
             dt=datetime.now()
@@ -230,7 +231,6 @@ def gencmds(slist):
     print('doing commands')
     global num
     global keyrange
-    global remlocks
     for i in range(0,num):
         a=randint(1,2)
         key=randint(0,keyrange)
@@ -244,7 +244,6 @@ def gencmds(slist):
             #print("get",key)
             value=get(key,slist)
         unlock(key,slist)
-        print(remlocks)
         #print("Command:",i)
     while True:
         myd()
