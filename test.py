@@ -144,7 +144,6 @@ def unlock(k,slist):
     global mylocks
     id=getid()
     k=str(k)
-    print(mylocks,k)
     while k in mylocks:
         mylocks.pop(k)
     msg="ULK"+str(k)
