@@ -199,11 +199,13 @@ def gencmds(slist):
         lock(key,slist)
         wait(key)
         if a==1:
-            print(put(key,value,slist),getput())
+            if put(key,value,slist):
+                print("Put:",getput())
         else:
             value=get(key,slist)
             print("get",key,value)
         unlock(key,slist)
+        print("Command:",i)
     while True:
         time.sleep(5)
 def send(s,msg,id):
