@@ -140,6 +140,7 @@ def lock(k,slist):
     for s in remlocks:
         while k in remlocks[s]:
             pass
+    print("THIS IS WHAT IM LOOKING FOR",k,remlocks)
     remlocks[0].append(k)
     msg="LCK"+str(k)
     id=getid()
