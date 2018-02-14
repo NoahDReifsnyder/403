@@ -96,6 +96,7 @@ def start_up():
             PORT_NUMBER+=1
     s.listen(0)
     while len(slist)<(len(iplist)-1):
+        print('waiting still')
         conn,addr=s.accept()
         print("connect on",addr)
         slist.append(conn)
