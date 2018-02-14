@@ -261,6 +261,7 @@ def gencmds(slist):
             value=get(key,slist)
         unlock(key,slist)
         #print("ECommand:",i)
+        print("Command",i,"of",num)
     while True:
         #myd()
         #print('here')
