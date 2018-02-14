@@ -21,6 +21,10 @@ PUTLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
+finlist=[]
+def finlen():
+    global finlist
+    return len(finlist)
 def myd():
     global mydata
     print(mydata)
@@ -51,10 +55,9 @@ def main():
     thread.start_new_thread(gencmds,(slist,))
     for s in slist:
         thread.start_new_thread(listen,(s,))
-    while True:
+    while finlen()<(iplen()+1):
         time.sleep(5)
         pass
-    shut_down(slist)
 def start_up():
     global iplist
     global SOCLOCL
@@ -97,10 +100,6 @@ def start_up():
     remlocks[0]=[]
     return slist
 
-def shut_down(slist):
-    for s in slist:
-        s.close()
-        slist.remove(s)
 #Protocols
 ############################
 def get(k,slist):
@@ -171,6 +170,11 @@ def unlock(k,slist):
     for s in slist:
         send(s,msg,id)
     pass
+def done(slist):
+    msg="FIN"
+    id=getid()
+    for s in slist:
+        send(s,msg,id)
 ############################
 def parse(mssg,s):
     global mylocks
@@ -178,6 +182,7 @@ def parse(mssg,s):
     global gotlist
     global faillist
     global mydata
+    global finlist
     #print(mssg.encode('utf-8'))
     #print("Got:",mssg)
     try:
@@ -220,7 +225,8 @@ def parse(mssg,s):
             remlocks[s].remove(k)
         #print(remlocks)
         pass
-
+    elif type=="FIN":
+        finlist.append(s)
 
 def wait(key,slist,id):
     global mylocks
