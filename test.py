@@ -197,6 +197,13 @@ def unlock(k,slist):
         send(s,msg,id)
     pass
 def l2(k,s,id):
+    LLS(k)
+    LOCLOCL[k].acquire()
+    for s in remlocks:
+        while k in remlocks[s]:
+            pass
+    remlocks[0].append(k)
+    LOCLOCL[k].release()
     msg="LCK"+str(k)
     send(s,msg,id)
 def ul2(k,s,id):
