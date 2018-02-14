@@ -195,6 +195,12 @@ def unlock(k,slist):
     for s in slist:
         send(s,msg,id)
     pass
+def l2(k,s,id):
+    msg="LCK"+str(k)
+    send(s,msg,id)
+def ul2(k,s,id):
+    msg="U2L"+str(k)
+    send(s,msg,id)
 def done(slist):
     global finlist
     msg="FIN"
@@ -245,6 +251,12 @@ def parse(mssg,s):
             mylocks[k]=0
         mylocks[k]+=1
         pass
+    elif type=="U2L":
+        l2(k,s,id)
+    elif type=="UL2":
+        if k in remlocks[s]:
+            remlocks.remove(k)
+            ul2(k,s,id)
     elif type=="ULK":
         #print(remlocks)
         if k in remlocks[s]:
@@ -258,7 +270,16 @@ def wait(key,slist,id):
     global mylocks
     global remlocks
     key=str(key)
+    dt=datetime.now()
+    to=randint(1,10)/10
     while not key in mylocks or not mylocks[key]==iplen():
+        td=(datetime.now())-dt).total_seconds()
+        if td>to:
+            msg="UL2"+str(key)
+           for s in slist:
+               send(msg,s,id)
+           dt=datetime.now()
+           to=randint(1,10)/10
         pass
 def gencmds(slist):
     print('doing commands')
