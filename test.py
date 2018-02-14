@@ -228,6 +228,7 @@ def parse(mssg,s):
         #print(remlocks)
         pass
     elif type=="FIN":
+        print("GET FIN")
         finlist.append(s)
 
 def wait(key,slist,id):
