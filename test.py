@@ -75,6 +75,7 @@ def start_up():
     n=10 #number of nodes, plus a few extra for safety
     partition={}
     for ip in iplist:
+        print(ip)
         i=PORT_NUMBER
         flag=True
         while i < PORT_NUMBER+n and flag:
