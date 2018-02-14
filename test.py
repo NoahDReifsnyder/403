@@ -7,19 +7,6 @@ from threading import Thread,Lock
 import _thread as thread
 import sys
 from random import randint
-import signal
-
-class timeout:
-    def __init__(self, seconds=1, error_message='Timeout'):
-        self.seconds = seconds
-        self.error_message = error_message
-    def handle_timeout(self, signum, frame):
-        raise TimeoutError(self.error_message)
-    def __enter__(self):
-        signal.signal(signal.SIGALRM, self.handle_timeout)
-        signal.alarm(self.seconds)
-    def __exit__(self, type, value, traceback):
-        signal.alarm(0)
 #iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
 save=0
 #iplist=['128.180.135.45','128.180.132.69','128.180.132.176','128.180.133.83']
@@ -94,9 +81,8 @@ def start_up():
         while i < PORT_NUMBER+n and flag:
             s=socket(AF_INET,SOCK_STREAM)
             print(i)
-            try:
-                with timeout(seconds=.5):
-                    s.connect((ip,i))
+            try::
+                s.connect((ip,i))
                 print("connected on:", ip)
                 slist.append(s)
                 flag=False
