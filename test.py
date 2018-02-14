@@ -54,11 +54,14 @@ def getid():
     IDLOC.release()
     return id
 def main(): 
+    global remlocks
     slist=start_up()
     thread.start_new_thread(gencmds,(slist,))
     for s in slist:
         thread.start_new_thread(listen,(s,))
     while finlen()<(iplen()+1):
+        for s in remlocks:
+            print(remlocks[s])
         print(finlen(),iplen()+1)
         time.sleep(5)
         pass
