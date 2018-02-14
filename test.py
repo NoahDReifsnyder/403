@@ -81,7 +81,7 @@ def start_up():
         while i < PORT_NUMBER+n and flag:
             s=socket(AF_INET,SOCK_STREAM)
             print(i)
-            try::
+            try:
                 s.connect((ip,i))
                 print("connected on:", ip)
                 slist.append(s)
