@@ -82,7 +82,7 @@ def start_up():
             #s=socket(AF_INET,SOCK_STREAM)
             try:
                 print("try",ip,i)
-                create_connection((ip,i),1)
+                create_connection((ip,i),.1)
                 print("connected on:", ip)
                 slist.append(s)
                 flag=False
