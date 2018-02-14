@@ -191,7 +191,7 @@ def parse(mssg,s):
     global faillist
     global mydata
     global finlist
-    print(mssg)
+    print("REC:",mssg)
     try:
         msg,id=mssg.split("\x00")
     except ValueError:
@@ -277,6 +277,7 @@ def send(s,msg,id):
     length=len(emsg)
     elength=int_to_bytes(length)
     SOCLOCL[s].acquire()
+    print("SND:",msg)
     s.send(elength)
     s.send(emsg)
     SOCLOCL[s].release()
