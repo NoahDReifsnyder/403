@@ -255,7 +255,7 @@ def parse(mssg,s):
         l2(k,s,id)
     elif type=="UL2":
         if k in remlocks[s]:
-            remlocks.remove(k)
+            remlocks[s].remove(k)
             ul2(k,s,id)
     elif type=="ULK":
         #print(remlocks)
