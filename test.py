@@ -247,7 +247,8 @@ def gencmds(slist):
         #print("WCommand:",i)
         if a==1:
             #print("put",key,value)
-            put(key,value,slist)
+            c=put(key,value,slist)
+            print("Put:",c)
         else:
             #print("get",key)
             value=get(key,slist)
