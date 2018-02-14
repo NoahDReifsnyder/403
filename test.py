@@ -287,7 +287,9 @@ def wait(key,slist,id):
             msg="UL2"+str(key)
             for s in slist:
                 send(s,msg,id)
-            remlocks[0].remove(str(key))
+            k=str(key)
+            if k in remlocks[0]:
+                remlocks[0].remove(k)
             dt=datetime.now()
             to=randint(1,10)/10
         pass
