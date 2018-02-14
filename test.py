@@ -130,9 +130,10 @@ def put(k,v,slist):
     global mydata
     x=get(k,slist)
     k=str(k)
-    if not x and k not in mydata:
-        mydata[k]=v
-        return getput(True)
+    if not x:
+        if k not in mydata:
+            mydata[k]=v
+            return getput(True)
     return getput(False)
 def lock(k,slist):
     global remlocks
