@@ -233,7 +233,7 @@ def wait(key,slist,id):
         td=datetime.now()-dt
         ts=td.total_seconds()
         if ts>to:
-            to=to/2
+            to=to/(randint(1,5))
             iglist.append(id)
             unlock(key,slist)
             time.sleep(.1)
