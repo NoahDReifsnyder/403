@@ -175,6 +175,7 @@ def parse(mssg,s):
     global gotlist
     global faillist
     global iglist
+    global mydata
     #print(mssg.encode('utf-8'))
     #print("Got:",mssg)
     try:
@@ -248,7 +249,7 @@ def gencmds(slist):
         if a==1:
             #print("put",key,value)
             c=put(key,value,slist)
-            print("Put:",c)
+            print("Put:",c,mydata)
         else:
             #print("get",key)
             value=get(key,slist)
