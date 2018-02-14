@@ -214,10 +214,10 @@ def parse(mssg,s):
         mylocks[k]+=1
         pass
     elif type=="ULK":
-        print(remlocks)
+        #print(remlocks)
         if k in remlocks[s]:
             remlocks[s].remove(k)
-        print(remlocks)
+        #print(remlocks)
         pass
 
 
@@ -240,11 +240,11 @@ def gencmds(slist):
         if key in mylocks:
             mylocks.pop(key)
         value=randint(0,1000000)
-        print("SCommand:",i,key,remlocks,mylocks)
+        #print("SCommand:",i,key,remlocks,mylocks)
         id=lock(key,slist)
-        print("LCommand:",i)
+        #print("LCommand:",i)
         wait(key,slist,id)
-        print("WCommand:",i)
+        #print("WCommand:",i)
         if a==1:
             #print("put",key,value)
             put(key,value,slist)
@@ -252,16 +252,16 @@ def gencmds(slist):
             #print("get",key)
             value=get(key,slist)
         unlock(key,slist)
-        print("ECommand:",i)
+        #print("ECommand:",i)
     while True:
-        myd()
-        print('here')
+        #myd()
+        #print('here')
         time.sleep(5)
 def send(s,msg,id):
     global SOCLOCL
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
     emsg=msg.encode('utf-8')
-    print("Sending",emsg,msg)
+    #print("Sending",emsg,msg)
     length=len(emsg)
     elength=int_to_bytes(length)
     SOCLOCL[s].acquire()
@@ -274,7 +274,7 @@ def listen(s):
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
         msg=emsg.decode('utf-8')
-        print("Got:",emsg,msg)
+        #print("Got:",emsg,msg)
         thread.start_new_thread(parse,(msg,s,))
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
