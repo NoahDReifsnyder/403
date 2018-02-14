@@ -284,7 +284,8 @@ def listen(s):
         emsg=s.recv(l)
         msg=emsg.decode('utf-8')
         #print("Got:",emsg,msg)
-        thread.start_new_thread(parse,(msg,s,))
+        parse(msg,s)
+        #thread.start_new_thread(parse,(msg,s,))
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
