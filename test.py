@@ -28,13 +28,12 @@ def getput(b):
     global putcount
     global PUTLOC
     PUTLOC.acquire()
-    if b:
+    if not b:
         nput=putcount-1
     else:
         nput=putcount
         putcount+=1
     PUTLOC.release()
-    print(b,putcount)
     return nput
 def iplen():
     global iplist
