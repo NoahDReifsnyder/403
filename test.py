@@ -277,10 +277,10 @@ def wait(key,slist,id):
         tds=td.total_seconds()
         if td>to:
             msg="UL2"+str(key)
-           for s in slist:
-               send(msg,s,id)
-           dt=datetime.now()
-           to=randint(1,10)/10
+            for s in slist:
+                send(msg,s,id)
+            dt=datetime.now()
+            to=randint(1,10)/10
         pass
 def gencmds(slist):
     print('doing commands')
