@@ -75,16 +75,11 @@ def start_up():
     n=10 #number of nodes, plus a few extra for safety
     partition={}
     for ip in iplist:
-        print(ip,get_ip_address())
-        if ip==get_ip_address():
-            continue
-        print(ip)
         i=PORT_NUMBER
         flag=True
         while i < PORT_NUMBER+n and flag:
             #s=socket(AF_INET,SOCK_STREAM)
             try:
-                print("try",ip,i)
                 create_connection((ip,i))
                 print("connected on:", ip)
                 slist.append(s)
@@ -98,13 +93,9 @@ def start_up():
             s.bind((get_ip_address(),PORT_NUMBER))
             flag=False
         except:
-            print(PORT_NUMBER)
             PORT_NUMBER+=1
-    print("here")
     s.listen(0)
     while len(slist)<(len(iplist)-1):
-        print("here1")
-        print(get_ip_address(),PORT_NUMBER)
         conn,addr=s.accept()
         print("connect on",addr)
         slist.append(conn)
