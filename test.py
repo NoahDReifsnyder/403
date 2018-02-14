@@ -8,7 +8,7 @@ import _thread as thread
 import sys
 from random import randint
 #iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
-iplist=['128.180.135.45','128.180.132.176','128.180.133.83']
+iplist=['128.180.135.45','128.180.132.69','128.180.133.83','128.180.132.176']
 num=100
 keyrange=5
 mylocks={}#list of keys I HOLD LOCKS FOR
@@ -21,7 +21,6 @@ PUTLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
-iglist=[]
 def myd():
     global mydata
     print(mydata)
@@ -178,7 +177,6 @@ def parse(mssg,s):
     global locks
     global gotlist
     global faillist
-    global iglist
     global mydata
     #print(mssg.encode('utf-8'))
     #print("Got:",mssg)
@@ -212,8 +210,6 @@ def parse(mssg,s):
         locked(k,s,id)
         pass
     elif type=="LKD":
-        if id in iglist:
-            return#ignore broken messages
         if k not in mylocks:
             mylocks[k]=0
         mylocks[k]+=1
@@ -229,7 +225,6 @@ def parse(mssg,s):
 def wait(key,slist,id):
     global mylocks
     global remlocks
-    global iglist
     key=str(key)
     while not key in mylocks or not mylocks[key]==iplen():
         pass
@@ -293,6 +288,4 @@ def int_to_bytes(x):#convert int to bytes to send
 
 def int_from_bytes(xbytes): #recieved bytes to int
     return int.from_bytes(xbytes, 'big')
-
-
 main()
