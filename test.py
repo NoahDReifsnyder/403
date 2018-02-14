@@ -138,10 +138,10 @@ def put(k,v,slist):
 def lock(k,slist):
     global remlocks
     k=str(k)
-    REMLOCLOC.acquire()
     for s in remlocks:
         while k in remlocks[s]:
-            pass    
+            pass
+    REMLOCLOC.acquire()
     remlocks[0].append(k)
     REMLOCLOC.release()
     msg="LCK"+str(k)
@@ -151,10 +151,10 @@ def lock(k,slist):
 def locked(k,s,id):
     global remlocks
     global LOCLOC
-    REMLOCLOC.acquire()
     for soc in remlocks:
         while k in remlocks[soc]:
             pass
+    REMLOCLOC.acquire()
     remlocks[s].append(k)
     REMLOCLOC.release()
     msg="LKD"+str(k)
