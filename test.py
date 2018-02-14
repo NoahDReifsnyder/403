@@ -97,8 +97,10 @@ def start_up():
         except:
             print(PORT_NUMBER)
             PORT_NUMBER+=1
+    print("here")
     s.listen(0)
     while len(slist)<(len(iplist)-1):
+        print("here1")
         conn,addr=s.accept()
         print("connect on",addr)
         slist.append(conn)
