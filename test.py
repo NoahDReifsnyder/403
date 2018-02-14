@@ -34,6 +34,7 @@ def getput(b):
         nput=putcount
         putcount+=1
     PUTLOC.release()
+    print(b,putcount)
     return nput
 def iplen():
     global iplist
