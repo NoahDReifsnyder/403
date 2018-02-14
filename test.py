@@ -98,10 +98,10 @@ def start_up():
             print(PORT_NUMBER)
             PORT_NUMBER+=1
     print("here")
-    s.listen(1)
-    s.setblocking(0)
+    s.listen(0)
     while len(slist)<(len(iplist)-1):
         print("here1")
+        print(get_ip_address(),PORT_NUMBER)
         conn,addr=s.accept()
         print("connect on",addr)
         slist.append(conn)
