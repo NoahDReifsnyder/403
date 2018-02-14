@@ -18,6 +18,7 @@ MSGID=0
 IDLOC=Lock()
 PUTLOC=Lock()
 SOCLOCL={}
+REMLOCLOC=Lock()
 putcount=1
 mydata={}
 iglist=[]
@@ -137,11 +138,12 @@ def put(k,v,slist):
 def lock(k,slist):
     global remlocks
     k=str(k)
+    REMLOCLOC.acquire()
     for s in remlocks:
         while k in remlocks[s]:
-            pass
-    print("THIS IS WHAT IM LOOKING FOR",k,remlocks)
+            pass    
     remlocks[0].append(k)
+    REMLOCLOC.release()
     msg="LCK"+str(k)
     id=getid()
     for s in slist:
@@ -149,10 +151,12 @@ def lock(k,slist):
 def locked(k,s,id):
     global remlocks
     global LOCLOC
+    REMLOCLOC.acquire()
     for soc in remlocks:
         while k in remlocks[soc]:
             pass
     remlocks[s].append(k)
+    REMLOCLOC.release()
     msg="LKD"+str(k)
     #print(remlocks)
     send(s,msg,id)
