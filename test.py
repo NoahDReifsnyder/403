@@ -95,7 +95,7 @@ def start_up():
             s=socket(AF_INET,SOCK_STREAM)
             print(i)
             try:
-                with timeout(seconds=.2):
+                with timeout(seconds=1):
                     s.connect((ip,i))
                 slist.append(s)
                 flag=False
