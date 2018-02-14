@@ -75,6 +75,8 @@ def start_up():
     n=10 #number of nodes, plus a few extra for safety
     partition={}
     for ip in iplist:
+        if ip==get_ip_address():
+            continue
         print(ip)
         i=PORT_NUMBER
         flag=True
