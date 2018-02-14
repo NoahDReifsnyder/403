@@ -84,6 +84,7 @@ def start_up():
             try:
                 print("try",i)
                 s.connect((ip,i))
+                print("got",i)
                 print("connect on",ip)
                 slist.append(s)
                 flag=False
