@@ -279,7 +279,7 @@ def wait(key,slist,id):
     global remlocks
     key=str(key)
     dt=datetime.now()
-    to=randint(1,10)/10
+    to=randint(1,4)
     while not key in mylocks or not mylocks[key]==iplen():
         td=(datetime.now())-dt
         tds=td.total_seconds()
@@ -291,7 +291,7 @@ def wait(key,slist,id):
             if k in remlocks[0]:
                 remlocks[0].remove(k)
             dt=datetime.now()
-            to=randint(1,10)/10
+            to=randint(1,4)
         pass
 def gencmds(slist):
     print('doing commands')
