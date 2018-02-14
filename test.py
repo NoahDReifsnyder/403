@@ -8,8 +8,8 @@ import _thread as thread
 import sys
 from random import randint
 #iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
-save='128.180.133.83'
-iplist=['128.180.135.45','128.180.132.69','128.180.132.176']
+save=''
+iplist=['128.180.135.45','128.180.132.69','128.180.132.176','128.180.133.83']
 num=100
 keyrange=5
 mylocks={}#list of keys I HOLD LOCKS FOR
@@ -187,10 +187,6 @@ def parse(mssg,s):
     global faillist
     global mydata
     global finlist
-    #print(mssg.encode('utf-8'))
-    #print("Got:",mssg)
-    if "FIN" in mssg:
-        print("GOOOOOT IT")
     try:
         msg,id=mssg.split("\x00")
     except ValueError:
@@ -232,7 +228,6 @@ def parse(mssg,s):
         #print(remlocks)
         pass
     elif type=="FIN":
-        print("GET FIN")
         finlist.append(s)
 
 def wait(key,slist,id):
