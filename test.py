@@ -6,7 +6,7 @@ from queue import Queue
 from threading import Thread,Lock
 import _thread as thread
 import sys
-from random import randin
+from random import randint
 import signal
 
 class timeout:
