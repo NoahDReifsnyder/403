@@ -130,6 +130,8 @@ def put(k,v,slist):
     global mydata
     x=get(k,slist)
     k=str(k)
+    b=k not in mydata
+    print(x,b)
     if not x:
         if k not in mydata:
             mydata[k]=v
