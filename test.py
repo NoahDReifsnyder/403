@@ -89,6 +89,7 @@ def start_up():
                 slist.append(s)
                 flag=False
             except:
+                print("failed",i)
                 i+=1
     print("made it")
     s=socket(AF_INET,SOCK_STREAM)
