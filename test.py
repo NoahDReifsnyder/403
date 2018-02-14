@@ -98,7 +98,7 @@ def start_up():
             print(PORT_NUMBER)
             PORT_NUMBER+=1
     print("here")
-    s.listen(0)
+    s.listen(1)
     while len(slist)<(len(iplist)-1):
         print("here1")
         conn,addr=s.accept()
