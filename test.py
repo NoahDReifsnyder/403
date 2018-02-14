@@ -227,18 +227,7 @@ def wait(key,slist,id):
     global remlocks
     global iglist
     key=str(key)
-    dt=datetime.now()
-    to=8
     while not key in mylocks or not mylocks[key]==iplen():
-        td=datetime.now()-dt
-        ts=td.total_seconds()
-        if ts>to:
-            to=to/(randint(1,2))
-            iglist.append(id)
-            unlock(key,slist)
-            time.sleep(.1)
-            id=lock(key,slist)
-            dt=datetime.now()
         pass
 def gencmds(slist):
     print('doing commands')
