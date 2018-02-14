@@ -80,7 +80,7 @@ def start_up():
         flag=True
         while i < PORT_NUMBER+n and flag:
             s=socket(AF_INET,SOCK_STREAM)
-            print(i)
+            s.setblocking(0)
             try:
                 s.connect((ip,i))
                 print("connected on:", ip)
