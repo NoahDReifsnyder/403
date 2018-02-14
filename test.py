@@ -173,10 +173,12 @@ def unlock(k,slist):
         send(s,msg,id)
     pass
 def done(slist):
+    global finlist
     msg="FIN"
     id=getid()
     for s in slist:
         send(s,msg,id)
+    finlist.append("0")
 ############################
 def parse(mssg,s):
     global mylocks
