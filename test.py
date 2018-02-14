@@ -82,6 +82,7 @@ def start_up():
             s=socket(AF_INET,SOCK_STREAM)
             s.setblocking(0)
             try:
+                print("try",ip,i)
                 s.connect((ip,i))
                 print("connected on:", ip)
                 slist.append(s)
