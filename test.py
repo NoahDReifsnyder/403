@@ -170,6 +170,7 @@ def lock(k,slist):
     id=getid()
     for s in slist:
         send(s,msg,id)
+    return id
 def locked(k,s,id):
     global remlocks
     LLS(k)
