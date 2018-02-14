@@ -187,6 +187,8 @@ def parse(mssg,s):
     global finlist
     #print(mssg.encode('utf-8'))
     #print("Got:",mssg)
+    if mssg.contains("FIN"):
+        print("GOOOOOT IT")
     try:
         msg,id=mssg.split("\x00")
     except ValueError:
