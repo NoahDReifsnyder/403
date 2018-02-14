@@ -79,6 +79,8 @@ def start_up():
         i=PORT_NUMBER
         flag=True
         while i < PORT_NUMBER+n and flag:
+            create_connection((ip,i))
+            '''
             s=socket(AF_INET,SOCK_STREAM)
             try:
                 print("try",ip,i)
@@ -87,8 +89,9 @@ def start_up():
                 slist.append(s)
                 flag=False
             except:
-                s=None
+                s.
                 i+=1
+                '''
     s=socket(AF_INET,SOCK_STREAM)
     flag=True
     while flag:
