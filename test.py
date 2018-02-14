@@ -249,6 +249,8 @@ def gencmds(slist):
     for i in range(0,num):
         a=randint(1,2)
         key=randint(0,keyrange)
+        if key in mylocks:
+            mylocks.pop(key)
         value=randint(0,1000000)
         print("SCommand:",i,key,remlocks,mylocks)
         id=lock(key,slist)
