@@ -93,6 +93,7 @@ def start_up():
             s.bind((get_ip_address(),PORT_NUMBER))
             flag=False
         except:
+            print(PORT_NUMBER)
             PORT_NUMBER+=1
     s.listen(0)
     while len(slist)<(len(iplist)-1):
