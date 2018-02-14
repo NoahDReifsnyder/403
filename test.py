@@ -191,6 +191,7 @@ def parse(mssg,s):
     global faillist
     global mydata
     global finlist
+    print(mssg)
     try:
         msg,id=mssg.split("\x00")
     except ValueError:
