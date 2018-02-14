@@ -165,7 +165,7 @@ def unlock(k,slist):
     k=str(k)
     while k in mylocks:
         mylocks.pop(k)
-    remlocks[0].remove(k)
+    #remlocks[0].remove(k)
     msg="ULK"+str(k)
     for s in slist:
         send(s,msg,id)
