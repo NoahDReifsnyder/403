@@ -278,7 +278,7 @@ def wait(key,slist,id):
         if tds>to:
             msg="UL2"+str(key)
             for s in slist:
-                send(msg,s,id)
+                send(s,msg,id)
             dt=datetime.now()
             to=randint(1,10)/10
         pass
