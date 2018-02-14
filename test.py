@@ -76,7 +76,6 @@ def start_up():
         i=PORT_NUMBER
         flag=True
         while i < PORT_NUMBER+n and flag:
-            print(i)
             s=socket(AF_INET,SOCK_STREAM)
             try:
                 s.connect((ip,i))
