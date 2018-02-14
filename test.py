@@ -90,6 +90,7 @@ def start_up():
     flag=True
     while flag:
         try:
+            print('here')
             s.bind((get_ip_address(),PORT_NUMBER))
             flag=False
         except:
