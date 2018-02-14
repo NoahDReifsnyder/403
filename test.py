@@ -85,6 +85,8 @@ def start_up():
                 flag=False
             except:
                 i+=1
+                if i==PORT_NUMBER+n:
+                    i=PORT_NUMBER
     s=socket(AF_INET,SOCK_STREAM)
     flag=True
     while flag:
