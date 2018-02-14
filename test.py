@@ -8,7 +8,6 @@ import _thread as thread
 import sys
 from random import randint
 #iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
-save=''
 iplist=['128.180.135.45','128.180.132.69','128.180.132.176','128.180.133.83']
 num=100
 keyrange=5
@@ -64,6 +63,8 @@ def start_up():
     global iplist
     global SOCLOCL
     global remlocks
+    print(iplist)
+    print(get_ip_address())
     slist=[] 
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
