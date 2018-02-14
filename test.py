@@ -8,7 +8,8 @@ import _thread as thread
 import sys
 from random import randint
 #iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
-iplist=['128.180.135.45','128.180.132.69','128.180.133.83','128.180.132.176']
+save='128.180.133.83'
+iplist=['128.180.135.45','128.180.132.69','128.180.132.176']
 num=100
 keyrange=5
 mylocks={}#list of keys I HOLD LOCKS FOR
