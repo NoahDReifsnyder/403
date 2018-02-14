@@ -97,16 +97,15 @@ def start_up():
             try:
                 with timeout(seconds=1):
                     s.connect((ip,i))
+                print("connected on:", ip)
                 slist.append(s)
                 flag=False
             except:
                 i+=1
-    print("made it")
     s=socket(AF_INET,SOCK_STREAM)
     flag=True
     while flag:
         try:
-            print('here')
             s.bind((get_ip_address(),PORT_NUMBER))
             flag=False
         except:
