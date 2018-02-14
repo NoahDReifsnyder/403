@@ -266,10 +266,7 @@ def gencmds(slist):
         unlock(key,slist)
         #print("ECommand:",i)
         print("Command",i,"of",num)
-    while True:
-        #myd()
-        #print('here')
-        time.sleep(5)
+    done(slist)
 def send(s,msg,id):
     global SOCLOCL
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
