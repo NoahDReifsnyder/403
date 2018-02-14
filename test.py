@@ -67,7 +67,7 @@ def main():
         thread.start_new_thread(listen,(s,))
     while finlen()<(iplen()+1):
         for s in remlocks:
-            print(remlocks[s])
+            print(remlocks[s],s.getpeername()[0])
         print(finlen(),iplen()+1)
         time.sleep(5)
         pass
