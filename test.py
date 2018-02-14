@@ -19,7 +19,7 @@ class timeout:
         signal.signal(signal.SIGALRM, self.handle_timeout)
         signal.alarm(self.seconds)
     def __exit__(self, type, value, traceback):
-        signal.alarm(0)t
+        signal.alarm(0)
 #iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
 save=0
 #iplist=['128.180.135.45','128.180.132.69','128.180.132.176','128.180.133.83']
