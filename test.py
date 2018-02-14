@@ -273,7 +273,7 @@ def wait(key,slist,id):
     dt=datetime.now()
     to=randint(1,10)/10
     while not key in mylocks or not mylocks[key]==iplen():
-        td=(datetime.now())-dt)
+        td=(datetime.now())-dt
         tds=td.total_seconds()
         if td>to:
             msg="UL2"+str(key)
