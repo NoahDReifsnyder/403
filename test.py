@@ -88,6 +88,7 @@ def start_up():
                 flag=False
             except:
                 i+=1
+    print("made it")
     s=socket(AF_INET,SOCK_STREAM)
     flag=True
     while flag:
