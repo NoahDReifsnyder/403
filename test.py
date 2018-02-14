@@ -87,9 +87,7 @@ def start_up():
                 slist.append(s)
                 flag=False
             except:
-                s.
                 i+=1
-                '''
     s=socket(AF_INET,SOCK_STREAM)
     flag=True
     while flag:
