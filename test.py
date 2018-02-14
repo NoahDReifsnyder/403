@@ -20,11 +20,17 @@ faillist={}#to count failed gets
 MSGID=0
 IDLOC=Lock()
 PUTLOC=Lock()
-LOCLOC=Lock()
+LOCLOCL={}
+LHLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
 finlist=[]
+def LLS(k):
+    LHLOC.acquire()
+    if k not in LOCLOCL:
+        LOCLOCL[k]=Lock()
+    LHLOC.release()
 def finlen():
     global finlist
     return len(finlist)
@@ -107,6 +113,7 @@ def start_up():
     for s in slist:
         remlocks[s]=[]
         SOCLOCL[s]=Lock()
+        LOCLOCL[s]=Lock()
     remlocks[0]=[]
     return slist
 
@@ -149,24 +156,26 @@ def put(k,v,slist):
 def lock(k,slist):
     global remlocks
     k=str(k)
-    LOCLOC.acquire()
+    LLS(k)
+    LOCLOCL[k].acquire()
     for s in remlocks:
         while k in remlocks[s]:
             pass
     remlocks[0].append(k)
-    LOCLOC.release()
+    LOCLOCL[k].release()
     msg="LCK"+str(k)
     id=getid()
     for s in slist:
         send(s,msg,id)
 def locked(k,s,id):
     global remlocks
-    LOCLOC.acquire()
+    LLS(k)
+    LOCLOCL[k].acquire()
     for soc in remlocks:
         while k in remlocks[soc]:
             pass
     remlocks[s].append(k)
-    LOCLOC.release()
+    LOCLOCL[k].release()
     msg="LKD"+str(k)
     #print(remlocks)
     send(s,msg,id)
