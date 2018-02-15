@@ -188,7 +188,7 @@ def locked(k,s,id):
         LOCLOCL[k].acquire()
         for soc in remlocks:
             while k in remlocks[soc]:
-                print(remlocks[soc],k)
+                #print(remlocks[soc],k)
                 pass
     remlocks[s].append(k)
     LOCLOCL[k].release()
