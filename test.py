@@ -265,7 +265,7 @@ def wait(key,slist,id):
     global remlocks
     key=str(key)
     dt=datetime.now()
-    to=randint(1,4)
+    to=randint(1,10)
     while not key in mylocks or not mylocks[key]==iplen():
         td=(datetime.now())-dt
         tds=td.total_seconds()
