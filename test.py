@@ -275,6 +275,13 @@ def wait(key,slist,id):
             k=str(key)
             if k in remlocks[0]:
                 remlocks[0].remove(k)
+            LLS(k)
+            LOCLOCL[k].acquire()
+            for s in remlocks:
+                while k in remlocks[s]:
+                    pass
+            remlocks[0].append(k)
+            LOCLOCL[k].release()
             dt=datetime.now()
             to=randint(1,4)
         pass
