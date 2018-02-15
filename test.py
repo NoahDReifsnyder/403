@@ -288,6 +288,7 @@ def wait(key,slist,id):
                 for s in remlocks:
                     while k in remlocks[s]:
                         time.sleep(.1)
+                        print('stuck here')
                         pass
                 remlocks[0].append(k)
                 LOCLOCL[k].release()
