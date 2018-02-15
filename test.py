@@ -163,6 +163,7 @@ def lock(k,slist,type=0):
     LLS(k)
     flag=False
     while not flag:
+        print('here1')
         flag=True
         LOCLOCL[k].acquire()
         for s in remlocks:
@@ -182,6 +183,7 @@ def locked(k,s,id):
     LLS(k)
     flag=False
     while not flag:
+        print('here2')
         flag=True
         LOCLOCL[k].acquire()
         for soc in remlocks:
