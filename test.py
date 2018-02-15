@@ -171,6 +171,7 @@ def lock(k,slist,type=0):
             if k in remlocks[s]:
                 flag=False
                 LOCLOCL[k].release()
+                time.sleep(.1)
     remlocks[0].append(k)
     LOCLOCL[k].release()
     msg="LCK"+str(k)
@@ -191,6 +192,7 @@ def locked(k,s,id):
             if k in remlocks[soc]:
                 flag=False
                 LOCLOCL[k].release()
+                time.sleep(1)
     remlocks[s].append(k)
     LOCLOCL[k].release()
     msg="LKD"+str(k)
