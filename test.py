@@ -192,6 +192,7 @@ def locked(k,s,id):
             if k in remlocks[soc]:
                 flag=False
                 LOCLOCL[k].release()
+                break
                 time.sleep(1)
     remlocks[s].append(k)
     LOCLOCL[k].release()
