@@ -270,9 +270,7 @@ def wait(key,slist,id):
     while not key in mylocks or not mylocks[key]==iplen():
         td=(datetime.now())-dt
         tds=td.total_seconds()
-        print('here')
         if tds>to:
-            print('here',key,ds)
             if ds==1:
                 msg="UL2"+str(key)
                 for s in slist:
