@@ -273,6 +273,7 @@ def wait(key,slist,id):
         td=(datetime.now())-dt
         tds=td.total_seconds()
         if tds>to:
+            print('here',key,ds)
             if ds==1:
                 msg="UL2"+str(key)
                 for s in slist:
