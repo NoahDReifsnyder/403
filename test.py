@@ -161,11 +161,14 @@ def lock(k,slist,type=0):
     global remlocks
     k=str(k)
     LLS(k)
-    LOCLOCL[k].acquire()
-    for s in remlocks:
-        while k in remlocks[s]:
-            #print('here')
-            pass
+    flag=False
+    while not flag:
+        flag=True
+        LOCLOCL[k].acquire()
+        for s in remlocks:
+            if k in remlocks[s]:
+                flag=False
+                LOCLOCL[k].release()
     remlocks[0].append(k)
     LOCLOCL[k].release()
     msg="LCK"+str(k)
@@ -177,12 +180,14 @@ def lock(k,slist,type=0):
 def locked(k,s,id):
     global remlocks
     LLS(k)
-    LOCLOCL[k].acquire()
-    for soc in remlocks:
-        while k in remlocks[soc]:
-            #print('here2')
-            time.sleep(.1)
-            pass
+    flag=False
+    while not flag:
+        flag=True
+        LOCLOCL[k].acquire()
+        for soc in remlocks:
+            if k in remlocks[soc]:
+                flag=False
+                LOCLOC[k].release()
     remlocks[s].append(k)
     LOCLOCL[k].release()
     msg="LKD"+str(k)
