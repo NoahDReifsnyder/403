@@ -245,8 +245,6 @@ def parse(mssg,s):
     elif type=="LKD":
         if k not in mylocks:
             mylocks[k]=0
-        while k not in remlocks[0]:
-            pass
         mylocks[k]+=1
         pass
     elif type=="UL2":
