@@ -333,6 +333,7 @@ def send(s,msg,id):
 
 def listen(s):
     while True:
+        print('h')
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
         msg=emsg.decode('utf-8')
