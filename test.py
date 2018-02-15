@@ -267,28 +267,30 @@ def wait(key,slist,id):
     global remlocks
     key=str(key)
     dt=datetime.now()
-    to=randint(1,10)
+    to=2
+    ds=randint(1,2)
     while not key in mylocks or not mylocks[key]==iplen():
         td=(datetime.now())-dt
         tds=td.total_seconds()
         if tds>to:
-            msg="UL2"+str(key)
-            for s in slist:
-                send(s,msg,id)
-            k=str(key)
-            if k in mylocks:
-                mylocks.pop(k)
-            if k in remlocks[0]:
-                remlocks[0].remove(k)
-            LLS(k)
-            LOCLOCL[k].acquire()
-            for s in remlocks:
-                while k in remlocks[s]:
-                    pass
-            remlocks[0].append(k)
-            LOCLOCL[k].release()
+            if ds==1:
+                msg="UL2"+str(key)
+                for s in slist:
+                    send(s,msg,id)
+                k=str(key)
+                if k in mylocks:
+                    mylocks.pop(k)
+                if k in remlocks[0]:
+                    remlocks[0].remove(k)
+                LLS(k)
+                LOCLOCL[k].acquire()
+                for s in remlocks:
+                    while k in remlocks[s]:
+                        pass
+                remlocks[0].append(k)
+                LOCLOCL[k].release()
             dt=datetime.now()
-            to=randint(1,4)
+            ds=randint(1,2)
         pass
 def gencmds(slist):
     print('doing commands')
