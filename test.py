@@ -281,6 +281,7 @@ def wait(key,slist,id):
                     mylocks.pop(k)
                 if k in remlocks[0]:
                     remlocks[0].remove(k)
+                time.sleep(.1)
                 lock(key,slist,1)
                 wait(key,slist,id)
                 
