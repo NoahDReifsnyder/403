@@ -270,6 +270,7 @@ def wait(key,slist,id):
     while not key in mylocks or not mylocks[key]==iplen():
         td=(datetime.now())-dt
         tds=td.total_seconds()
+        print('here')
         if tds>to:
             print('here',key,ds)
             if ds==1:
@@ -286,7 +287,7 @@ def wait(key,slist,id):
                 for s in remlocks:
                     while k in remlocks[s]:
                         time.sleep(.1)
-                        print('stuck here')
+                        print('1stuck here')
                         pass
                 remlocks[0].append(k)
                 LOCLOCL[k].release()
