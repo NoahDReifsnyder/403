@@ -332,13 +332,12 @@ def send(s,msg,id):
     SOCLOCL[s].release()
 
 def listen(s):
-    print('h')
-    l=int_from_bytes(s.recv(1))
-    emsg=s.recv(l)
-    msg=emsg.decode('utf-8')
-        #print("Got:",emsg,msg)
-    parse(msg,s)
-    thread.start_new_thread(listen,(s,))
+    while True:
+        print('h')
+        l=int_from_bytes(s.recv(1))
+        emsg=s.recv(l)
+        msg=emsg.decode('utf-8')
+        thread.start_new_thread(parse,(msg,s,))
     
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
