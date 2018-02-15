@@ -188,14 +188,8 @@ def locked(k,s,id):
         flag=True
         LOCLOCL[k].acquire()
         for soc in remlocks:
-            if k in remlocks[soc]:
-                if k in mylocks and mylocks[k]==iplen():
-                    remlocks[soc].remove(k)
-                else:
-                    flag=False
-                    LOCLOCL[k].release()
-                break
-                time.sleep(1)
+            while k not in remlocks[soc]:
+                pass
     remlocks[s].append(k)
     LOCLOCL[k].release()
     msg="LKD"+str(k)
