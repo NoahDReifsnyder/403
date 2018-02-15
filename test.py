@@ -164,6 +164,7 @@ def lock(k,slist,type=0):
     LOCLOCL[k].acquire()
     for s in remlocks:
         while k in remlocks[s]:
+            print('here')
             pass
     remlocks[0].append(k)
     LOCLOCL[k].release()
@@ -179,6 +180,7 @@ def locked(k,s,id):
     LOCLOCL[k].acquire()
     for soc in remlocks:
         while k in remlocks[soc]:
+            print('here2')
             pass
     remlocks[s].append(k)
     LOCLOCL[k].release()
