@@ -276,8 +276,13 @@ def wait(key,slist,id):
                 msg="UL2"+str(key)
                 for s in slist:
                     send(s,msg,id)
+                if k in mylocks:
+                    mylocks.pop(k)
+                if k in remlocks[0]:
+                    remlocks[0].remove(k)
                 lock(key,slist,1)
                 wait(key,slist,id)
+                
         pass
 def gencmds(slist):
     print('doing commands')
