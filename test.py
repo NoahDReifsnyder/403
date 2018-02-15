@@ -273,6 +273,7 @@ def wait(key,slist,id):
         tds=td.total_seconds()
         if tds>to:
             if ds==1:
+                k=str(key)
                 msg="UL2"+str(key)
                 for s in slist:
                     send(s,msg,id)
