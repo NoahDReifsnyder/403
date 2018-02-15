@@ -275,6 +275,7 @@ def wait(key,slist,id):
                 send(s,msg,id)
             k=str(key)
             if k in remlocks[0]:
+                mylocks.pop(k)
                 remlocks[0].remove(k)
             LLS(k)
             LOCLOCL[k].acquire()
