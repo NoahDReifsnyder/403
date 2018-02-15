@@ -189,7 +189,7 @@ def locked(k,s,id):
         LOCLOCL[k].acquire()
         for soc in remlocks:
             if k in remlocks[soc]:
-                if mylocks[k]==iplen():
+                if k is in mylocks and mylocks[k]==iplen():
                     remlocks[soc].remove(k)
                 else:
                     flag=False
