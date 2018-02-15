@@ -274,6 +274,7 @@ def parse(mssg,s):
 def wait(key,slist,id):
     global mylocks
     global remlocks
+    print('here3')
     key=str(key)
     dt=datetime.now()
     to=2
