@@ -340,6 +340,7 @@ def listen(s):
         #print("Got:",emsg,msg)
         #parse(msg,s)
         thread.start_new_thread(parse,(msg,s,))
+        print('here')
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
