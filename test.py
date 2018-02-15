@@ -66,6 +66,7 @@ def main():
     for s in slist:
         thread.start_new_thread(listen,(s,))
     while finlen()<(iplen()+1):
+        print(get_ip_address(),mylocks)
         for s in remlocks:
             if s==0:
                 print(remlocks[s],'0')
