@@ -1,2 +1,3 @@
 string="rtext"
-print(string.split("r"))
+m,n=(string.split("r"))
+print(m,n)
