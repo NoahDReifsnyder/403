@@ -184,11 +184,11 @@ def locked(k,s,id):
     LLS(k)
     flag=False
     while not flag:
-        print('here2')
         flag=True
         LOCLOCL[k].acquire()
         for soc in remlocks:
             while k not in remlocks[soc]:
+                print('here2')
                 pass
     remlocks[s].append(k)
     LOCLOCL[k].release()
