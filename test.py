@@ -285,6 +285,7 @@ def wait(key,slist,id):
                 for s in remlocks:
                     while k in remlocks[s]:
                         time.sleep(.1)
+                        print('1')
                         if k in mylocks and mylocks[key]==iplen() and k in remlocks[s]:
                             remlocks[s].remove(k)
                         pass
