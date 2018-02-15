@@ -157,7 +157,7 @@ def put(k,v,slist):
             mydata[k]=v
             return getput(True)
     return getput(False)
-def lock(k,slist):
+def lock(k,slist,type=0):
     global remlocks
     k=str(k)
     LLS(k)
@@ -169,8 +169,9 @@ def lock(k,slist):
     LOCLOCL[k].release()
     msg="LCK"+str(k)
     id=getid()
-    for s in slist:
-        send(s,msg,id)
+    if type==0:
+        for s in slist:
+            send(s,msg,id)
     return id
 def locked(k,s,id):
     global remlocks
@@ -275,24 +276,8 @@ def wait(key,slist,id):
                 msg="UL2"+str(key)
                 for s in slist:
                     send(s,msg,id)
-                k=str(key)
-                if k in mylocks:
-                    mylocks.pop(k)
-                if k in remlocks[0]:
-                    remlocks[0].remove(k)
-                LLS(k)
-                LOCLOCL[k].acquire()
-                for s in remlocks:
-                    while k in remlocks[s]:
-                        time.sleep(.1)
-                        print('1')
-                        if k in mylocks and mylocks[key]==iplen() and k in remlocks[s]:
-                            remlocks[s].remove(k)
-                        pass
-                remlocks[0].append(k)
-                LOCLOCL[k].release()
-            dt=datetime.now()
-            ds=randint(1,2)
+                lock(key,slist,1)
+                wait(key,slist,id)
         pass
 def gencmds(slist):
     print('doing commands')
