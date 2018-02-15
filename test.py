@@ -337,7 +337,7 @@ def listen(s):
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
         msg=emsg.decode('utf-8')
-        t=Thread.(target=parse,args=(msg,s,))
+        t=Thread(target=parse,args=(msg,s,))
         t.start()
     
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
