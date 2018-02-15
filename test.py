@@ -196,19 +196,6 @@ def unlock(k,slist):
     for s in slist:
         send(s,msg,id)
     pass
-def l2(k,s,id):
-    LLS(k)
-    LOCLOCL[k].acquire()
-    for s in remlocks:
-        while k in remlocks[s]:
-            pass
-    remlocks[0].append(k)
-    LOCLOCL[k].release()
-    msg="LCK"+str(k)
-    send(s,msg,id)
-def ul2(k,s,id):
-    msg="U2L"+str(k)
-    send(s,msg,id)
 def done(slist):
     global finlist
     msg="FIN"
@@ -259,12 +246,10 @@ def parse(mssg,s):
             mylocks[k]=0
         mylocks[k]+=1
         pass
-    elif type=="U2L":
-        l2(k,s,id)
     elif type=="UL2":
         if k in remlocks[s]:
             remlocks[s].remove(k)
-            ul2(k,s,id)
+            locked(k,s,id)
     elif type=="ULK":
         #print(remlocks)
         if k in remlocks[s]:
