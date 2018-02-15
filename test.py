@@ -261,6 +261,7 @@ def parse(mssg,s):
     elif type=="UL2":
         if k in remlocks[s]:
             remlocks[s].remove(k)
+            time.sleep(.1)
             locked(k,s,id)
     elif type=="ULK":
         #print(remlocks)
