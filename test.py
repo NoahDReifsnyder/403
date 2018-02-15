@@ -190,7 +190,7 @@ def locked(k,s,id):
         for soc in remlocks:
             if k in remlocks[soc]:
                 flag=False
-                LOCLOC[k].release()
+                LOCLOCL[k].release()
     remlocks[s].append(k)
     LOCLOCL[k].release()
     msg="LKD"+str(k)
