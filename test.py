@@ -287,7 +287,8 @@ def wait(key,slist,id):
                 for s in remlocks:
                     while k in remlocks[s]:
                         time.sleep(.1)
-                        print('1stuck here')
+                        if k in mylocks and mylocks[key]==iplen():
+                            remlocks[s].remove(k)
                         pass
                 remlocks[0].append(k)
                 LOCLOCL[k].release()
