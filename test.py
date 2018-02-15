@@ -282,6 +282,7 @@ def wait(key,slist,id):
                 if k in remlocks[0]:
                     remlocks[0].remove(k)
                 time.sleep(.1)
+                print('try again',key)
                 lock(key,slist,1)
                 wait(key,slist,id)
                 
