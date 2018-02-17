@@ -28,6 +28,17 @@ def finlen():
 def myd():
     global mydata
     print(mydata)
+def getput(b):
+    global putcount
+    global PUTLOC
+    PUTLOC.acquire()
+    if not b:
+        nput=putcount-1
+    else:
+        nput=putcount
+        putcount+=1
+    PUTLOC.release()
+    return nput
 def iplen():
     global iplist
     return len(iplist)-1
