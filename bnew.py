@@ -225,27 +225,28 @@ def wait(key,slist,id):
                 id=lock(key,slist)
                 
             dt=datetime.now()
-        
+
+def cmds(slist,i):
+    a=randint(1,2)
+    key=randint(0,keyrange)
+    while key in mylocks:
+        pass#currently, can't support keeping lock for multiple actions at once, need to reacquire
+    value=randint(0,1000000)
+    id=lock(key,slist)
+    wait(key,slist,id) 
+    if a==1:
+        c=put(key,value,slist)
+        print("Put:",key,c,mydata)
+    else:
+        value=get(key,slist)
+        print("Get:",key,value,mydata)
+    unlock(key,slist)
+    print("Command",i,"of",num)
+
 def gencmds(slist):
     print('doing commands')
     for i in range(0,num):
-        a=randint(1,2)
-        key=randint(0,keyrange)
-        '''
-        if key in mylocks:
-            mylocks.pop(key)
-        '''#shouldn't need this?
-        value=randint(0,1000000)
-        id=lock(key,slist)
-        wait(key,slist,id) 
-        if a==1:
-            c=put(key,value,slist)
-            print("Put:",key,c,mydata)
-        else:
-            value=get(key,slist)
-            print("Get:",key,value,mydata)
-        unlock(key,slist)
-        print("Command",i,"of",num)
+        thread.start_new_thread(cmds,(slist,i,))
     done(slist)
 
 def send(s,msg,id):
