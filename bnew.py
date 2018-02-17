@@ -215,6 +215,7 @@ def parse(mssg,s):
     elif type=="LKD":
         print(id,k,id,idlist,mylocks)
         print(id in idlist)
+        print(id.toInt() in idlist)
         if id in idlist:
             print('getin')
             mylocks[str(k)]+=1
