@@ -157,6 +157,7 @@ def locked(k,s,id):
     msg="LKD"+str(k)
     send(s,msg,id)
 def unlock(k,slist):
+    k=str(k)
     mylocks.pop(k)
     pass
 def done(slist):
