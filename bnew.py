@@ -163,8 +163,8 @@ def locked(k,s,id):
     LOCLOCL[k].acquire()
     while k in mylocks:
         pass
-    msg="LKD"+str(k)
     LOCLOCL[k].release()
+    msg="LKD"+str(k)
     send(s,msg,id)
 def unlock(k,slist):
     k=str(k)
