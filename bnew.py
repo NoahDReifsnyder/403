@@ -22,6 +22,7 @@ PUTLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
+idlist=[]
 finlist=[]
 def finlen():
     global finlist
@@ -148,6 +149,7 @@ def lock(k,slist):
     id=getid()
     for s in slist:
         send(s,msg,id)
+    return id
 def locked(k,s,id):
     while k in mylocks:
         pass
@@ -210,7 +212,8 @@ def parse(mssg,s):
         locked(k,s,id)
         pass
     elif type=="LKD":
-        mylocks[k]+=1
+        if id in idlist:
+            mylocks[k]+=1
     elif type=="ULK":
         #print(remlocks)
         if k in remlocks[s]:
@@ -224,7 +227,18 @@ def wait(key,slist,id):
     global mylocks
     global remlocks
     key=str(key)
-    while not key in mylocks or not mylocks[key]==iplen():
+    dt=datetime.now()
+    while not mylocks[key]==iplen():
+        tn=datetime.now()
+        td=tn-dt
+        ts=td.total_seconds()
+        if ts>1:
+            a=randint(1,2)
+            if a==1:#random chance to give up lock, so that eventually one gives way and one doesn't
+                idlist.remove(id)
+                mylocks.pop(key)
+                id=lock(key,slist)
+                dt=datetime.now()
         pass
 def gencmds(slist):
     print('doing commands')
