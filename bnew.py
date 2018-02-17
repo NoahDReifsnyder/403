@@ -214,6 +214,7 @@ def wait(key,slist,id):
     key=str(key)
     dt=datetime.now()
     while not mylocks[key]==iplen():
+        print('stuck2')
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
