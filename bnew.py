@@ -29,15 +29,15 @@ def LLS(k):
     k=str(k)
     if k not in LOCLOCL:
         LOCLOCL[k]=Lock()
+
 def finlen():
     global finlist
     return len(finlist)
+
 def myd():
-    global mydata
     print(mydata)
+
 def getput(b):
-    global putcount
-    global PUTLOC
     PUTLOC.acquire()
     if not b:
         nput=putcount-1
@@ -46,17 +46,17 @@ def getput(b):
         putcount+=1
     PUTLOC.release()
     return nput
+
 def iplen():
-    global iplist
     return len(iplist)-1
+
 def getid():
-    global MSGID
-    global IDLOC
     IDLOC.acquire()
     id=MSGID
     MSGID+=1
     IDLOC.release()
     return id
+
 def main(): 
     slist=start_up()
     thread.start_new_thread(gencmds,(slist,))
@@ -64,12 +64,10 @@ def main():
         thread.start_new_thread(listen,(s,))
     while finlen()<(iplen()+1):
         print(finlen(),iplen()+1)
-        time.sleep(5)
+        time.sleep(1)#just for a cleaner run
         pass
+
 def start_up():
-    global iplist
-    global SOCLOCL
-    global remlocks
     slist=[] 
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
@@ -111,30 +109,25 @@ def start_up():
 #Protocols
 ############################
 def get(k,slist):
-    global faillist
-    global gotlist
     id=getid()
     msg="GET"+str(k)
     for s in slist:
         send(s,msg,id)
     id=str(id)
     while not id in faillist or not faillist[id]==iplen():
-        #print(id, faillist,gotlist)
         if id in gotlist:
             return gotlist.pop(id)
     return None
 
 def got(k,s,id):
-    global mydata
     v='\xff'#denotes not found
     k=str(k)
     if k in mydata:
         v=str(mydata[k])
     msg="GOT"+k+"_"+v
     send(s,msg,id)
-    pass
+
 def put(k,v,slist):
-    global mydata
     x=get(k,slist)
     k=str(k)
     b=k not in mydata
@@ -143,8 +136,8 @@ def put(k,v,slist):
             mydata[k]=v
             return getput(True)
     return getput(False)
-def lock(k,slist):
-    global remlocks
+
+def lock(k,slist):s
     k=str(k)
     LLS(k)
     LOCLOCL[k].acquire()
@@ -158,6 +151,7 @@ def lock(k,slist):
     for s in slist:
         send(s,msg,id)
     return id
+
 def locked(k,s,id):
     LLS(k)
     LOCLOCL[k].acquire()
@@ -166,30 +160,25 @@ def locked(k,s,id):
     msg="LKD"+str(k)
     send(s,msg,id)
     LOCLOCL[k].release()
+
 def unlock(k,slist):
     k=str(k)
     mylocks.pop(k)
-    pass
+
 def done(slist):
-    global finlist
     msg="FIN"
     id=getid()
     for s in slist:
         send(s,msg,id)
     finlist.append("0")
+
 ############################
 def parse(mssg,s):
-    global mylocks
-    global locks
-    global gotlist
-    global faillist
-    global mydata
-    global finlist
     try:
         msg,id=mssg.split("\x00")
     except ValueError:
-        print("Error:",mssg)
-        time.sleep(10)
+        print("Error:",mssg)#corrupted message
+        return
     type=msg[:3]
     rest=msg[3:]
     k=None
@@ -210,25 +199,15 @@ def parse(mssg,s):
             faillist[id]+=1
         else:
             gotlist[id]=v
-        pass
     elif type=="LCK":
         locked(k,s,id)
-        pass
     elif type=="LKD":
-        if id in idlist:
+        if id in idlist:#currently requested lock (time outs)
             mylocks[str(k)]+=1
-    elif type=="ULK":
-        #print(remlocks)
-        if k in remlocks[s]:
-            remlocks[s].remove(k)
-        #print(remlocks)
-        pass
     elif type=="FIN":
         finlist.append(s)
 
 def wait(key,slist,id):
-    global mylocks
-    global remlocks
     key=str(key)
     dt=datetime.now()
     while not mylocks[key]==iplen():
@@ -237,46 +216,37 @@ def wait(key,slist,id):
         ts=td.total_seconds()
         if ts>1:
             a=randint(1,2)
-            if a==1:#random chance to give up lock, so that eventually one gives way and one doesn't
+            if a==1:#random chance to give up lock
                 idlist.remove(str(id))
                 mylocks.pop(key)
                 id=lock(key,slist)
                 
             dt=datetime.now()
-        pass
+        
 def gencmds(slist):
     print('doing commands')
-    global num
-    global keyrange
-    global remlocks
-    global mylocks
     for i in range(0,num):
         a=randint(1,2)
         key=randint(0,keyrange)
+        '''
         if key in mylocks:
             mylocks.pop(key)
+        '''#shouldn't need this?
         value=randint(0,1000000)
-        #print("SCommand:",i,key,remlocks,mylocks)
         id=lock(key,slist)
-        #print("LCommand:",i)
-        wait(key,slist,id)
-        #print("WCommand:",i)
+        wait(key,slist,id) 
         if a==1:
-            #print("put",key,value)
             c=put(key,value,slist)
             print("Put:",c,mydata)
         else:
-            #print("get",key)
             value=get(key,slist)
         unlock(key,slist)
-        #print("ECommand:",i)
         print("Command",i,"of",num)
     done(slist)
+
 def send(s,msg,id):
-    global SOCLOCL
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
     emsg=msg.encode('utf-8')
-    #print("Sending",emsg,msg)
     length=len(emsg)
     elength=int_to_bytes(length)
     SOCLOCL[s].acquire()
@@ -289,8 +259,6 @@ def listen(s):
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
         msg=emsg.decode('utf-8')
-        #print("Got:",emsg,msg)
-        #parse(msg,s)
         if len(msg)>0:
             thread.start_new_thread(parse,(msg,s,))
 
@@ -302,6 +270,7 @@ def get_ip_address():#using google to obtain real ip, google most reliable host 
 def int_to_bytes(x):#convert int to bytes to send
     return x.to_bytes((x.bit_length() + 7) // 8, 'big')
 
-def int_from_bytes(xbytes): #recieved bytes to int
+def int_from_bytes(xbytes): #recieved bytes to int 
     return int.from_bytes(xbytes, 'big')
-main()
+
+main()#program is loaded, start running
