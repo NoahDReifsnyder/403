@@ -225,7 +225,7 @@ def wait(key,slist,id):
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
-        if ts>5:
+        if ts>3:
             print(key,mylocks)
             a=randint(1,2)
             if a==1:#random chance to give up lock, so that eventually one gives way and one doesn't
