@@ -11,7 +11,7 @@ from random import randint
 iplist=['172.31.47.97','172.31.37.86','172.31.43.198','172.31.36.171']
 save=''
 num=25
-keyrange=10000
+keyrange=5
 mylocks={}#list of keys I HOLD LOCKS FOR
 remlocks={}#list of locked by outside 
 gotlist={}#list of return k,v pairs from get requests.
@@ -213,8 +213,6 @@ def parse(mssg,s):
         locked(k,s,id)
         pass
     elif type=="LKD":
-        print(id,k,id,idlist,mylocks)
-        print(id in idlist)
         if id in idlist:
             print('getin')
             mylocks[str(k)]+=1
