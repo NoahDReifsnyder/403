@@ -65,9 +65,7 @@ def main():
     for s in slist:
         thread.start_new_thread(listen,(s,))
     while finlen()<(iplen()+1):
-        print(finlen(),iplen()+1)
         time.sleep(1)#just for a cleaner run
-        pass
 
 def start_up():
     slist=[] 
@@ -239,9 +237,10 @@ def gencmds(slist):
         wait(key,slist,id) 
         if a==1:
             c=put(key,value,slist)
-            print("Put:",c,mydata)
+            print("Put:",key,c,mydata)
         else:
             value=get(key,slist)
+            print("Get:",key,value,mydata)
         unlock(key,slist)
         print("Command",i,"of",num)
     done(slist)
