@@ -11,7 +11,7 @@ from random import randint
 iplist=['172.31.47.97','172.31.37.86','172.31.43.198','172.31.36.171']
 save=''
 num=25
-keyrange=5
+keyrange=2
 mylocks={}#list of keys I HOLD LOCKS FOR
 remlocks={}#list of locked by outside 
 gotlist={}#list of return k,v pairs from get requests.
@@ -236,7 +236,7 @@ def wait(key,slist,id):
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
-        if ts>3:
+        if ts>2:
             a=randint(1,2)
             print(ts,tn)
             print(key,mylocks,a)
