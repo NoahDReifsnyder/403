@@ -177,7 +177,6 @@ def done(slist):
     finlist.append("0")
 ############################
 def parse(mssg,s):
-    print(mssg)
     global mylocks
     global locks
     global gotlist
@@ -215,7 +214,6 @@ def parse(mssg,s):
         pass
     elif type=="LKD":
         if id in idlist:
-            print('getin')
             mylocks[str(k)]+=1
     elif type=="ULK":
         #print(remlocks)
@@ -269,7 +267,7 @@ def gencmds(slist):
         else:
             #print("get",key)
             value=get(key,slist)
-        unlock(key,slist)
+        #unlock(key,slist)
         #print("ECommand:",i)
         print("Command",i,"of",num)
     done(slist)
