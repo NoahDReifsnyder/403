@@ -157,16 +157,7 @@ def locked(k,s,id):
     msg="LKD"+str(k)
     send(s,msg,id)
 def unlock(k,slist):
-    global mylocks
-    global remlocks
-    id=getid()
-    k=str(k)
-    while k in mylocks:
-        mylocks.pop(k)
-    #remlocks[0].remove(k)
-    msg="ULK"+str(k)
-    for s in slist:
-        send(s,msg,id)
+    mylocks.pop(k)
     pass
 def done(slist):
     global finlist
@@ -267,7 +258,7 @@ def gencmds(slist):
         else:
             #print("get",key)
             value=get(key,slist)
-        #unlock(key,slist)
+        unlock(key,slist)
         #print("ECommand:",i)
         print("Command",i,"of",num)
     done(slist)
