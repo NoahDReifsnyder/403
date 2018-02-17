@@ -244,7 +244,8 @@ def wait(key,slist,id):
                 idlist.remove(str(id))
                 mylocks.pop(key)
                 id=lock(key,slist)
-                dt=datetime.now()
+                
+            dt=datetime.now()
         pass
 def gencmds(slist):
     print('doing commands')
