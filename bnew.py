@@ -148,10 +148,7 @@ def lock(k,slist):
     k=str(k)
     while k in mylocks:
         pass
-    LLS(k)
-    LOCLOCL[k].acquire()
     mylocks[k]=0
-    LOCLOCL[k].release()
     msg="LCK"+str(k)
     id=getid()
     idlist.append(str(id))
@@ -159,13 +156,7 @@ def lock(k,slist):
         send(s,msg,id)
     return id
 def locked(k,s,id):
-    LLS(k)
-    LOCLOCL[k].acquire()
     while k in mylocks:
-        pass
-    try:
-        LOCLOCL[k].release()
-    except:
         pass
     msg="LKD"+str(k)
     send(s,msg,id)
