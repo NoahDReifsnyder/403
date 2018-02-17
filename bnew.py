@@ -18,6 +18,7 @@ gotlist={}#list of return k,v pairs from get requests.
 faillist={}#to count failed gets
 MSGID=0
 IDLOC=Lock()
+PUTLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
