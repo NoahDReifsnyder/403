@@ -27,7 +27,8 @@ idlist=[]
 finlist=[]
 def LLS(k):
     k=str(k)
-    LOCLOCL[k]=Lock()
+    if k not in LOCLOCL:
+        LOCLOCL[k]=Lock()
 def finlen():
     global finlist
     return len(finlist)
@@ -146,9 +147,12 @@ def put(k,v,slist):
 def lock(k,slist):
     global remlocks
     k=str(k)
+    LLS(k)
+    LOCLOCL[k].acquire()
     while k in mylocks:
         pass
     mylocks[k]=0
+    LOCLOCL[k].release()
     msg="LCK"+str(k)
     id=getid()
     idlist.append(str(id))
@@ -156,10 +160,13 @@ def lock(k,slist):
         send(s,msg,id)
     return id
 def locked(k,s,id):
+    LLS(k)
+    LOCLOCL[k].acquire()
     while k in mylocks:
         pass
     msg="LKD"+str(k)
     send(s,msg,id)
+    LOCLOCL[k].release()
 def unlock(k,slist):
     k=str(k)
     mylocks.pop(k)
