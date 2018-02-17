@@ -213,6 +213,7 @@ def parse(mssg,s):
         locked(k,s,id)
         pass
     elif type=="LKD":
+        print(id,k,id,idlist,mylocks)
         if id in idlist:
             mylocks[k]+=1
     elif type=="ULK":
@@ -233,7 +234,7 @@ def wait(key,slist,id):
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
-        print(ts,key,mylocks,id,idlist)
+       # print(ts,key,mylocks,id,idlist)
         if ts>5:
             print('here')
             a=randint(1,2)
