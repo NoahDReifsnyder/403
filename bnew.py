@@ -241,6 +241,7 @@ def wait(key,slist,id):
             if a==1:#random chance to give up lock, so that eventually one gives way and one doesn't
                 idlist.remove(str(id))
                 mylocks.pop(key)
+                time.sleep(.1)
                 id=lock(key,slist)
                 dt=datetime.now()
         pass
