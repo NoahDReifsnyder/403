@@ -237,8 +237,8 @@ def wait(key,slist,id):
         td=tn-dt
         ts=td.total_seconds()
         if ts>3:
-            print(key,mylocks)
             a=randint(1,2)
+            print(key,mylocks,a)
             if a==1:#random chance to give up lock, so that eventually one gives way and one doesn't
                 idlist.remove(str(id))
                 mylocks.pop(key)
