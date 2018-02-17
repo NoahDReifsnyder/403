@@ -152,7 +152,6 @@ def lock(k,slist):
         send(s,msg,id)
 def locked(k,s,id):
     global remlocks
-    global LOCLOC
     for soc in remlocks:
         while k in remlocks[soc]:
             pass

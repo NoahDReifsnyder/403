@@ -8,10 +8,9 @@ import _thread as thread
 import sys
 from random import randint
 #iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
+iplist=['172.31.47.97','172.31.37.86','172.31.43.198','172.31.36.171']
 save=''
-iplist=['128.180.135.45','128.180.132.69','128.180.132.176','128.180.133.83']
-iplist=['127.31.47.97','172.31.37.86','172.31.43.198']
-num=100
+num=25
 keyrange=5
 mylocks={}#list of keys I HOLD LOCKS FOR
 remlocks={}#list of locked by outside 
@@ -19,7 +18,6 @@ gotlist={}#list of return k,v pairs from get requests.
 faillist={}#to count failed gets
 MSGID=0
 IDLOC=Lock()
-PUTLOC=Lock()
 SOCLOCL={}
 putcount=1
 mydata={}
@@ -30,17 +28,6 @@ def finlen():
 def myd():
     global mydata
     print(mydata)
-def getput(b):
-    global putcount
-    global PUTLOC
-    PUTLOC.acquire()
-    if not b:
-        nput=putcount-1
-    else:
-        nput=putcount
-        putcount+=1
-    PUTLOC.release()
-    return nput
 def iplen():
     global iplist
     return len(iplist)-1
@@ -142,24 +129,18 @@ def put(k,v,slist):
 def lock(k,slist):
     global remlocks
     k=str(k)
-    for s in remlocks:
-        while k in remlocks[s]:
-            pass
-    #remlocks[0].append(k)
+    while k in mylocks:
+        pass
+    mylocks[k]=0
     msg="LCK"+str(k)
     id=getid()
     for s in slist:
         send(s,msg,id)
 def locked(k,s,id):
-    global remlocks
-    for soc in remlocks:
-        while k in remlocks[soc]:
-            pass
-    remlocks[s].append(k)
+    while k in mylocks:
+        pass
     msg="LKD"+str(k)
-    #print(remlocks)
     send(s,msg,id)
-    return id
 def unlock(k,slist):
     global mylocks
     global remlocks
@@ -217,10 +198,8 @@ def parse(mssg,s):
         locked(k,s,id)
         pass
     elif type=="LKD":
-        if k not in mylocks:
-            mylocks[k]=0
-        mylocks[k]+=1
-        pass
+        if id in idlist:
+            mylocks[k]+=1
     elif type=="ULK":
         #print(remlocks)
         if k in remlocks[s]:
