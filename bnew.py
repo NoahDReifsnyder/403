@@ -51,6 +51,7 @@ def iplen():
     return len(iplist)-1
 
 def getid():
+    global MSGID
     IDLOC.acquire()
     id=MSGID
     MSGID+=1
