@@ -214,11 +214,11 @@ def wait(key,slist,id):
     key=str(key)
     dt=datetime.now()
     while not mylocks[key]==iplen():
-        print('stuck2')
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
         if ts>1:
+            print('stuck2',mylocks,key)
             a=randint(1,2)
             if a==1:#random chance to give up lock
                 idlist.remove(str(id))
