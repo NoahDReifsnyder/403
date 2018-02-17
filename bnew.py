@@ -160,7 +160,7 @@ def lock(k,slist):
     return id
 def locked(k,s,id):
     LLS(k)
-    LOCLOCL[k].acquire
+    LOCLOCL[k].acquire()
     while k in mylocks:
         pass
     msg="LKD"+str(k)
