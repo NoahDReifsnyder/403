@@ -8,11 +8,10 @@ import _thread as thread
 import sys
 from random import randint
 #iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
+iplist=['172.31.47.97','172.31.37.86','172.31.43.198','172.31.36.171']
 save=''
-iplist=['128.180.135.45','128.180.132.69','128.180.132.176','128.180.133.83']
-iplist=['127.31.47.97','172.31.37.86','172.31.43.198']
-num=100
-keyrange=5
+num=25
+keyrange=2
 mylocks={}#list of keys I HOLD LOCKS FOR
 remlocks={}#list of locked by outside 
 gotlist={}#list of return k,v pairs from get requests.
@@ -20,10 +19,16 @@ faillist={}#to count failed gets
 MSGID=0
 IDLOC=Lock()
 PUTLOC=Lock()
+LOCLOCL={}
 SOCLOCL={}
 putcount=1
 mydata={}
+idlist=[]
 finlist=[]
+def LLS(k):
+    k=str(k)
+    if k not in LOCLOCL:
+        LOCLOCL[k]=Lock()
 def finlen():
     global finlist
     return len(finlist)
@@ -133,7 +138,6 @@ def put(k,v,slist):
     x=get(k,slist)
     k=str(k)
     b=k not in mydata
-    print(x,b)
     if not x:
         if k not in mydata:
             mydata[k]=v
@@ -142,35 +146,29 @@ def put(k,v,slist):
 def lock(k,slist):
     global remlocks
     k=str(k)
-    for s in remlocks:
-        while k in remlocks[s]:
-            pass
-    #remlocks[0].append(k)
+    LLS(k)
+    LOCLOCL[k].acquire()
+    while k in mylocks:
+        pass
+    mylocks[k]=0
+    LOCLOCL[k].release()
     msg="LCK"+str(k)
     id=getid()
+    idlist.append(str(id))
     for s in slist:
         send(s,msg,id)
-def locked(k,s,id):
-    global remlocks
-    for soc in remlocks:
-        while k in remlocks[soc]:
-            pass
-    remlocks[s].append(k)
-    msg="LKD"+str(k)
-    #print(remlocks)
-    send(s,msg,id)
     return id
-def unlock(k,slist):
-    global mylocks
-    global remlocks
-    id=getid()
-    k=str(k)
+def locked(k,s,id):
+    LLS(k)
+    LOCLOCL[k].acquire()
     while k in mylocks:
-        mylocks.pop(k)
-    #remlocks[0].remove(k)
-    msg="ULK"+str(k)
-    for s in slist:
-        send(s,msg,id)
+        pass
+    msg="LKD"+str(k)
+    send(s,msg,id)
+    LOCLOCL[k].release()
+def unlock(k,slist):
+    k=str(k)
+    mylocks.pop(k)
     pass
 def done(slist):
     global finlist
@@ -217,10 +215,8 @@ def parse(mssg,s):
         locked(k,s,id)
         pass
     elif type=="LKD":
-        if k not in mylocks:
-            mylocks[k]=0
-        mylocks[k]+=1
-        pass
+        if id in idlist:
+            mylocks[str(k)]+=1
     elif type=="ULK":
         #print(remlocks)
         if k in remlocks[s]:
@@ -234,7 +230,21 @@ def wait(key,slist,id):
     global mylocks
     global remlocks
     key=str(key)
-    while not key in mylocks or not mylocks[key]==iplen():
+    dt=datetime.now()
+    while not mylocks[key]==iplen():
+        '''
+        tn=datetime.now()
+        td=tn-dt
+        ts=td.total_seconds()
+        if ts>2:
+            a=randint(1,2)
+            if a==1:#random chance to give up lock, so that eventually one gives way and one doesn't
+                idlist.remove(str(id))
+                mylocks.pop(key)
+                id=lock(key,slist)
+                
+            dt=datetime.now()
+        '''
         pass
 def gencmds(slist):
     print('doing commands')
@@ -282,6 +292,7 @@ def listen(s):
         emsg=s.recv(l)
         msg=emsg.decode('utf-8')
         #print("Got:",emsg,msg)
+        #parse(msg,s)
         thread.start_new_thread(parse,(msg,s,))
 
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.

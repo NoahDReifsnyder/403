@@ -232,11 +232,10 @@ def wait(key,slist,id):
     key=str(key)
     dt=datetime.now()
     while not mylocks[key]==iplen():
-        '''
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
-        if ts>2:
+        if ts>1:
             a=randint(1,2)
             if a==1:#random chance to give up lock, so that eventually one gives way and one doesn't
                 idlist.remove(str(id))
@@ -244,7 +243,6 @@ def wait(key,slist,id):
                 id=lock(key,slist)
                 
             dt=datetime.now()
-        '''
         pass
 def gencmds(slist):
     print('doing commands')
