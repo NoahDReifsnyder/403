@@ -38,6 +38,7 @@ def myd():
     print(mydata)
 
 def getput(b):
+    global putcount
     PUTLOC.acquire()
     if not b:
         nput=putcount-1
