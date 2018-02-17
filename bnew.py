@@ -138,7 +138,6 @@ def put(k,v,slist):
     x=get(k,slist)
     k=str(k)
     b=k not in mydata
-    print(x,b)
     if not x:
         if k not in mydata:
             mydata[k]=v
@@ -233,19 +232,19 @@ def wait(key,slist,id):
     key=str(key)
     dt=datetime.now()
     while not mylocks[key]==iplen():
+        '''
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
         if ts>2:
             a=randint(1,2)
-            print(ts,tn)
-            print(key,mylocks,a)
             if a==1:#random chance to give up lock, so that eventually one gives way and one doesn't
                 idlist.remove(str(id))
                 mylocks.pop(key)
                 id=lock(key,slist)
                 
             dt=datetime.now()
+        '''
         pass
 def gencmds(slist):
     print('doing commands')
