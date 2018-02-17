@@ -177,6 +177,7 @@ def done(slist):
     finlist.append("0")
 ############################
 def parse(mssg,s):
+    print(mssg)
     global mylocks
     global locks
     global gotlist
