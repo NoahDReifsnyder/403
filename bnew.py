@@ -233,6 +233,7 @@ def wait(key,slist,id):
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
+        print(ts,key)
         if ts>1:
             a=randint(1,2)
             if a==1:#random chance to give up lock, so that eventually one gives way and one doesn't
