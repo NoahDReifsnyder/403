@@ -137,7 +137,7 @@ def put(k,v,slist):
             return getput(True)
     return getput(False)
 
-def lock(k,slist):s
+def lock(k,slist):
     k=str(k)
     LLS(k)
     LOCLOCL[k].acquire()
