@@ -233,7 +233,7 @@ def wait(key,slist,id):
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
-        print(ts,key,mylocks,id)
+        print(ts,key,mylocks,id,idlist)
         if ts>5:
             print('here')
             a=randint(1,2)
