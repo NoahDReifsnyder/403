@@ -147,7 +147,7 @@ def lock(k,slist):
     mylocks[k]=0
     msg="LCK"+str(k)
     id=getid()
-    idlist.append(id)
+    idlist.append(str(id))
     for s in slist:
         send(s,msg,id)
     return id
@@ -215,7 +215,6 @@ def parse(mssg,s):
     elif type=="LKD":
         print(id,k,id,idlist,mylocks)
         print(id in idlist)
-        print(id.toInt() in idlist)
         if id in idlist:
             print('getin')
             mylocks[str(k)]+=1
@@ -242,7 +241,7 @@ def wait(key,slist,id):
             print('here')
             a=randint(1,2)
             if a==1:#random chance to give up lock, so that eventually one gives way and one doesn't
-                idlist.remove(id)
+                idlist.remove(str(id))
                 mylocks.pop(key)
                 id=lock(key,slist)
                 dt=datetime.now()
