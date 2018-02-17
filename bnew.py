@@ -19,11 +19,15 @@ faillist={}#to count failed gets
 MSGID=0
 IDLOC=Lock()
 PUTLOC=Lock()
+LOCLOCL={}
 SOCLOCL={}
 putcount=1
 mydata={}
 idlist=[]
 finlist=[]
+def LLS(k):
+    k=str(k)
+    LOCLOCL[k]=Lock()
 def finlen():
     global finlist
     return len(finlist)
@@ -144,7 +148,10 @@ def lock(k,slist):
     k=str(k)
     while k in mylocks:
         pass
+    LLS(k)
+    LOCLOCL[k].acquire()
     mylocks[k]=0
+    LOCLOCL[k].release()
     msg="LCK"+str(k)
     id=getid()
     idlist.append(str(id))
@@ -152,10 +159,13 @@ def lock(k,slist):
         send(s,msg,id)
     return id
 def locked(k,s,id):
+    LLS(k)
+    LOCLOCL[k].acquire
     while k in mylocks:
         pass
     msg="LKD"+str(k)
     send(s,msg,id)
+    LOCLOCL[k].release()
 def unlock(k,slist):
     k=str(k)
     mylocks.pop(k)
