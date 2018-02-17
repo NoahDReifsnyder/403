@@ -245,8 +245,14 @@ def cmds(slist,i):
 
 def gencmds(slist):
     print('doing commands')
+    tl=[]
     for i in range(0,num):
-        thread.start_new_thread(cmds,(slist,i,))
+        #thread.start_new_thread(cmds,(slist,i,))
+        t=Thread(target=cmds,args=(slist,i,))
+        t.start()
+        tl.append(t)
+    for t in tl:
+        t.join()
     done(slist)
 
 def send(s,msg,id):
