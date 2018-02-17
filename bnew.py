@@ -198,8 +198,7 @@ def parse(mssg,s):
         locked(k,s,id)
         pass
     elif type=="LKD":
-        if id in idlist:
-            mylocks[k]+=1
+        mylocks[k]+=1
     elif type=="ULK":
         #print(remlocks)
         if k in remlocks[s]:
