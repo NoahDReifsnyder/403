@@ -236,6 +236,7 @@ def wait(key,slist,id):
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
+        print(ts,tn)
         if ts>3:
             a=randint(1,2)
             print(key,mylocks,a)
