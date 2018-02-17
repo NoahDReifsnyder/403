@@ -147,6 +147,7 @@ def lock(k,slist):
     mylocks[k]=0
     msg="LCK"+str(k)
     id=getid()
+    idlist.append(id)
     for s in slist:
         send(s,msg,id)
     return id
