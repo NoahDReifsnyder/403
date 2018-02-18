@@ -278,6 +278,7 @@ def cmds(slist,i):
     return td
     
 def gencmds(slist):
+    global mydata
     print('doing commands')
     tl=0
     dt=datetime.now()
@@ -290,6 +291,7 @@ def gencmds(slist):
     lt=tl/ops
     print("latency:",lt)
     print("throughput:",tp)
+    print("data:",mydata)
     done(slist)
 
 def send(s,msg,id):
