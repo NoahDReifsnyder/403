@@ -1,5 +1,6 @@
 #Working Model
 from socket import * #using sockets for now, will implement lower level if needed 
+import json
 import time
 from datetime import datetime
 from queue import Queue
