@@ -218,7 +218,7 @@ def wait(key,slist,id):
         td=tn-dt
         ts=td.total_seconds()
         if ts>1:
-            print('stuck2',mylocks,key)
+            print('stuck2',mylocks,key) #lock on keys, threads interfeering in to
             a=randint(1,2)
             if a==1:#random chance to give up lock
                 idlist.remove(str(id))
@@ -250,11 +250,12 @@ def gencmds(slist):
     tl=[]
     for i in range(0,num):
         #thread.start_new_thread(cmds,(slist,i,))
-        t=Thread(target=cmds,args=(slist,i,))
-        t.start()
-        tl.append(t)
-    for t in tl:
-        t.join()
+        #t=Thread(target=cmds,args=(slist,i,))
+        cmds(slist,i)
+#t.start()
+        #tl.append(t)
+    #for t in tl:
+        #t.join()
     done(slist)
 
 def send(s,msg,id):
