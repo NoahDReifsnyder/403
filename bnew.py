@@ -218,7 +218,7 @@ def wait(key,slist,id):
         td=tn-dt
         ts=td.total_seconds()
         if ts>1:
-            print('stuck2',mylocks,key) #lock on keys, threads interfeering in to
+            #print('stuck2',mylocks,key) #lock on keys, threads interfeering in to
             a=randint(1,2)
             if a==1:#random chance to give up lock
                 idlist.remove(str(id))
@@ -232,7 +232,7 @@ def cmds(slist,i):
     a=randint(1,2)
     key=randint(0,keyrange)
     while key in mylocks:
-        print('stuck')
+        #print('stuck')
         pass#currently, can't support keeping lock for multiple actions at once, need to reacquire
     value=randint(0,1000000)
     id=lock(key,slist)
