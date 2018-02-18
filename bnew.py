@@ -251,11 +251,16 @@ def cmds(slist,i):
 def gencmds(slist):
     print('doing commands')
     tl=0
+    dt=datetime.now()
     for i in range(0,num):
         td=cmds(slist,i)
         tl+=td
-    tl=tl/num
-    print(tl)
+    td=datetime.now()-dt
+    td=td.total_seconds()
+    tp=num/td
+    lt=tl/num
+    print("latency:",lt)
+    print("throughput:",tp)
     done(slist)
 
 def send(s,msg,id):
