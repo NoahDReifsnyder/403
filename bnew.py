@@ -228,6 +228,7 @@ def wait(key,slist,id):
             dt=datetime.now()
 
 def cmds(slist,i):
+    dt=datetime.now()
     a=randint(1,2)
     key=randint(0,keyrange)
     while key in mylocks:
@@ -243,19 +244,18 @@ def cmds(slist,i):
         value=get(key,slist)
         print("Get:",key,value,mydata)
     unlock(key,slist)
-    print("Command",i,"of",num)
-
+    #print("Command",i,"of",num)
+    td=((datetime.now())-dt).total_seconds()
+    return td
+    
 def gencmds(slist):
     print('doing commands')
-    tl=[]
+    tl=0
     for i in range(0,num):
-        #thread.start_new_thread(cmds,(slist,i,))
-        #t=Thread(target=cmds,args=(slist,i,))
-        cmds(slist,i)
-#t.start()
-        #tl.append(t)
-    #for t in tl:
-        #t.join()
+        td=cmds(slist,i)
+        tl+=td
+    tl=tl/num
+    print(tl)
     done(slist)
 
 def send(s,msg,id):
