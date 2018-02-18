@@ -8,11 +8,13 @@ from threading import Thread,Lock
 import _thread as thread
 import sys
 from random import randint
+#############
 iplist=None
 ops=None
-keyrange=None#to be read from file
-mylocks={}#list of keys I HOLD LOCKS FOR
-remlocks={}#list of locked by outside 
+keyrange=None
+#to be read from file
+#############
+mylocks={}#list of keys I HOLD LOCKS FOR 
 gotlist={}#list of return k,v pairs from get requests.
 faillist={}#to count failed gets
 MSGID=0
@@ -24,7 +26,10 @@ putcount=1
 mydata={}
 idlist=[]
 finlist=[]
+#globals
+###########
 def LLS(k):
+    global LOCLOCL
     k=str(k)
     if k not in LOCLOCL:
         LOCLOCL[k]=Lock()
@@ -34,9 +39,11 @@ def finlen():
     return len(finlist)
 
 def myd():
+    global mydata
     print(mydata)
 
 def getput(b):
+    global PUTLOC
     global putcount
     PUTLOC.acquire()
     if not b:
@@ -48,9 +55,11 @@ def getput(b):
     return nput
 
 def iplen():
+    global iplist
     return len(iplist)-1
 
 def getid():
+    global IDLOC
     global MSGID
     IDLOC.acquire()
     id=MSGID
@@ -120,6 +129,9 @@ def start_up():
 #Protocols
 ############################
 def get(k,slist):
+    global mydata
+    global faillist
+    global gotlist
     id=getid()
     k=str(k)
     msg="GET"+str(k)
@@ -134,6 +146,7 @@ def get(k,slist):
     return None
 
 def got(k,s,id):
+    global mydata
     v='\xff'#denotes not found
     k=str(k)
     if k in mydata:
@@ -142,6 +155,7 @@ def got(k,s,id):
     send(s,msg,id)
 
 def put(k,v,slist):
+    global mydata
     x=get(k,slist)
     k=str(k)
     b=k not in mydata
@@ -152,6 +166,8 @@ def put(k,v,slist):
     return getput(False)
 
 def lock(k,slist):
+    global LOCLOCL
+    global mylocks
     k=str(k)
     LLS(k)
     LOCLOCL[k].acquire()
@@ -167,6 +183,8 @@ def lock(k,slist):
     return id
 
 def locked(k,s,id):
+    global LOCLOCL
+    global mylocks
     LLS(k)
     LOCLOCL[k].acquire()
     while k in mylocks:
@@ -176,10 +194,12 @@ def locked(k,s,id):
     LOCLOCL[k].release()
 
 def unlock(k,slist):
+    global mylocks
     k=str(k)
     mylocks.pop(k)
 
 def done(slist):
+    global finlist
     msg="FIN"
     id=getid()
     for s in slist:
