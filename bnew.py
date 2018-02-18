@@ -239,10 +239,10 @@ def cmds(slist,i):
     wait(key,slist,id) 
     if a==1:
         c=put(key,value,slist)
-        print("Put:",key,c,mydata)
+        print("Put:",key,c)
     else:
         value=get(key,slist)
-        print("Get:",key,value,mydata)
+        print("Get:",key,value)
     unlock(key,slist)
     #print("Command",i,"of",num)
     td=((datetime.now())-dt).total_seconds()
