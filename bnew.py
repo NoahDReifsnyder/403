@@ -121,9 +121,7 @@ def start_up():
         print("connect on",addr)
         slist.append(conn)
     for s in slist:
-        remlocks[s]=[]
         SOCLOCL[s]=Lock()
-    remlocks[0]=[]
     return slist
 
 #Protocols
