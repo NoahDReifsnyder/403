@@ -1,3 +1,5 @@
-string="rtext"
-m,n=(string.split("r"))
-print(m,n)
+import pickle
+data=[]
+with open("config.txt","r") as f:
+    data=pickle.loads(f)
+print(data)

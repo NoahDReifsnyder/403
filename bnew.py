@@ -7,11 +7,9 @@ from threading import Thread,Lock
 import _thread as thread
 import sys
 from random import randint
-#iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
-iplist=['172.31.47.97','172.31.37.86','172.31.43.198','172.31.36.171']
-save=''
-num=100
-keyrange=100
+iplist=None
+ops=None
+keyrange=None#to be read from file
 mylocks={}#list of keys I HOLD LOCKS FOR
 remlocks={}#list of locked by outside 
 gotlist={}#list of return k,v pairs from get requests.
@@ -59,7 +57,19 @@ def getid():
     IDLOC.release()
     return id
 
+def readfile():
+    global iplist
+    global ops
+    global keyrange
+    data=None
+    with open('config.txt','r') as f:
+        data=json.load(f)
+    iplist=data["ip"]
+    ops=data["ops"]
+    keyrange=data["keyrange"]
+
 def main(): 
+    readfile()
     slist=start_up()
     thread.start_new_thread(gencmds,(slist,))
     for s in slist:
@@ -252,13 +262,13 @@ def gencmds(slist):
     print('doing commands')
     tl=0
     dt=datetime.now()
-    for i in range(0,num):
+    for i in range(0,ops):
         td=cmds(slist,i)
         tl+=td
     td=datetime.now()-dt
     td=td.total_seconds()
-    tp=num/td
-    lt=tl/num
+    tp=ops/td
+    lt=tl/ops
     print("latency:",lt)
     print("throughput:",tp)
     done(slist)
