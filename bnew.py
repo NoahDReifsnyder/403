@@ -269,6 +269,7 @@ def parse(mssg,s):
         pass
     elif type=="ADD":
         newlist[k]+=1
+        print(newlist)
         pass
     elif type=="FIN":
         finlist.append(s)
