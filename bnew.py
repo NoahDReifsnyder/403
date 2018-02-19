@@ -87,7 +87,7 @@ def main():
     start_up()
     thread.start_new_thread(gencmds,())
     while finlen()<(iplen()+1):
-        print(iplen(),finlen())
+        print(iplen(),finlen(),iplist)
         time.sleep(5)#just for a cleaner run
 
 def start_up():
