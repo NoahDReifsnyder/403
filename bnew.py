@@ -263,6 +263,11 @@ def done():
     for s in slist:
         send(s,msg,id)
     finlist.append("0")
+
+def helper(key):
+    lock(key)
+    wait(key)
+
 def close():
     global slist
     global mydata
@@ -270,11 +275,14 @@ def close():
     id=getid()
     n=len(slist)
     i=0
+    tl=[]
     print(mydata.keys())
     for key in mydata:
-        lock(key)
-    for key in mydata:
-        wait(key)
+        t=Thread(target=helper,args=(key,))
+        tl.append(t)
+        t.start()
+    for t in tl:
+        t.join()
     for key in mydata:
         msg="PUT"+str(key)+"_"+str(mydata[key])
         print(key,mydata[key])
