@@ -370,6 +370,9 @@ def listen(s):
             thread.start_new_thread(parse,(msg,s,))
         else:
             print('dead',s.getpeername()[0])
+            slist.remove(s)
+            iplist.remove(str(s.getpeername()[0]))
+            s.close()
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
