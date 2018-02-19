@@ -372,6 +372,8 @@ def gencmds():
     tl=0
     dt=datetime.now()
     for i in range(0,ops):
+        if '0' in finlist:
+            break
         td=cmds(i)
         tl+=td
     td=datetime.now()-dt
@@ -381,7 +383,8 @@ def gencmds():
     print("latency:",lt)
     print("throughput:",tp)
     print("data:",mydata)
-    done()
+    if '0' not in finlist:
+        done()
 
 def send(s,msg,id):
     global SOCLOCL
