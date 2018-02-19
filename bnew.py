@@ -150,6 +150,19 @@ def new(addr,s):
     iplist.append(addr)
     slist.append(s)
     listen(s)
+
+def conn(ip):
+    PORT_NUMBER=5000
+    s=socket(AF_INET,SOCK_STREAM)
+    try:
+        s.connect((ip,PORT_NUMBER))
+        print("connect on",ip)
+        slist.append(s)
+        SOCLOCL[s]=Lock()
+        thread.start_new_thread(listen,(s,))
+    except:
+        print("failure")
+
 #Protocols
 ############################
 def add(k,s,id):
@@ -165,6 +178,7 @@ def adr(k):
             iplist.append(ip)
             if not ip==get_ip_address():
                 print('diff')
+                conn(ip)
 
 def get(k):
     global slist
