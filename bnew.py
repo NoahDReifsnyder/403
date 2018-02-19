@@ -290,18 +290,21 @@ def close():
     global mylocks
     id=getid()
     n=len(slist)
+    print('1',n)
     if n==0:
         done()
         return
     msg="CLS"
     for s in slist:
         send(s,msg,id)
+    print('2')
     i=0
     tl=[]
     #print(mydata.keys())
     for key in mydata:
         id=lock(key)
         wait(key,id)
+    print('3')
     for key in mydata:
         id=getid()
         msg="PUT"+str(key)+"_"+str(mydata[key])
@@ -310,11 +313,13 @@ def close():
         i+=1
         if i==n:
             i=0
+    print('4')
     msg="CLD"
     id=getid()
     for s in slist:
         print(s.getpeername()[0])
         send(s,msg,id)
+    print('5')
     mydata={}
     mylocks={}
     iplist=[]
