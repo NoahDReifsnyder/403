@@ -162,6 +162,7 @@ def adr(k):
     for ip in k.split(","):
         ip=str(ip)
         if ip not in iplist:
+            print(ip,get_ip_address())
             iplist.append(ip)
 
 def get(k):
