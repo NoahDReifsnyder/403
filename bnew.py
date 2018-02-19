@@ -277,6 +277,9 @@ def close():
     global mylocks
     id=getid()
     n=len(slist)
+    if n==0:
+        done()
+        return
     msg="CLS"
     for s in slist:
         send(s,msg,id)
