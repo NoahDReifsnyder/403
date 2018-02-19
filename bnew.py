@@ -157,6 +157,10 @@ def add(k,s,id):
     msg="ADD"+k
     send(s,msg,id)
 
+def adr(k):
+    for ip in k.split(","):
+        print(ip)
+
 def get(k):
     global slist
     global mydata
@@ -280,7 +284,7 @@ def parse(mssg,s):
         print(newlist)
         pass
     elif type=="ADR":
-        print(k)
+        adr(k)
     elif type=="FIN":
         finlist.append(s)
 
