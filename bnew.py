@@ -274,6 +274,8 @@ def close():
     for key in mydata:
         lock(key)
     for key in mydata:
+        wait(key)
+    for key in mydata:
         msg="PUT"+str(key)+"_"+str(mydata[key])
         print(key,mydata[key])
         send(slist[i],msg,id)
