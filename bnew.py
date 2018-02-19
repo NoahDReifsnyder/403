@@ -159,7 +159,7 @@ def add(k,s,id):
 
 def adr(k):
     for ip in k.split(","):
-        print(ip)
+        iplist.append(str(ip))
 
 def get(k):
     global slist
