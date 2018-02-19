@@ -252,7 +252,8 @@ def locked(k,s,id):
 def unlock(k):
     global mylocks
     k=str(k)
-    mylocks.pop(k)
+    if k in mylocks:
+        mylocks.pop(k)
 
 def done():
     global slist
