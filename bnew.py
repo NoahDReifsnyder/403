@@ -183,7 +183,7 @@ def adr(k):
         if ip not in iplist:
             iplist.append(ip)
             if not ip==get_ip_address():
-                print('diff')
+                #print('diff')
                 conn(ip)
 
 def get(k):
@@ -288,7 +288,7 @@ def close():
         send(s,msg,id)
     i=0
     tl=[]
-    print(mydata.keys())
+    #print(mydata.keys())
     for key in mydata:
         t=Thread(target=helper,args=(key,))
         tl.append(t)
@@ -298,7 +298,7 @@ def close():
     for key in mydata:
         id=getid()
         msg="PUT"+str(key)+"_"+str(mydata[key])
-        print(key,mydata[key])
+        #print(key,mydata[key])
         send(slist[i],msg,id)
         i+=1
         if i==n:
@@ -343,7 +343,7 @@ def parse(mssg,s):
             gotlist[id]=v
     elif type=="PUT":
         mydata[k]=v
-        print(k,mydata[k])
+        #print(k,mydata[k])
     elif type=="LCK":
         locked(k,s,id)
     elif type=="LKD":
@@ -354,14 +354,14 @@ def parse(mssg,s):
         pass
     elif type=="ADD":
         newlist[k]+=1
-        print(newlist)
+        #print(newlist)
         pass
     elif type=="ADR":
         adr(k)
     elif type=="CLD":
         canclose[s]=1
     elif type=="CLS":
-        print(type)
+        #print(type)
         slist.remove(s)
         canclose[s]=0
         while canclose[s]==0:
@@ -378,7 +378,7 @@ def wait(key,id):
         td=tn-dt
         ts=td.total_seconds()
         if ts>1:
-            print('stuck2',mylocks,key) #lock on keys, threads interfeering in to
+            #print('stuck2',mylocks,key) #lock on keys, threads interfeering in to
             a=randint(1,2)
             if a==1:#random chance to give up lock
                 idlist.remove(str(id))
@@ -392,7 +392,7 @@ def cmds(i):
     a=randint(1,100)
     key=randint(0,keyrange)
     while key in mylocks:
-        print('stuck1')
+        #print('stuck1')
         pass#currently, can't support keeping lock for multiple actions at once, need to reacquire
     value=randint(0,1000000)
     id=lock(key)
