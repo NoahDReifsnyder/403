@@ -262,7 +262,13 @@ def done():
     for s in slist:
         send(s,msg,id)
     finlist.append("0")
-
+def close():
+    global slist
+    global mydata
+    id=getid()
+    n=len(slist)
+    i=0
+    print(s[i],s[n])
 ############################
 def parse(mssg,s):
     try:
@@ -337,6 +343,8 @@ def cmds(i):
     if a>6:
         c=put(key,value)
         print("Put:",key,c)
+    elif a==1:
+        close()
     else:
         value=get(key)
         print("Get:",key,value)
