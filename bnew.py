@@ -346,6 +346,7 @@ def parse(mssg,s):
         adr(k)
     elif type=="CLS":
         slist.remove(s)
+        iplist.remove(s.getpeername[0])
     elif type=="FIN":
         finlist.append(s)
 
