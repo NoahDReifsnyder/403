@@ -208,10 +208,10 @@ def get(k):
         print(iplen(),wh(),faillist)
         if id in gotlist:
             if id in faillist:
-                faillist.pop(id)
+                faillist.remove(id)
             return gotlist.pop(id)
     if id in faillist:
-        faillist.pop(id)
+        faillist.remove(id)
     return None
 
 def got(k,s,id):
