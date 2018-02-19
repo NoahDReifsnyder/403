@@ -85,8 +85,6 @@ def main():
     readfile()
     start_up()
     thread.start_new_thread(gencmds,())
-    for s in slist:
-        thread.start_new_thread(listen,(s,))
     while finlen()<(iplen()+1):
         time.sleep(1)#just for a cleaner run
 
@@ -103,6 +101,8 @@ def start_up():
             s.connect((ip,PORT_NUMBER))
             print("connect on",ip)
             slist.append(s)
+            SOCLOCL[s]=Lock()
+            thread.start_new_thread(listen,(s,))
         except:
             pass
     s=socket(AF_INET,SOCK_STREAM)
@@ -119,8 +119,8 @@ def start_up():
         conn,addr=s.accept()
         print("connect on",addr[0])
         slist.append(conn)
-    for soc in slist:
-        SOCLOCL[soc]=Lock()
+        SOCLOCL[conn]=Lock()
+        thread.start_new_thread(listen,(conn,))
     thread.start_new_thread(cons,(PORT_NUMBER,s,))
     return
 
