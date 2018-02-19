@@ -412,7 +412,7 @@ def wait(key,id):
                 id=lock(key)
                 
             dt=datetime.now()
-
+    print('done',key)
 def cmds(i):
     dt=datetime.now()
     a=randint(1,100)
