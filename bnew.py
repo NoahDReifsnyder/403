@@ -266,10 +266,13 @@ def done():
 def close():
     global slist
     global mydata
+    global mylocks
     id=getid()
     n=len(slist)
     i=0
     print(mydata.keys())
+    for key in mydata:
+        lock(key)
     for key in mydata:
         msg="PUT"+str(key)+"_"+str(mydata[key])
         print(key,mydata[key])
@@ -278,6 +281,8 @@ def close():
         i+=1
         if i==n:
             i=0
+    mydata={}
+    mylocks={}
     done()
 ############################
 def parse(mssg,s):
