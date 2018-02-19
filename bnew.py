@@ -144,6 +144,13 @@ def new(addr,s):
     SOCLOCL[s]=Lock()
 #Protocols
 ############################
+def add(k,s,id):
+    while k not in newlist:
+        pass
+    newlist[k]+=1
+    msg="ADD"+k
+    send(s,msg,id)
+
 def get(k):
     global slist
     global mydata
@@ -261,6 +268,7 @@ def parse(mssg,s):
         add(k,s,id)
         pass
     elif type=="ADD":
+        newlist[k]+=1
         pass
     elif type=="FIN":
         finlist.append(s)
@@ -294,10 +302,10 @@ def cmds(i):
     wait(key,id) 
     if a>6:
         c=put(key,value)
-        #print("Put:",key,c)
+        print("Put:",key,c)
     else:
         value=get(key)
-        #print("Get:",key,value)
+        print("Get:",key,value)
     unlock(key)
     #print("Command",i,"of",num)
     td=((datetime.now())-dt).total_seconds()
