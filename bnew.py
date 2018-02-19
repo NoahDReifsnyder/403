@@ -227,6 +227,7 @@ def unlock(k):
 def done():
     global slist
     global finlist
+    print("Done")
     msg="FIN"
     id=getid()
     for s in slist:
