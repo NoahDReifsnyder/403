@@ -400,8 +400,8 @@ def wh():
 def wait(key,id):
     key=str(key)
     dt=datetime.now()
+    print(key)
     while not mylocks[key]>=(iplen()-wh()):
-        print(key)
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
