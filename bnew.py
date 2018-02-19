@@ -138,6 +138,7 @@ def new(addr,s):
     msg="ADR"
     for ip in iplist:
         msg+=ip+","
+    msg+=addr
     print(msg)
     send(s,msg,id)
     msg="NEW"+addr
@@ -159,7 +160,9 @@ def add(k,s,id):
 
 def adr(k):
     for ip in k.split(","):
-        iplist.append(str(ip))
+        ip=str(ip)
+        if ip not in iplist:
+            iplist.append(ip)
 
 def get(k):
     global slist
