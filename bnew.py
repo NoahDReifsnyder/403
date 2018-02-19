@@ -83,7 +83,7 @@ def readfile():
     iplist=data["ip"]
     ops=data["ops"]
     keyrange=data["keyrange"]
-    canclose=data["canclose"
+    canclose=data["canclose"]
 def main(): 
     global slist
     readfile()
