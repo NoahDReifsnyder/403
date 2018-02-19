@@ -388,6 +388,7 @@ def cmds(i):
         c=put(key,value)
         print("Put:",key,c)
     elif a<5:
+        print("CLOSING")
         close()
     else:
         value=get(key)
