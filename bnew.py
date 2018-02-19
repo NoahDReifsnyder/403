@@ -134,7 +134,10 @@ def new(addr,s):
     global newlist
     id=getid()
     addr=str(addr)
-    print(str(iplist))
+    msg="ADR"
+    for ip in iplist:
+        msg+=ip+","
+    send(s,msg,id)
     msg="NEW"+addr
     newlist[addr]=0
     for soc in slist:
@@ -275,6 +278,8 @@ def parse(mssg,s):
         newlist[k]+=1
         print(newlist)
         pass
+    elif type=="ADR":
+        print(k)
     elif type=="FIN":
         finlist.append(s)
 
