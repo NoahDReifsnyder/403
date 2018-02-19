@@ -205,6 +205,7 @@ def get(k):
         send(s,msg,id)
     id=str(id)
     while iplen()>0 and (not id in faillist or not faillist[id]==iplen()-wh()):
+        print(iplen(),wh(),faillist,id)
         if id in gotlist:
             return gotlist.pop(id)
     return None
@@ -373,7 +374,7 @@ def parse(mssg,s):
         slist.remove(s)
         canclose[s]=1
         while not canclose[s]==2:
-            #print('stuck3',mylocks)
+            print('stuck3',mylocks)
             time.sleep(1)
             pass
         iplist.remove(str(s.getpeername()[0]))
