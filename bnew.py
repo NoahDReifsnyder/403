@@ -90,7 +90,7 @@ def main():
     start_up()
     thread.start_new_thread(gencmds,())
     while finlen()<(iplen()+1):
-        print(iplen(),finlen(),iplist,mylocks)
+        #print(iplen(),finlen(),iplist,mylocks)
         time.sleep(5)#just for a cleaner run
 
 def start_up():
@@ -445,7 +445,7 @@ def send(s,msg,id):
     SOCLOCL[s].release()
 
 def listen(s):
-    print(s)
+    #print(s)
     while True:
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
