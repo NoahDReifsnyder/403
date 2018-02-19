@@ -234,7 +234,7 @@ def put(k,v):
             return getput(True)
     return getput(False)
 
-def lock(k):
+def lock(k,flag=False):
     global slist
     global LOCLOCL
     global mylocks
@@ -242,6 +242,8 @@ def lock(k):
     LLS(k)
     LOCLOCL[k].acquire()
     while k in mylocks:
+        if flag:
+            print('stuck')
         pass
     mylocks[k]=0
     LOCLOCL[k].release()
@@ -302,7 +304,7 @@ def close():
     tl=[]
     #print(mydata.keys())
     for key in mydata:
-        id=lock(key)
+        id=lock(key,falg=True)
         print('2.5',key)
         wait(key,id)
     print('3')
