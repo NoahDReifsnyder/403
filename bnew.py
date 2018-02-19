@@ -396,10 +396,10 @@ def wh():
             count+=1
     return count
 def wait(key,id):
-    print(key)
     key=str(key)
     dt=datetime.now()
     while not mylocks[key]>=(iplen()-wh()):
+        print(key)
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
