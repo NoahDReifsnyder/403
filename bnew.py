@@ -308,6 +308,7 @@ def close():
     msg="CLD"
     id=getid()
     for s in slist:
+        print(s.getpeername()[0])
         send(s,msg,id)
     mydata={}
     mylocks={}
