@@ -270,7 +270,7 @@ def close():
     i=0
     for key in mydata:
         lock(key)
-        msg="PUT"+key+"_"+mydata[key]
+        msg="PUT"+str(key)+"_"+str(mydata[key])
         print(key,mydata[key])
         send(s[i],msg,id)
         i+=1
