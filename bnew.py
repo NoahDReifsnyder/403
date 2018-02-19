@@ -298,6 +298,8 @@ def close():
             i=0
     mydata={}
     mylocks={}
+    iplist=[]
+    slist=[]
     done()
 ############################
 def parse(mssg,s):
