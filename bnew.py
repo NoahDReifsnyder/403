@@ -95,7 +95,7 @@ def start_up():
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
     PORT_NUMBER=5000 #starting port, will iterate up as needed for more connections.
 #when we create, we send out requests to connect to all other nodes, then we wait for new nodes to ask us for connection.               
-    partition={}#test
+    partition={}
     for ip in iplist:
         s=socket(AF_INET,SOCK_STREAM)
         try:
