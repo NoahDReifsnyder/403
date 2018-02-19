@@ -205,7 +205,7 @@ def get(k):
         send(s,msg,id)
     id=str(id)
     while iplen()>0 and (not id in faillist or not faillist[id]==iplen()):
-        print(iplen(),wh(),faillist,ip)
+        print(iplen(),wh(),faillist,id)
         if id in gotlist:
             return gotlist.pop(id)
     return None
