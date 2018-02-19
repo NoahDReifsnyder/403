@@ -148,7 +148,6 @@ def new(addr,s):
 def add(k,s,id):
     while k not in newlist:
         pass
-    newlist[k]+=1
     msg="ADD"+k
     send(s,msg,id)
 
