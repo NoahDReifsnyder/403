@@ -268,9 +268,17 @@ def close():
     id=getid()
     n=len(slist)
     i=0
-    print(slist[i],slist[n-1])
+    for key in mydata:
+        lock(key)
+        msg="PUT"+key+"_"+mydata[key]
+        print(key,mydata[key])
+        send(s[i],msg,id)
+        i+=1
+        if i==n:
+            i=0
 ############################
 def parse(mssg,s):
+    global mydata
     try:
         msg,id=mssg.split("\x00")
     except ValueError:
@@ -296,6 +304,9 @@ def parse(mssg,s):
             faillist[id]+=1
         else:
             gotlist[id]=v
+    elif type=="PUT":
+        mydata[k]=v
+        print(k,mydata[k])
     elif type=="LCK":
         locked(k,s,id)
     elif type=="LKD":
