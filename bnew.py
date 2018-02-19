@@ -137,6 +137,7 @@ def new(addr,s):
     msg="ADR"
     for ip in iplist:
         msg+=ip+","
+    print(msg)
     send(s,msg,id)
     msg="NEW"+addr
     newlist[addr]=0
