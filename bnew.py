@@ -400,7 +400,7 @@ def cmds(i):
     if a>60:
         c=put(key,value)
         print(i,"Put:",key,c)
-    elif a==1 and closeable:
+    elif a==1 and closeable and iplen()>0:
         print(i,"CLOSING",a)
         close()
     else:
