@@ -292,11 +292,8 @@ def close():
     tl=[]
     #print(mydata.keys())
     for key in mydata:
-        t=Thread(target=helper,args=(key,))
-        tl.append(t)
-        t.start()
-    for t in tl:
-        t.join()
+        id=lock(key)
+        wait(key,id)
     for key in mydata:
         id=getid()
         msg="PUT"+str(key)+"_"+str(mydata[key])
