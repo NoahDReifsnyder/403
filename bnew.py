@@ -276,6 +276,7 @@ def close():
         i+=1
         if i==n:
             i=0
+    done()
 ############################
 def parse(mssg,s):
     global mydata
