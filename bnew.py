@@ -76,15 +76,15 @@ def readfile():
     global iplist
     global ops
     global keyrange
-    global canclose
+    global closeable
     data=None
     with open('config.txt','r') as f:
         data=json.load(f)
     iplist=data["ip"]
     ops=data["ops"]
     keyrange=data["keyrange"]
-    canclose=data["canclose"]
-def main(): 
+    closeable=data["closeable"]
+def main():
     global slist
     readfile()
     start_up()
