@@ -31,6 +31,7 @@ slist=[]#list of sockets
 newlist={}#new connections
 savelist={}#saving data on closing connection
 canclose={}#wait for finished sending data
+PORT_RANGE=10
 #globals
 ###########
 def LLS(k):
@@ -100,16 +101,17 @@ def start_up():
     PORT_NUMBER=5000 #starting port, will iterate up as needed for more connections.
 #when we create, we send out requests to connect to all other nodes, then we wait for new nodes to ask us for connection.               
     partition={}#test
-    for ip in iplist:
-        s=socket(AF_INET,SOCK_STREAM)
-        try:
-            s.connect((ip,PORT_NUMBER))
-            print("connect on",ip)
-            slist.append(s)
-            SOCLOCL[s]=Lock()
-            thread.start_new_thread(listen,(s,))
-        except:
-            pass
+    for n in range(0,PORT_RANGE):
+        for ip in iplist:
+            s=socket(AF_INET,SOCK_STREAM)
+            try:
+                s.connect((ip,PORT_NUMBER+n))
+                print("connect on",ip)
+                slist.append(s)
+                SOCLOCL[s]=Lock()
+                thread.start_new_thread(listen,(s,))
+            except:
+                pass
     s=socket(AF_INET,SOCK_STREAM)
     flag=True
     while flag:
@@ -118,7 +120,7 @@ def start_up():
             print(PORT_NUMBER)
             flag=False
         except:
-            time.sleep(1)
+            PORT_NUMBER+=1
             pass
     s.listen(0)
     while len(slist)<(len(iplist)-1):
