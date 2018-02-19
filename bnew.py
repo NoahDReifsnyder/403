@@ -143,6 +143,7 @@ def new(addr,s):
     iplist.append(addr)
     slist.append(s)
     SOCLOCL[s]=Lock()
+    listen(s)
 #Protocols
 ############################
 def add(k,s,id):
