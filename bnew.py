@@ -304,7 +304,7 @@ def close():
     tl=[]
     #print(mydata.keys())
     for key in mydata:
-        id=lock(key,falg=True)
+        id=lock(key,flag=True)
         print('2.5',key)
         wait(key,id)
     print('3')
