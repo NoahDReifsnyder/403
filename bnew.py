@@ -163,7 +163,7 @@ def adr(k):
         ip=str(ip)
         if ip not in iplist:
             print(ip,get_ip_address())
-            if not ip==get_ip_addres():
+            if not ip==get_ip_address():
                 print('diff')
             iplist.append(ip)
 
@@ -369,7 +369,7 @@ def listen(s):
         if len(msg)>0:
             thread.start_new_thread(parse,(msg,s,))
         else:
-            print('dead')
+            print('dead',s.getpeername()[0])
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
