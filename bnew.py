@@ -364,6 +364,7 @@ def parse(mssg,s):
         adr(k)
     elif type=="CLD":
         canclose[s]=1
+        print(s.getpeername()[0])
     elif type=="CLS":
         #print(type)
         slist.remove(s)
