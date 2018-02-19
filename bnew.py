@@ -27,6 +27,7 @@ mydata={}
 idlist=[]
 finlist=[]
 slist=[]
+newlist={}
 #globals
 ###########
 def LLS(k):
@@ -123,15 +124,24 @@ def start_up():
     thread.start_new_thread(cons,(PORT_NUMBER,s,))
     return
 
-def cons(PORT_NUMBER,s):
+def cons(PORT_NUMBER,s):#if new nodes join
     while True:
         conn,addr=s.accept()
         print("connect on",addr)
-        slist.append(conn)
-        SOCLOCL[s]=Lock()
-        thread.start_new_thread(new,(addr,))
-def new(addr):
-    msg="NEW"+str(addr)
+        thread.start_new_thread(new,(addr,conn,))
+def new(addr,s):
+    global newlist
+    id=getid()
+    addr=str(addr)
+    msg="NEW"+addr
+    newlist[addr]=0
+    for s in slist:
+        send(s,msg,id)
+    while newlist[addr]<iplen():
+        pass
+    iplist.append(addr)
+    slist.append(s)
+    SOCLOCL[s]=Lock()
 #Protocols
 ############################
 def get(k):
@@ -247,6 +257,11 @@ def parse(mssg,s):
     elif type=="LKD":
         if id in idlist:#currently requested lock (time outs)
             mylocks[str(k)]+=1
+    elif type=="NEW":
+        add(k,s,id)
+        pass
+    elif type=="ADD":
+        pass
     elif type=="FIN":
         finlist.append(s)
 
@@ -279,10 +294,10 @@ def cmds(i):
     wait(key,id) 
     if a>6:
         c=put(key,value)
-        print("Put:",key,c)
+        #print("Put:",key,c)
     else:
         value=get(key)
-        print("Get:",key,value)
+        #print("Get:",key,value)
     unlock(key)
     #print("Command",i,"of",num)
     td=((datetime.now())-dt).total_seconds()
