@@ -12,7 +12,7 @@ from random import randint
 iplist=None
 ops=None
 keyrange=None
-canclose=None
+closeable=None
 #to be read from file
 #############
 mylocks={}#list of keys I HOLD LOCKS FOR 
@@ -400,7 +400,7 @@ def cmds(i):
     if a>60:
         c=put(key,value)
         print(i,"Put:",key,c)
-    elif a==1:
+    elif a==1 and closeable:
         print(i,"CLOSING",a)
         close()
     else:
