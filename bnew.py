@@ -207,7 +207,8 @@ def get(k):
     while iplen()>0 and (not id in faillist or not faillist[id]==iplen()):
         print(iplen(),wh(),faillist)
         if id in gotlist:
-            faillist.pop(id)
+            if id in faillist:
+                faillist.pop(id)
             return gotlist.pop(id)
     if id in faillist:
         faillist.pop(id)
