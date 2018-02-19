@@ -269,6 +269,7 @@ def close():
     id=getid()
     n=len(slist)
     i=0
+    print(mydata.keys())
     for key in mydata:
         lock(key)
         msg="PUT"+str(key)+"_"+str(mydata[key])
