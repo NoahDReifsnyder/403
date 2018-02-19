@@ -94,21 +94,16 @@ def start_up():
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
     PORT_NUMBER=5000 #starting port, will iterate up as needed for more connections.
-#when we create, we send out requests to connect to all other nodes, then we wait for new nodes to ask us for connection.                            
-    n=10 #number of nodes, plus a few extra for safety
+#when we create, we send out requests to connect to all other nodes, then we wait for new nodes to ask us for connection.               
     partition={}
     for ip in iplist:
-        i=PORT_NUMBER
-        flag=True
-        while i < PORT_NUMBER+n and flag:
-            s=socket(AF_INET,SOCK_STREAM)
-            try:
-                s.connect((ip,i))
-                print("connect on",ip,s)
-                slist.append(s)
-                flag=False
-            except:
-                i+=1
+        s=socket(AF_INET,SOCK_STREAM)
+        try:
+            s.connect((ip,PORT_NUMBER))
+            print("connect on",ip,s)
+            slist.append(s)
+        except:
+            pass
     s=socket(AF_INET,SOCK_STREAM)
     flag=True
     while flag:
