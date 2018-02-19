@@ -369,7 +369,8 @@ def parse(mssg,s):
         slist.remove(s)
         canclose[s]=0
         while canclose[s]==0:
-            print('stuck3')
+            print('stuck3',mylocks)
+            time.sleep(1)
             pass
         iplist.remove(str(s.getpeername()[0]))
     elif type=="FIN":
