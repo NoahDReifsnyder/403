@@ -339,7 +339,7 @@ def parse(mssg,s):
     elif type=="LCK":
         locked(k,s,id)
     elif type=="LKD":
-        if id in idlist:#currently requested lock (time outs)
+        if id in idlist and str(k) in mylocks:#currently requested lock (time outs)
             mylocks[str(k)]+=1
     elif type=="NEW":
         add(k,s,id)
