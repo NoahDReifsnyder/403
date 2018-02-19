@@ -316,6 +316,7 @@ def close():
     done()
 ############################
 def parse(mssg,s):
+    print(mssg)
     global mydata
     global canclose
     try:
