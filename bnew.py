@@ -88,7 +88,7 @@ def main():
     thread.start_new_thread(gencmds,())
     while finlen()<(iplen()+1):
         print(iplen(),finlen())
-        time.sleep(1)#just for a cleaner run
+        time.sleep(5)#just for a cleaner run
 
 def start_up():
     global slist 
