@@ -17,17 +17,18 @@ keyrange=None
 mylocks={}#list of keys I HOLD LOCKS FOR 
 gotlist={}#list of return k,v pairs from get requests.
 faillist={}#to count failed gets
-MSGID=0
-IDLOC=Lock()
-PUTLOC=Lock()
-LOCLOCL={}
-SOCLOCL={}
-putcount=1
-mydata={}
-idlist=[]
-finlist=[]
-slist=[]
-newlist={}
+MSGID=0#message identifiers, unique
+IDLOC=Lock()#lock to ensure uniqueness for msgid
+PUTLOC=Lock()#lock ot esnure uniquenss for putcount
+LOCLOCL={}#list of keys and their corresponding locks
+SOCLOCL={}#locks for sockets to ensure one read/write at a time
+putcount=1#count of puts
+mydata={}#internall knowledge
+idlist=[]#list of valid message ids
+finlist=[]#sockets that are done sending messages
+slist=[]#list of sockets
+newlist={}#new connections
+savelist={}#saving data on closing connection
 #globals
 ###########
 def LLS(k):
@@ -275,6 +276,9 @@ def close():
     global mylocks
     id=getid()
     n=len(slist)
+    msg="CLS"
+    for s in slist:
+        send(s,msg,id)
     i=0
     tl=[]
     print(mydata.keys())
@@ -285,6 +289,7 @@ def close():
     for t in tl:
         t.join()
     for key in mydata:
+        id=getid()
         msg="PUT"+str(key)+"_"+str(mydata[key])
         print(key,mydata[key])
         send(slist[i],msg,id)
@@ -339,6 +344,8 @@ def parse(mssg,s):
         pass
     elif type=="ADR":
         adr(k)
+    elif type=="CLS":
+        slist.remove(s)
     elif type=="FIN":
         finlist.append(s)
 
