@@ -134,6 +134,7 @@ def new(addr,s):
     global newlist
     id=getid()
     addr=str(addr)
+    print(str(iplist))
     msg="NEW"+addr
     newlist[addr]=0
     for soc in slist:
