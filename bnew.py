@@ -273,6 +273,7 @@ def helper(key):
 
 def close():
     global slist
+    global iplist
     global mydata
     global mylocks
     id=getid()
