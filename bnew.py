@@ -223,9 +223,7 @@ def got(k,s,id):
 
 def put(k,v):
     global mydata
-    print('1')
     x=get(k)
-    print('2')
     k=str(k)
     b=k not in mydata
     if not x:
@@ -292,22 +290,18 @@ def close():
     global mylocks
     id=getid()
     n=len(slist)
-    print('1',n)
     if n==0:
         done()
         return
     msg="CLS"
     for s in slist:
         send(s,msg,id)
-    print('2')
     i=0
     tl=[]
     #print(mydata.keys())
     for key in mydata:
         id=lock(key,flag=True)
-        print('2.5',key)
         wait(key,id)
-    print('3')
     for key in mydata:
         id=getid()
         msg="PUT"+str(key)+"_"+str(mydata[key])
@@ -316,13 +310,11 @@ def close():
         i+=1
         if i==n:
             i=0
-    print('4')
     msg="CLD"
     id=getid()
     for s in slist:
         print(s.getpeername()[0])
         send(s,msg,id)
-    print('5')
     mydata={}
     mylocks={}
     iplist=[]
@@ -376,15 +368,15 @@ def parse(mssg,s):
     elif type=="ADR":
         adr(k)
     elif type=="CLD":
-        print(msg)
+        #print(msg)
         canclose[s]=2
-        print(s.getpeername()[0])
+        #print(s.getpeername()[0])
     elif type=="CLS":
-        print(msg)
+        #print(msg)
         slist.remove(s)
         canclose[s]=1
         while not canclose[s]==2:
-            print('stuck3',mylocks)
+            #print('stuck3',mylocks)
             time.sleep(1)
             pass
         iplist.remove(str(s.getpeername()[0]))
@@ -406,7 +398,7 @@ def wait(key,id):
         td=tn-dt
         ts=td.total_seconds()
         if ts>1:
-            print('stuck2',mylocks,key,iplist,iplen()) #lock on keys, threads interfeering in to
+            #print('stuck2',mylocks,key,iplist,iplen()) #lock on keys, threads interfeering in to
             a=randint(1,2)
             if a==1:#random chance to give up lock
                 idlist.remove(str(id))
@@ -425,7 +417,7 @@ def cmds(i):
     value=randint(0,1000000)
     id=lock(key)
     wait(key,id) 
-    print(key,a)
+    #print(key,a)
     if a>60:
         c=put(key,value)
         print(i,"Put:",key,c)
