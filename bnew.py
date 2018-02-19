@@ -117,8 +117,8 @@ def start_up():
         conn,addr=s.accept()
         print("connect on",addr[0])
         slist.append(conn)
-    for s in slist:
-        SOCLOCL[s]=Lock()
+    for soc in slist:
+        SOCLOCL[soc]=Lock()
     thread.start_new_thread(cons,(PORT_NUMBER,s,))
     return
 
