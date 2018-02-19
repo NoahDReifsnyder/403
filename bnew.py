@@ -273,6 +273,7 @@ def close():
     for key in mydata:
         msg="PUT"+str(key)+"_"+str(mydata[key])
         print(key,mydata[key])
+        mydata.pop(key)
         send(slist[i],msg,id)
         i+=1
         if i==n:
