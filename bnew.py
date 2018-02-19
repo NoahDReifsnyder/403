@@ -149,7 +149,7 @@ def new(addr,s):
     for ip in iplist:
         msg+=ip+","
     msg+=addr
-    print(msg)
+    #print(msg)
     send(s,msg,id)
     msg="NEW"+addr
     newlist[addr]=0
@@ -313,7 +313,7 @@ def close():
     msg="CLD"
     id=getid()
     for s in slist:
-        print(s.getpeername()[0])
+        #print(s.getpeername()[0])
         send(s,msg,id)
     mydata={}
     mylocks={}
@@ -392,7 +392,6 @@ def wh():
 def wait(key,id):
     key=str(key)
     dt=datetime.now()
-    print(key)
     while not mylocks[key]>=(iplen()-wh()):
         tn=datetime.now()
         td=tn-dt
@@ -406,7 +405,6 @@ def wait(key,id):
                 id=lock(key)
                 
             dt=datetime.now()
-    print('done',key)
 def cmds(i):
     dt=datetime.now()
     a=randint(1,100)
