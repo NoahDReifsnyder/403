@@ -29,6 +29,7 @@ finlist=[]#sockets that are done sending messages
 slist=[]#list of sockets
 newlist={}#new connections
 savelist={}#saving data on closing connection
+canclose={}#wait for finished sending data
 #globals
 ###########
 def LLS(k):
@@ -308,6 +309,7 @@ def close():
 ############################
 def parse(mssg,s):
     global mydata
+    global canclose
     try:
         msg,id=mssg.split("\x00")
     except ValueError:
@@ -350,9 +352,14 @@ def parse(mssg,s):
         pass
     elif type=="ADR":
         adr(k)
+    elif type=="CLD":
+        canclose[s]=1
     elif type=="CLS":
         print(type)
         slist.remove(s)
+        canclose[s]=0
+        while canclose[s]==0:
+            pass
         iplist.remove(str(s.getpeername()[0]))
     elif type=="FIN":
         finlist.append(s)
@@ -386,13 +393,13 @@ def cmds(i):
     wait(key,id) 
     if a>60:
         c=put(key,value)
-        print("Put:",key,c)
+        print(i,"Put:",key,c)
     elif a==1:
-        print("CLOSING",a)
+        print(i,"CLOSING",a)
         close()
     else:
         value=get(key)
-        print("Get:",key,value)
+        print(i,"Get:",key,value)
     unlock(key)
     #print("Command",i,"of",num)
     td=((datetime.now())-dt).total_seconds()
