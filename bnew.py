@@ -346,7 +346,7 @@ def parse(mssg,s):
         adr(k)
     elif type=="CLS":
         slist.remove(s)
-        iplist.remove(str(s.getpeername[0]))
+        iplist.remove(str(s.getpeername()[0]))
     elif type=="FIN":
         finlist.append(s)
 
@@ -432,7 +432,7 @@ def listen(s):
         if len(msg)>0:
             thread.start_new_thread(parse,(msg,s,))
         else:
-            print(s)
+            pass
 def get_ip_address():#using google to obtain real ip, google most reliable host I know.
     s = socket(AF_INET,SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
