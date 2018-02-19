@@ -217,7 +217,9 @@ def got(k,s,id):
 
 def put(k,v):
     global mydata
+    print('1')
     x=get(k)
+    print('2')
     k=str(k)
     b=k not in mydata
     if not x:
