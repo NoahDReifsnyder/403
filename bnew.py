@@ -403,6 +403,7 @@ def cmds(i):
     value=randint(0,1000000)
     id=lock(key)
     wait(key,id) 
+    print(key,a)
     if a>60:
         c=put(key,value)
         print(i,"Put:",key,c)
