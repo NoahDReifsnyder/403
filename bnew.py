@@ -301,6 +301,10 @@ def close():
         i+=1
         if i==n:
             i=0
+    msg="CLD"
+    id=getid()
+    for s in slist:
+        send(s,msg,id)
     mydata={}
     mylocks={}
     iplist=[]
