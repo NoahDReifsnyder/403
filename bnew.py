@@ -376,7 +376,7 @@ def cmds(i):
     a=randint(1,100)
     key=randint(0,keyrange)
     while key in mylocks:
-        #print('stuck')
+        print('stuck1')
         pass#currently, can't support keeping lock for multiple actions at once, need to reacquire
     value=randint(0,1000000)
     id=lock(key)
