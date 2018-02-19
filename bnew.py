@@ -83,7 +83,7 @@ def main():
     global slist
     readfile()
     start_up()
-    thread.start_new_thread(gencmds,(,))
+    thread.start_new_thread(gencmds,())
     for s in slist:
         thread.start_new_thread(listen,(s,))
     while finlen()<(iplen()+1):
@@ -104,7 +104,7 @@ def start_up():
             s=socket(AF_INET,SOCK_STREAM)
             try:
                 s.connect((ip,i))
-                print("connect on",ip)
+                print("connect on",ip,s)
                 slist.append(s)
                 flag=False
             except:
