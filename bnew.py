@@ -113,6 +113,7 @@ def start_up():
             print(PORT_NUMBER)
             flag=False
         except:
+            print(PORT_NUMBER)
             pass
     s.listen(0)
     while len(slist)<(len(iplist)-1):
