@@ -418,6 +418,7 @@ def cmds(i):
     else:
         value=get(key)
         print(i,"Get:",key,value)
+    print(key,a)
     unlock(key)
     #print("Command",i,"of",num)
     td=((datetime.now())-dt).total_seconds()
