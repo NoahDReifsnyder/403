@@ -265,8 +265,8 @@ def done():
     finlist.append("0")
 
 def helper(key):
-    lock(key)
-    wait(key)
+    id=lock(key)
+    wait(key,id)
 
 def close():
     global slist
