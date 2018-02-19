@@ -12,6 +12,7 @@ from random import randint
 iplist=None
 ops=None
 keyrange=None
+canclose=None
 #to be read from file
 #############
 mylocks={}#list of keys I HOLD LOCKS FOR 
@@ -75,13 +76,14 @@ def readfile():
     global iplist
     global ops
     global keyrange
+    global canclose
     data=None
     with open('config.txt','r') as f:
         data=json.load(f)
     iplist=data["ip"]
     ops=data["ops"]
     keyrange=data["keyrange"]
-
+    canclose=data["canclose"
 def main(): 
     global slist
     readfile()
