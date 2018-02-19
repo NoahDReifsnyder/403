@@ -272,7 +272,7 @@ def close():
         lock(key)
         msg="PUT"+str(key)+"_"+str(mydata[key])
         print(key,mydata[key])
-        send(s[i],msg,id)
+        send(slist[i],msg,id)
         i+=1
         if i==n:
             i=0
