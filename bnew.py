@@ -332,7 +332,7 @@ def wait(key,id):
 
 def cmds(i):
     dt=datetime.now()
-    a=randint(1,10)
+    a=randint(1,100)
     key=randint(0,keyrange)
     while key in mylocks:
         #print('stuck')
@@ -340,7 +340,7 @@ def cmds(i):
     value=randint(0,1000000)
     id=lock(key)
     wait(key,id) 
-    if a>6:
+    if a>60:
         c=put(key,value)
         print("Put:",key,c)
     elif a==1:
