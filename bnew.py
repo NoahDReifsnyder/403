@@ -165,7 +165,8 @@ def get(k):
     for s in slist:
         send(s,msg,id)
     id=str(id)
-    while not id in faillist or not faillist[id]==iplen():
+    length=iplen()
+    while not id in faillist or not faillist[id]==length:
         if id in gotlist:
             return gotlist.pop(id)
     return None
