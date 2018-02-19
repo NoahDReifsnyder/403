@@ -209,7 +209,8 @@ def get(k):
         if id in gotlist:
             faillist.pop(id)
             return gotlist.pop(id)
-    faillist.pop(id)
+    if id in faillist:
+        faillist.pop(id)
     return None
 
 def got(k,s,id):
