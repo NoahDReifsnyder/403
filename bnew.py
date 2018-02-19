@@ -205,7 +205,7 @@ def get(k):
         send(s,msg,id)
     id=str(id)
     while iplen()>0 and (not id in faillist or not faillist[id]==iplen()-wh()):
-        print(iplen(),wh(),faillist,id)
+        #print(iplen(),wh(),faillist,id)
         if iplen()-wh()==0:
             return None
         if id in gotlist:
@@ -397,7 +397,7 @@ def wait(key,id):
         td=tn-dt
         ts=td.total_seconds()
         if ts>1:
-            #print('stuck2',mylocks,key,iplist,iplen()) #lock on keys, threads interfeering in to
+            print('stuck2',mylocks,key,iplist,iplen()) #lock on keys, threads interfeering in to
             a=randint(1,2)
             if a==1:#random chance to give up lock
                 idlist.remove(str(id))
