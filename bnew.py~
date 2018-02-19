@@ -1,5 +1,6 @@
 #Working Model
 from socket import * #using sockets for now, will implement lower level if needed 
+import json
 import time
 from datetime import datetime
 from queue import Queue
@@ -7,13 +8,13 @@ from threading import Thread,Lock
 import _thread as thread
 import sys
 from random import randint
-#iplist=['10.0.0.173','10.0.0.224','10.0.0.39']
-iplist=['172.31.47.97','172.31.37.86','172.31.43.198','172.31.36.171']
-save=''
-num=100
-keyrange=100
-mylocks={}#list of keys I HOLD LOCKS FOR
-remlocks={}#list of locked by outside 
+#############
+iplist=None
+ops=None
+keyrange=None
+#to be read from file
+#############
+mylocks={}#list of keys I HOLD LOCKS FOR 
 gotlist={}#list of return k,v pairs from get requests.
 faillist={}#to count failed gets
 MSGID=0
@@ -25,7 +26,11 @@ putcount=1
 mydata={}
 idlist=[]
 finlist=[]
+slist=[]
+#globals
+###########
 def LLS(k):
+    global LOCLOCL
     k=str(k)
     if k not in LOCLOCL:
         LOCLOCL[k]=Lock()
@@ -35,9 +40,11 @@ def finlen():
     return len(finlist)
 
 def myd():
+    global mydata
     print(mydata)
 
 def getput(b):
+    global PUTLOC
     global putcount
     PUTLOC.acquire()
     if not b:
@@ -49,9 +56,11 @@ def getput(b):
     return nput
 
 def iplen():
+    global iplist
     return len(iplist)-1
 
 def getid():
+    global IDLOC
     global MSGID
     IDLOC.acquire()
     id=MSGID
@@ -59,34 +68,42 @@ def getid():
     IDLOC.release()
     return id
 
+def readfile():
+    global iplist
+    global ops
+    global keyrange
+    data=None
+    with open('config.txt','r') as f:
+        data=json.load(f)
+    iplist=data["ip"]
+    ops=data["ops"]
+    keyrange=data["keyrange"]
+
 def main(): 
-    slist=start_up()
-    thread.start_new_thread(gencmds,(slist,))
+    global slist
+    readfile()
+    start_up()
+    thread.start_new_thread(gencmds,())
     for s in slist:
         thread.start_new_thread(listen,(s,))
     while finlen()<(iplen()+1):
         time.sleep(1)#just for a cleaner run
 
 def start_up():
-    slist=[] 
+    global slist 
 #list of ip's for my network.Creating connections based on this list. Probably will be read in from a file                      
 #I don't have static ip's so will need to update each time I move until I set it up on a AWS
     PORT_NUMBER=5000 #starting port, will iterate up as needed for more connections.
-#when we create, we send out requests to connect to all other nodes, then we wait for new nodes to ask us for connection.                            
-    n=10 #number of nodes, plus a few extra for safety
-    partition={}
+#when we create, we send out requests to connect to all other nodes, then we wait for new nodes to ask us for connection.               
+    partition={}#test
     for ip in iplist:
-        i=PORT_NUMBER
-        flag=True
-        while i < PORT_NUMBER+n and flag:
-            s=socket(AF_INET,SOCK_STREAM)
-            try:
-                s.connect((ip,i))
-                print("connect on",ip)
-                slist.append(s)
-                flag=False
-            except:
-                i+=1
+        s=socket(AF_INET,SOCK_STREAM)
+        try:
+            s.connect((ip,PORT_NUMBER))
+            print("connect on",ip,s)
+            slist.append(s)
+        except:
+            pass
     s=socket(AF_INET,SOCK_STREAM)
     flag=True
     while flag:
@@ -101,14 +118,16 @@ def start_up():
         print("connect on",addr)
         slist.append(conn)
     for s in slist:
-        remlocks[s]=[]
         SOCLOCL[s]=Lock()
-    remlocks[0]=[]
-    return slist
+    return
 
 #Protocols
 ############################
-def get(k,slist):
+def get(k):
+    global slist
+    global mydata
+    global faillist
+    global gotlist
     id=getid()
     k=str(k)
     msg="GET"+str(k)
@@ -123,6 +142,7 @@ def get(k,slist):
     return None
 
 def got(k,s,id):
+    global mydata
     v='\xff'#denotes not found
     k=str(k)
     if k in mydata:
@@ -130,8 +150,9 @@ def got(k,s,id):
     msg="GOT"+k+"_"+v
     send(s,msg,id)
 
-def put(k,v,slist):
-    x=get(k,slist)
+def put(k,v):
+    global mydata
+    x=get(k)
     k=str(k)
     b=k not in mydata
     if not x:
@@ -140,7 +161,10 @@ def put(k,v,slist):
             return getput(True)
     return getput(False)
 
-def lock(k,slist):
+def lock(k):
+    global slist
+    global LOCLOCL
+    global mylocks
     k=str(k)
     LLS(k)
     LOCLOCL[k].acquire()
@@ -156,6 +180,8 @@ def lock(k,slist):
     return id
 
 def locked(k,s,id):
+    global LOCLOCL
+    global mylocks
     LLS(k)
     LOCLOCL[k].acquire()
     while k in mylocks:
@@ -164,11 +190,14 @@ def locked(k,s,id):
     send(s,msg,id)
     LOCLOCL[k].release()
 
-def unlock(k,slist):
+def unlock(k):
+    global mylocks
     k=str(k)
     mylocks.pop(k)
 
-def done(slist):
+def done():
+    global slist
+    global finlist
     msg="FIN"
     id=getid()
     for s in slist:
@@ -210,7 +239,7 @@ def parse(mssg,s):
     elif type=="FIN":
         finlist.append(s)
 
-def wait(key,slist,id):
+def wait(key,id):
     key=str(key)
     dt=datetime.now()
     while not mylocks[key]==iplen():
@@ -223,11 +252,11 @@ def wait(key,slist,id):
             if a==1:#random chance to give up lock
                 idlist.remove(str(id))
                 mylocks.pop(key)
-                id=lock(key,slist)
+                id=lock(key)
                 
             dt=datetime.now()
 
-def cmds(slist,i):
+def cmds(i):
     dt=datetime.now()
     a=randint(1,10)
     key=randint(0,keyrange)
@@ -235,35 +264,38 @@ def cmds(slist,i):
         #print('stuck')
         pass#currently, can't support keeping lock for multiple actions at once, need to reacquire
     value=randint(0,1000000)
-    id=lock(key,slist)
-    wait(key,slist,id) 
+    id=lock(key)
+    wait(key,id) 
     if a>6:
-        c=put(key,value,slist)
+        c=put(key,value)
         print("Put:",key,c)
     else:
-        value=get(key,slist)
+        value=get(key)
         print("Get:",key,value)
-    unlock(key,slist)
+    unlock(key)
     #print("Command",i,"of",num)
     td=((datetime.now())-dt).total_seconds()
     return td
     
-def gencmds(slist):
+def gencmds():
+    global mydata
     print('doing commands')
     tl=0
     dt=datetime.now()
-    for i in range(0,num):
-        td=cmds(slist,i)
+    for i in range(0,ops):
+        td=cmds(i)
         tl+=td
     td=datetime.now()-dt
     td=td.total_seconds()
-    tp=num/td
-    lt=tl/num
+    tp=ops/td
+    lt=tl/ops
     print("latency:",lt)
     print("throughput:",tp)
-    done(slist)
+    print("data:",mydata)
+    done()
 
 def send(s,msg,id):
+    global SOCLOCL
     msg=msg+"\x00"+str(id) #char/x00 splits msg and id
     emsg=msg.encode('utf-8')
     length=len(emsg)

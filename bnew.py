@@ -100,7 +100,7 @@ def start_up():
         s=socket(AF_INET,SOCK_STREAM)
         try:
             s.connect((ip,PORT_NUMBER))
-            print("connect on",ip,s)
+            print("connect on",ip)
             slist.append(s)
         except:
             pass
@@ -115,12 +115,22 @@ def start_up():
     s.listen(0)
     while len(slist)<(len(iplist)-1):
         conn,addr=s.accept()
-        print("connect on",addr)
+        print("connect on",addr[0])
         slist.append(conn)
     for s in slist:
         SOCLOCL[s]=Lock()
+    thread.start_new_thread(cons,(PORT_NUMBER,s,))
     return
 
+def cons(PORT_NUMBER,s):
+    while True:
+        conn,addr=s.accept()
+        print("connect on",addr)
+        slist.append(conn)
+        SOCLOCL[s]=Lock()
+        thread.start_new_thread(new,(addr,))
+def new(addr):
+    msg="NEW"+str(addr)
 #Protocols
 ############################
 def get(k):
