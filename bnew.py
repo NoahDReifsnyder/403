@@ -134,6 +134,7 @@ def new(addr,s):
     global newlist
     id=getid()
     addr=str(addr)
+    SOCLOCL[s]=Lock()
     msg="ADR"
     for ip in iplist:
         msg+=ip+","
@@ -147,7 +148,6 @@ def new(addr,s):
         pass
     iplist.append(addr)
     slist.append(s)
-    SOCLOCL[s]=Lock()
     listen(s)
 #Protocols
 ############################
