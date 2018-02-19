@@ -342,6 +342,7 @@ def send(s,msg,id):
     SOCLOCL[s].release()
 
 def listen(s):
+    print(s)
     while True:
         l=int_from_bytes(s.recv(1))
         emsg=s.recv(l)
