@@ -128,6 +128,7 @@ def cons(PORT_NUMBER,s):#if new nodes join
     while True:
         conn,addr=s.accept()
         print("connect on",addr)
+        addr=addr[0]
         thread.start_new_thread(new,(addr,conn,))
 def new(addr,s):
     global newlist
@@ -135,8 +136,8 @@ def new(addr,s):
     addr=str(addr)
     msg="NEW"+addr
     newlist[addr]=0
-    for s in slist:
-        send(s,msg,id)
+    for soc in slist:
+        send(soc,msg,id)
     while newlist[addr]<iplen():
         pass
     iplist.append(addr)
