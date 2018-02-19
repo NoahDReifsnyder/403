@@ -387,7 +387,7 @@ def cmds(i):
     if a>60:
         c=put(key,value)
         print("Put:",key,c)
-    elif a<5:
+    elif a==1:
         print("CLOSING",a)
         close()
     else:
