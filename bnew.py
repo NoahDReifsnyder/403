@@ -268,7 +268,7 @@ def close():
     id=getid()
     n=len(slist)
     i=0
-    print(slist[i],slist[n])
+    print(slist[i],slist[n-1])
 ############################
 def parse(mssg,s):
     try:
