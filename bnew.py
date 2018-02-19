@@ -369,7 +369,7 @@ def listen(s):
         if len(msg)>0:
             thread.start_new_thread(parse,(msg,s,))
         else:
-            print('dead',s.getpeername()[0])
+            #print('dead',s.getpeername()[0])
             slist.remove(s)
             iplist.remove(str(s.getpeername()[0]))
             s.close()
