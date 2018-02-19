@@ -367,12 +367,13 @@ def parse(mssg,s):
     elif type=="CLS":
         #print(type)
         slist.remove(s)
+        
+        iplist.remove(str(s.getpeername()[0]))
         canclose[s]=0
         while canclose[s]==0:
             print('stuck3',mylocks)
             time.sleep(1)
             pass
-        iplist.remove(str(s.getpeername()[0]))
     elif type=="FIN":
         finlist.append(s)
 
