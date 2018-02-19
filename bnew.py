@@ -109,6 +109,7 @@ def start_up():
                 print("connect on",ip)
                 slist.append(s)
                 SOCLOCL[s]=Lock()
+                canclose[s]=0
                 thread.start_new_thread(listen,(s,))
             except:
                 pass
@@ -128,6 +129,7 @@ def start_up():
         print("connect on",addr[0])
         slist.append(conn)
         SOCLOCL[conn]=Lock()
+        canclose[conn]=0
         thread.start_new_thread(listen,(conn,))
     thread.start_new_thread(cons,(PORT_NUMBER,s,))
     return
@@ -167,6 +169,7 @@ def conn(ip):
         print("connect on",ip)
         slist.append(s)
         SOCLOCL[s]=Lock()
+        canclose[s]=0
         thread.start_new_thread(listen,(s,))
     except:
         print("failure")
