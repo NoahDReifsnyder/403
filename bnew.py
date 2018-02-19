@@ -22,7 +22,7 @@ IDLOC=Lock()#lock to ensure uniqueness for msgid
 PUTLOC=Lock()#lock ot esnure uniquenss for putcount
 LOCLOCL={}#list of keys and their corresponding locks
 SOCLOCL={}#locks for sockets to ensure one read/write at a time
-putcount=1#count of puts
+putcount=0#count of puts
 mydata={}#internall knowledge
 idlist=[]#list of valid message ids
 finlist=[]#sockets that are done sending messages
@@ -51,10 +51,10 @@ def getput(b):
     global putcount
     PUTLOC.acquire()
     if not b:
-        nput=putcount-1
-    else:
         nput=putcount
+    else:
         putcount+=1
+        nput=putcount
     PUTLOC.release()
     return nput
 
