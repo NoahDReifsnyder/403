@@ -376,10 +376,16 @@ def parse(mssg,s):
     elif type=="FIN":
         finlist.append(s)
 
+def wh():
+    count=0
+    for s in canclose:
+        if canclose[s]==0:
+            count+=1
+    return count
 def wait(key,id):
     key=str(key)
     dt=datetime.now()
-    while not mylocks[key]>=iplen():
+    while not mylocks[key]>=(iplen()-wh()):
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
