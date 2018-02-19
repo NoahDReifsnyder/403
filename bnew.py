@@ -109,6 +109,7 @@ def start_up():
     while flag:
         try:
             s.bind((get_ip_address(),PORT_NUMBER))
+            print(PORT_NUMBER)
             flag=False
         except:
             PORT_NUMBER+=1
