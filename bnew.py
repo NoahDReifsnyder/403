@@ -303,6 +303,7 @@ def close():
     #print(mydata.keys())
     for key in mydata:
         id=lock(key)
+        print('2.5',key)
         wait(key,id)
     print('3')
     for key in mydata:
