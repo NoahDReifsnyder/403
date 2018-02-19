@@ -367,13 +367,13 @@ def parse(mssg,s):
         adr(k)
     elif type=="CLD":
         print(msg)
-        canclose[s]=1
+        canclose[s]=2
         print(s.getpeername()[0])
     elif type=="CLS":
         print(msg)
         slist.remove(s)
-        canclose[s]=0
-        while canclose[s]==0:
+        canclose[s]=1
+        while not canclose[s]==2:
             print('stuck3',mylocks)
             time.sleep(1)
             pass
@@ -384,7 +384,7 @@ def parse(mssg,s):
 def wh():
     count=0
     for s in canclose:
-        if canclose[s]==0:
+        if canclose[s]==1:
             count+=1
     return count
 def wait(key,id):
