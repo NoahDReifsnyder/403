@@ -243,7 +243,7 @@ def lock(k,flag=False):
     LOCLOCL[k].acquire()
     while k in mylocks:
         if flag:
-            print('stuck')
+            mylocks.pop(k)
         pass
     mylocks[k]=0
     LOCLOCL[k].release()
