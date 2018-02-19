@@ -373,7 +373,7 @@ def parse(mssg,s):
         slist.remove(s)
         canclose[s]=1
         while not canclose[s]==2:
-            print('stuck3',mylocks)
+            #print('stuck3',mylocks)
             time.sleep(1)
             pass
         iplist.remove(str(s.getpeername()[0]))
@@ -394,7 +394,7 @@ def wait(key,id):
         td=tn-dt
         ts=td.total_seconds()
         if ts>1:
-            print('stuck2',mylocks,key,iplist,iplen()) #lock on keys, threads interfeering in to
+            #print('stuck2',mylocks,key,iplist,iplen()) #lock on keys, threads interfeering in to
             a=randint(1,2)
             if a==1:#random chance to give up lock
                 idlist.remove(str(id))
@@ -408,7 +408,7 @@ def cmds(i):
     a=randint(1,100)
     key=randint(0,keyrange)
     while key in mylocks:
-        print('stuck1')
+        #print('stuck1')
         pass#currently, can't support keeping lock for multiple actions at once, need to reacquire
     value=randint(0,1000000)
     id=lock(key)
