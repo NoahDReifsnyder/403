@@ -384,6 +384,7 @@ def cmds(i):
     
 def gencmds():
     global mydata
+    global putcount
     print('doing commands')
     tl=0
     dt=datetime.now()
@@ -398,7 +399,8 @@ def gencmds():
     lt=tl/ops
     print("latency:",lt)
     print("throughput:",tp)
-    print("data:",mydata)
+    print("data:",mydata,len(mydata))
+    print("puts:",putcount)
     if '0' not in finlist:
         done()
 
