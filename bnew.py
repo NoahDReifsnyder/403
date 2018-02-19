@@ -163,7 +163,7 @@ def adr(k):
         ip=str(ip)
         if ip not in iplist:
             print(ip,get_ip_address())
-            if not ip==get_ip_addres()):
+            if not ip==get_ip_addres():
                 print('diff')
             iplist.append(ip)
 
