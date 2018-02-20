@@ -204,10 +204,8 @@ def get(k):
     for s in slist:
         send(s,msg,id)
     id=str(id)
-    while iplen()>0 and (not id in faillist or not faillist[id]==iplen()-wh()):
+    while iplen()>0 and (not id in faillist or not faillist[id]==iplen()):
         #print(iplen(),wh(),faillist,id)
-        if iplen()-wh()==0:
-            return None
         if id in gotlist:
             return gotlist.pop(id)
     return None
@@ -392,7 +390,7 @@ def wh():
 def wait(key,id):
     key=str(key)
     dt=datetime.now()
-    while not mylocks[key]>=(iplen()-wh()):
+    while not mylocks[key]>=(iplen()):
         tn=datetime.now()
         td=tn-dt
         ts=td.total_seconds()
