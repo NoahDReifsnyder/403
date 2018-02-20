@@ -326,6 +326,7 @@ def parse(mssg,s):
     #print(mssg)
     global mydata
     global canclose
+    global mylocks
     try:
         msg,id=mssg.split("\x00")
     except ValueError:
