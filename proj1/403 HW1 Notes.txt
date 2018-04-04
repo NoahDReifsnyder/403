@@ -1,0 +1,64 @@
+Define socket args, and utf-8
+
+Staring out, really have no idea how to implement low level network connections. Lowest I have knowledge of is using Sockets in python/c. 
+Going to start there, and if that isn’t at a low enough level, I will create my own socket object to mimic the function calls, thus not forcing me to rewrite code later.
+
+Started with making a socket for each node, realized should be able to try to only have 1 socket that everyone sends too per node.
+
+Doesn’t work because can’t wait for connections and ask for connections with same socket. Having one socket per connection will allow me to simplify my communication process. This could cause problems of multiple simultaneous requests. Worried mainly about both sides asking at the same time to each other, flooding the socket. Would be overkill, but could create two sockets per node connection, a listen and a writing socket. If flooding is a problem.
+
+I was thinking about sockets and their functionalities wrong. When you accept on a socket it already gives you back a new socket object that you can send off. So now I have it try to connect to sockets from every ip, and then it creates it’s own to wait for all the nodes that were not yet started up. May need to flip execution order to not miss nodes. Maybe even thread it.
+
+
+DESIGN IDEA: Put places key into current nodes partition of the DHT, first asked all nodes if it exists in theres. Get sends a request to all nodes to see if they have the key in their partition.
+
+Create a thread that runs the function of generating random put/get commands. Create a thread for each connection, have them all wait. When any receive a message, spawn a thread and pass the message in the thread to the parsing function.
+
+
+Have now working, one thread that sends a message to each other node, and then a thread per node that listens and reads in a single message from a node. (Using hello from (ip) to test) standard send msg length then message
+
+Protocol is as follows:
+Int indicating following message length
+
+Call
+Response
+
+Dont make calls for put, thats local only.. (putting into internal storage after checking remote storage)
+
+GETK
+GOTK_V #store in a data structure so thread knows we got it, when used remove
+
+LCKK
+LKDK
+
+ULKK
+Don’t need response.
+
+Null character represents none value
+
+First three bytes are put/get/ret, in put, bytes until ‘_’ are key, rest after are value
+In get all bytes after are key, in ret all bytes after are v. (For a return value) Need to add in some sort of msg identification to match RET with put/get request to make sure all are serviced correctly. Maybe just a message counter that ticks up. Every message I send out gets tagged and upticks. Then I wait for that tag to appear in a return list, and its value is what I asked for.
+
+Locking protocol:
+	To access a variable, you send a lock message to each node. Once they have all returned saying locked, you do you process, then send unlock message once you are done to each node
+
+Current assumption, no message over 256 characters, shouldn’t be a problem. Fix would be to send another abstracting message of size of byte that is the size of message. Unnecessary inconvience at this point
+
+Using a message counter to unique id each message, (sort of forces synchronicity). Slow down is on thread locking on the ID variable. To speed up, fix this issue.
+### NO SLOWDOWN HERE, reput lock for safety.
+
+Use same method for msgid for counting successful puts.
+
+Dropped down key range, realized a conflict with my lock implementation between nodes on keys.
+
+Somehow msgs are losing /x00 that I build in before each send guaranteed, will strengthen the guarantee.
+
+My last two assumptions were wrong. It was that multiple threads were writing into the same socket at the same time, implemented a lock on the socket for sending messages and that cleared up the problems. 
+
+There was a conflict with my lock implementation still as well. Added a short timeout, an unlock call, ignored all future messages pertain to the last attempt at lock, and then try to lock again.
+
+This unlocked a different nodes lock, because it had acquired where I thought I had, and that was the issue. Made the list of locks specific to each node and their locks. So when I call unlock I only take from the lock list of that node. Thereby removing the last conflicting. Now Im in a loop of trying to lock one item. Try cascading time out. devide timeout by 2 so that longer waiting has a better chance to take over. Starting with a 5 sec timeout, going to try to drop that if it works, start with something more reasonable like 1 or 2 seconds. Ok randomize the division so if two call at the exact same time they have different cascading timeouts so one of them wins.
+
+No timeout, it was a bad ordering of setting internal lock knowledge. I was telling myself I had the lock too early.
+
+Struggled with locks a lot. Was keeping a list of remotely held locks. This caused a lot of collision errors. I realized this was very unnecessary. I now just say I don’t have the lock when asked, and let only the nodes trying to get the lock respond with weather its locked or not. 

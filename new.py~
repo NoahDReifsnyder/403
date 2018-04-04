@@ -1,5 +1,0 @@
-import pickle
-data=[]
-with open("config.txt","r") as f:
-    data=pickle.loads(f)
-print(data)

@@ -1,0 +1,16 @@
+To start out, create sockets and send messages one at a time to ensure correct connections.
+
+Make a method so that the socket connections wait until the whole network is up and running. Make a socket for each connection between nodes.
+
+Functionalities:
+	to run a get request, send a message “GET” and key to each node. They will replay with “GOT”+value if they have it in their internal knowledge. If the don’t, value will be ascii value /xff.
+	to run a put request, first run a get request. If they all return /xff, then we add the key value pair to our internal knowledge.
+
+Before any request we need to lock the key. To do this we send a lock message. If the node doesn’t have the lock, it returns the message. If it does, it waits until it doesn’t have the lock to send back the message. There is a timeout for waiting for the return message. When the time out occurs, we drop the lock and try to reacquire. eventually all but one gives way and then they have the lock.
+
+We have one thread for each socket connection waiting for messages (blocking sockets). Message format is a one byte int saying the length of the message, and then the message. 
+
+
+ADDED FEATURES:
+	after network sets up, continue to wait for new connections. Allow new nodes to join in after it starts. 
+	Nodes can also close early, and distribute their data to the remaining nodes.
