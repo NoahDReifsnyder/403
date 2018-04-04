@@ -79,7 +79,7 @@ def readfile():
     global keyrange
     global closeable
     data=None
-    with open('config.txt','r') as f:
+    with open('/home/ubuntu/403/proj2/config.txt','r') as f:
         data=json.load(f)
     iplist=data["ip"]
     ops=data["ops"]
@@ -396,7 +396,7 @@ def wait(key,id):
         td=tn-dt
         ts=td.total_seconds()
         if ts>1:
-            #print('stuck2',mylocks,key,iplist,iplen()) #lock on keys, threads interfeering in to
+            #print('stuck2',mylocks,key,iplist,iplen()) #lock on keys, thread
             a=randint(1,2)
             if a==1:#random chance to give up lock
                 idlist.remove(str(id))
