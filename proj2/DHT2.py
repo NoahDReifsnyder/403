@@ -1,4 +1,5 @@
 from socket import *
+import requests
 import json
 import time
 from datetime import datetime
@@ -7,6 +8,8 @@ from threading import Thread,Lock
 import _thread as thread
 import sys
 from random import randint
+import requests
+
 ###############################
 iplist=None
 ops=None
@@ -15,9 +18,13 @@ closeable=None
 ###############################
 slist=[]
 outfile=open("out.txt","w")
+MYIP = requests.get('https://api.ipify.org').text
 ###############################
-
+IDLOC=Lock()
+VCLOCK={}
 def start_up():
+    for ip in iplist:
+        VCLOCK[ip]=0
     print("starting")
     global slist
     PORT_NUMBER=5000
@@ -81,11 +88,12 @@ def cmds(i):
 def put():
     key=randint(0,keyrange)
     value=randint(0,100000000)
-    print("put",key,value)
-    
+    msg="PUT"+str(key)+"_"+str(value)
+    send(msg)
 def get():    
     key=randint(0,keyrange)
-    print("get",key)
+    msg="GET"+str(key)
+    send(msg)
     
 def putmult(num):#need to parrellel this
     for i in range(num):
@@ -96,20 +104,19 @@ def putmult(num):#need to parrellel this
     for t in tlist:
         t.join()
 def main():
-    print("\n\n\n\n\n\n\n\n\n\nThis is the output for node "+get_ip_address())
+    print("\n\n\n\n\n\n\n\n\n\nThis is the output for node "+MYIP)
     readfile()
     start_up()
-    print(ops)
     gencmds()
     #print(slist)
     closeall()
+def send(msg):
+    addVCLOCK(MYIP)
+    msg=msg+"/x00"+str(VCLOCK)
+    print(msg)
 def closeall():
     for s in slist:
         s.close()
-def get_ip_address():#using google to obtain real ip, google most reliable host I know.
-    s = socket(AF_INET,SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0]
 def slistlen():
     return len(slist)
 def iplistlen():
@@ -130,5 +137,19 @@ def readfile():
         ops=data["ops"]
         keyrange=data["keyrange"]
         closeable=data["closeable"]
-                                                
+def get_ip_address():#using google to obtain real ip, google most reliable host I know.
+    s = socket(AF_INET,SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
+            
+def addVCLOCK(id):
+    if id not in VCLOCK:
+        print(id)
+    else:
+        global IDLOC
+        global MSGID
+        IDLOC.acquire()
+        VCLOCK[id]=VCLOCK[id]+1
+        IDLOC.release()
+                                    
 main()
