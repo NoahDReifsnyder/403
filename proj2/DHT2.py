@@ -21,7 +21,7 @@ outfile=open("out.txt","w")
 MYIP = requests.get('https://api.ipify.org').text
 ###############################
 IDLOC=Lock()
-VCLOCK={}
+MSGID=0
 def start_up():
     for ip in iplist:
         VCLOCK[ip]=0
@@ -111,8 +111,7 @@ def main():
     #print(slist)
     closeall()
 def send(msg):
-    addVCLOCK(MYIP)
-    msg=msg+"/x00"+str(VCLOCK)
+    msg=msg+"/x00"+getid()
     print(msg)
 def closeall():
     for s in slist:
@@ -142,14 +141,12 @@ def get_ip_address():#using google to obtain real ip, google most reliable host 
     s.connect(("8.8.8.8", 80))
     return s.getsockname()[0]
             
-def addVCLOCK(id):
-    if id not in VCLOCK:
-        print(id)
-    else:
-        global IDLOC
-        global MSGID
-        IDLOC.acquire()
-        VCLOCK[id]=VCLOCK[id]+1
-        IDLOC.release()
-                                    
+def getid():
+    global IDLOC
+    global MSGID
+    IDLOC.acquire()
+    id=MSGID
+    MSGID=MSGID+1
+    IDLOC.release()
+    return str(id)                                
 main()
