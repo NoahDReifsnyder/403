@@ -13,6 +13,6 @@ for server in $(cat cluster); do
 done
 echo "Done"
 for server in $(cat cluster); do
-    ssh -i $identity_file ubuntu@$server "while pgrep python3 > /dev/null; do sleep 1; done; cat out.txt"
+    ssh -i $identity_file ubuntu@$server "while pgrep python3 > /dev/null; do sleep 1; done; cat error.txt"
 done
 echo "printed"
