@@ -13,6 +13,9 @@ for server in $(cat cluster); do
 done
 echo "Done"
 for server in $(cat cluster); do
-    ssh -i $identity_file ec2-user@$server "while pgrep python3 > /dev/null; do sleep 1; done; cat error.txt"
+    ssh -i $identity_file ec2-user@$server "while pgrep python3 > /dev/null; do sleep 1; done;"
+done
+for server in $(cat cluster); do
+    ssh -i $identity_file ec2-user@$server "cat error.txt"
 done
 echo "printed"

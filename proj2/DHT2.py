@@ -34,6 +34,8 @@ def start_up():
     global SOCLOCL
     PORT_NUMBER=5000
     for ip in iplist:
+        if ip==pub_ip:
+            continue
         s=socket(AF_INET,SOCK_STREAM)
         for i in range(0,100):
             try:

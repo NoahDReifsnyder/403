@@ -8,11 +8,15 @@ for server in $(cat cluster); do
     scp -i $identity_file ./DHT2.py ec2-user@$server:~/    
     scp -i $identity_file ./config.txt ec2-user@$server:~/
     echo "file send"
-    ssh -i $identity_file ec2-user@$server "if pgrep python3 > /dev/null; then killall python3; fi ; python3 ~/DHT2.py 1>out.txt 2>error.txt&"
+    ssh -i $identity_file ec2-user@$server "if pgrep python3 > /dev/null; then killall python3; fi ; python3 ~/DHT2.py 1>out.txt 2>error.txt &"
     echo "Command sent $server"
 done
 echo "Done"
 for server in $(cat cluster); do
-    ssh -i $identity_file ec2-user@$server "while pgrep python3 > /dev/null; do sleep 1; done; cat out.txt"
+    ssh -i $identity_file ec2-user@$server "while pgrep python3 > /dev/null; do sleep 1; done;"
+    echo "command done"
+done
+for server in $(cat cluster); do
+    ssh -i $identity_file ec2-user@$server "cat out.txt"
 done
 echo "printed"

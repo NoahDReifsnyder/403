@@ -5,5 +5,5 @@ identity_file="403.pem"
 
 for server in $(cat cluster); do
     echo $server
-    ssh -i $identity_file ec2-user@$server "python3 -v"
+    ssh -i $identity_file ec2-user@$server "sudo yum install python36"
 done
