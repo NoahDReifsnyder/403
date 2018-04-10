@@ -18,7 +18,7 @@ iplist=None
 ops=None
 keyrange=None
 closeable=None
-NPut=2
+NPut=1
 ###############################
 slist={}
 outfile=open("out.txt","w")
@@ -27,6 +27,8 @@ IDLOC=Lock()
 MSGID=0
 LTL=[]
 SOCLOCL={}
+waitList={}
+waitListL=Lock()
 def start_up():
     print("starting")
     global slist
@@ -85,7 +87,7 @@ def listen(s):
         if msg=="CLS":
             break
         parse(msg,id)
-def parse(msg,id):
+def parse(msg,id,s):
     type=msg[:3]
     rest=msg[3:]
     k=None
@@ -93,15 +95,16 @@ def parse(msg,id):
     try:
         k,v=rest.split("_")
         print(k,v,id,casehandler[type])
-        casehandler[type](k,v,id) 
+        casehandler[type](k,v,s,id) 
     except ValueError:
         k=rest
         print(k,id,casehandler[type])
-        casehandler[type](k,id)
+        casehandler[type](k,s,id)
     
 def done():
     msg="CLS"
-    send(msg,-1)
+    id=getid()
+    send(msg,-1,id)
     for t in LTL:
         t.join()
     
@@ -149,20 +152,24 @@ def hashf(key):
             num=0
         lis.append(num)
     return lis
-def sendself(elength,emsg):
+def sendself(msg,id):
+    parse(msg,id,sendself)
     pass
-def send(msg,key):
-    lis=hashf(key)
-    socs=[]
-    for n in lis:
-        socs.append(slist[n])
-    msg=msg+"/x00"+getid()
-    emsg=msg.encode('utf-8')
+def send(msg,key,id,s=None):
+    if not s:
+        lis=hashf(key)
+        socs=[]
+        for n in lis:
+            socs.append(slist[n])
+    else:
+        socs=[s]
+    lmsg=msg+"/x00"+str(id)
+    emsg=lmsg.encode('utf-8')
     length=len(emsg)
     elength=int_to_bytes(length)
     for s in socs:
         if hasattr(s,'__call__'):
-            s(elength,emsg)
+            s(msg,id)
         else:
             SOCLOCL[s].acquire()
             s.send(elength)
@@ -206,33 +213,40 @@ def getid():
 def put():#handles none,sends put
     key=randint(0,keyrange)
     value=randint(0,100000000)
+    id=getid()
     msg="PUT"+str(key)+"_"+str(value)
-    lock(key)
-    send(msg,key)
+    lock(key,id)
+    send(msg,key,id)
 def get():#handles none, sends get    
     key=randint(0,keyrange)
+    id=getid()
     msg="GET"+str(key)
-    send(msg,key)
-def lock(k):#handles none, sends lck
-    pass
+    send(msg,key,id)
+def lock(k,id):#handles none, sends lck
+    msg="LCK"+str(k)
+    send(msg,k,id)
 def unlock(k):#handles none, sends ulk
     pass
-def puth(k,v,id):#handles put, sends nothing
+def puth(k,v,s,id):#handles put, sends nothing
     pass
-def geth(k,id):#handles get,sends got
+def geth(k,s,id):#handles get,sends got
     pass
-def lckh(k,id):#handles lck, sends lkd,nlk
+def lckh(k,s,id):#handles lck, sends lkd,nlk
     pass
-def ulkh(k,id):#handles ulk, sends nothing
+def ulkh(k,s,id):#handles ulk, sends nothing
     pass
-def goth(v,id):#handles got, sends nothig
+def goth(v,s,id):#handles got, sends nothig
     pass
-def lkdh(k,id):#handles lkd, sends nothing
+def lkdh(k,s,id):#handles lkd, sends nothing
     pass
-def nlkh(k,id):#handles nlk, sends nothing
+def nlkh(k,s,id):#handles nlk, sends nothing
     pass
 #send put get lck ulk got lkd nlk
 #hand put get lck ulk got lkd nlk
 casehandler={"PUT":puth,"GET":geth,"LCK":lckh,"ULK":ulkh,"GOT":goth,"LKD":lkdh,"NLK":nlkh}
-
+def print(*string):
+    for s in string:
+        outfile.write(str(s))
+        outfile.write(" ")
+    outfile.write('\n')
 main()

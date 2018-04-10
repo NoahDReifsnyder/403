@@ -34,6 +34,8 @@ def start_up():
     global SOCLOCL
     PORT_NUMBER=5000
     for ip in iplist:
+        if ip==pub_ip:
+            continue
         s=socket(AF_INET,SOCK_STREAM)
         for i in range(0,100):
             try:
@@ -132,10 +134,10 @@ def main():
     print("\n\n\n\n\n\n\n\n\n\nThis is the output for node",priv_ip,pub_ip)
     readfile()
     start_up()
-    #gencmds()
+    gencmds()
     #print(slist)
-    #done()
-    #closeall()
+    done()
+    closeall()
 def hashf(key):
     if key==-1:
         return slist.keys()
