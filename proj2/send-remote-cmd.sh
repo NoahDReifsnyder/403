@@ -2,7 +2,7 @@
 ### Key file is provided by AWS when setting up node
 
 identity_file="403.pem"
-
+python3 startEC2.py
 for server in $(cat cluster); do
     echo $server
     scp -i $identity_file ./DHT2.py ec2-user@$server:~/    
@@ -20,3 +20,4 @@ for server in $(cat cluster); do
     ssh -i $identity_file ec2-user@$server "cat out.txt"
 done
 echo "printed"
+python3 stopEC2.py

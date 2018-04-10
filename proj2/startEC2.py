@@ -22,6 +22,12 @@ while True:
         break
     except:
         print("Waiting to start up processes")
+        time.sleep(5)
+cmd=["aws","ec2","describe-instances"]
+a=subprocess.check_output(cmd)
+if isinstance(a,bytes):
+    a=a.decode('utf-8')
+data=json.loads(a)
 flag=True
 while flag:
     try:
@@ -37,6 +43,8 @@ while flag:
         for b in a:
             publicDNS.append(b["PublicDnsName"])
             ip[b["PublicIpAddress"]]=counter
+            if not b["State"]["Code"]==16:
+                raise ValueError("Wrong running code")
             counter=counter+1
         flag=False
     except:
@@ -46,7 +54,8 @@ with open("cluster","w") as f:
     for DNS in publicDNS:
         f.write(DNS)
         f.write(" ")
-data={"ip":ip,"ops":100,"keyrange":10,"closeable":False}
+data={"ip":ip,"ops":50,"keyrange":100,"NPut":2}
 with open("config.txt","w") as f:
     json.dump(data,f)
+        
 print("All ready to run")

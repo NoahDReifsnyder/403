@@ -17,8 +17,7 @@ pub_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
 iplist=None
 ops=None
 keyrange=None
-closeable=None
-NPut=3
+NPut=None#how many nodes to store each key on (Put in config file)
 ###############################
 slist={}
 outfile=open("out.txt","w")
@@ -163,11 +162,14 @@ def putmult(num):#need to parrellel this
     for t in tlist:
         t.join()
 def main():
+    global NPut
     print("\n\n\n\n\n\n\n\n\n\nThis is the output for node",priv_ip,pub_ip)
     readfile()
+    if NPut>slistlen():
+        NPut=iplistlen()+1
+    print(NPut)
     start_up()
     gencmds()
-    #print(slist)
     time.sleep(1)
     done()
     closeall()
@@ -227,14 +229,14 @@ def readfile():
     global iplist
     global ops
     global keyrange
-    global closeable
+    global NPut
     data=None
     with open('config.txt','r') as f:
         data=json.load(f)
         iplist=data["ip"]
         ops=data["ops"]
         keyrange=data["keyrange"]
-        closeable=data["closeable"]
+        NPut=data["NPut"]
             
 def getid():
     global IDLOC
@@ -260,7 +262,7 @@ def put():#handles none,sends put
         ti=randint(1,10)#Random wait cures livelock
         time.sleep(ti/10)
     send(msg,key,id)
-    print("PUT",key,value)
+    #print("PUT",key,value)
 def get():#handles none, sends get    
     key=randint(0,keyrange)
     id=getid()
@@ -273,10 +275,10 @@ def get():#handles none, sends get
         pass
     v=gwaitList[id]
     gwaitList.pop(id)
-    if v=="\xff":
+    '''if v=="\xff":
         print("Key not yet placed")
     else:
-        print("GOT",key,v)
+        print("GOT",key,v)'''
 def lock(k,id):#handles none, sends lck
     msg="LCK"+str(k)
     waitListL.acquire()
