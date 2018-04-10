@@ -18,7 +18,7 @@ iplist=None
 ops=None
 keyrange=None
 closeable=None
-NPut=1
+NPut=3
 ###############################
 slist={}
 outfile=open("out.txt","w")
@@ -29,12 +29,15 @@ LTL=[]
 SOCLOCL={}
 keyLocs={}
 keyLocL=Lock()
+gwaitList={}
+gwaitListL=Lock()
 uwaitList={}
 uwaitListL=Lock()
 waitList={}
 waitListL=Lock()
 cls=0
 clsL=Lock()
+myData={}
 def start_up():
     print("starting")
     global slist
@@ -91,7 +94,6 @@ def listen(s):
                 flag=False
             continue
         emsg=s.recv(l)
-            
         msg=emsg.decode('utf-8')
         if len(msg)==0:
             break
@@ -114,11 +116,11 @@ def parse(msg,id,s):
     v=None
     try:
         k,v=rest.split("_")
-        print(k,v,id,casehandler[type],keyLocs)
+        #print(k,v,id,casehandler[type],keyLocs)
         casehandler[type](k,v,s,id) 
     except ValueError:
         k=rest
-        print(k,id,casehandler[type],keyLocs)
+        #print(k,id,casehandler[type],keyLocs)
         casehandler[type](k,s,id)
     
 def done():
@@ -126,7 +128,7 @@ def done():
     id=getid()
     send(msg,-1,id)
     while cls<slistlen():
-        print(cls)
+        #print(cls)
         time.sleep(1)
     print("WERE DONE NOW")
     
@@ -140,7 +142,7 @@ def gencmds():
     counter=ops
     for t in tlist:
         t.join()
-        print("JOINED UP BOI",counter)
+        #print("JOINED UP BOI",counter)
         counter=counter-1
     print("all cmds done")
 def cmds(i):
@@ -190,9 +192,6 @@ def sendself(msg,id):
     else:
         thread.start_new_thread(parse,(msg,id,sendself,))
 def send(msg,key,id,s=None):
-    if msg[:3]=="ULD":
-        #print("Unlocking",key,id,s)
-        print(msg)
     if not s:
         lis=hashf(key)
         socs=[]
@@ -258,12 +257,26 @@ def put():#handles none,sends put
         #print(1)
         unlock(key,id)
         id=getid()
+        ti=randint(1,10)#Random wait cures livelock
+        time.sleep(ti/10)
     send(msg,key,id)
+    print("PUT",key,value)
 def get():#handles none, sends get    
     key=randint(0,keyrange)
     id=getid()
     msg="GET"+str(key)
+    gwaitListL.acquire()
+    gwaitList[id]=None
+    gwaitListL.release()
     send(msg,key,id)
+    while not gwaitList[id]:
+        pass
+    v=gwaitList[id]
+    gwaitList.pop(id)
+    if v=="\xff":
+        print("Key not yet placed")
+    else:
+        print("GOT",key,v)
 def lock(k,id):#handles none, sends lck
     msg="LCK"+str(k)
     waitListL.acquire()
@@ -286,15 +299,21 @@ def unlock(k,id):#handles none, sends ulk
     send(msg,k,id)
     while uwaitList[id]<NPut:
         #print(3,id,uwaitList)
-        time.sleep(.1)
+        time.sleep(.1) 
     uwaitList.pop(id)
 def puth(k,v,s,id):#handles put, sends nothing
     if k in keyLocs and keyLocs[k]==id:
+        myData[k]=v
         keyLocs.pop(k)
     else:
         print("BAD PUT BAD PUT")
     pass
 def geth(k,s,id):#handles get,sends got
+    if k in myData:
+        msg="GOT"+str(myData[k])
+    else:
+        msg="GOT"+"\xff"
+    send(msg,k,id,s)
     pass
 def lckh(k,s,id):#handles lck, sends lkd,nlk
     keyLocL.acquire()
@@ -319,6 +338,10 @@ def uldh(k,s,id):#handles uld, sends nothing
     uwaitList[id]=uwaitList[id]+1
     uwaitListL.release()
 def goth(v,s,id):#handles got, sends nothig
+    gwaitListL.acquire()
+    if id in gwaitList:
+        gwaitList[id]=v
+    gwaitListL.release()
     pass
 def lkdh(k,s,id):#handles lkd, sends nothing
     waitListL.acquire()
@@ -328,7 +351,8 @@ def lkdh(k,s,id):#handles lkd, sends nothing
     pass
 def nlkh(k,s,id):#handles nlk, sends nothing
     waitListL.acquire()
-    waitList.pop(id)
+    if id in waitList:
+        waitList.pop(id)
     waitListL.release()
     pass
 #send put get lck ulk got lkd nlk
@@ -342,4 +366,5 @@ def print(*string):
     outfile.flush()
 main()
 print("We out")
+print(myData)
 #outfile.close()

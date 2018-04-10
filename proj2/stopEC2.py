@@ -5,6 +5,8 @@ id=[]
 type="stop-instances"
 cmd=["aws","ec2","describe-instances"]
 a=subprocess.check_output(cmd)
+if isinstance(a,bytes):
+    a=a.decode('utf-8')
 data=json.loads(a)
 a=data["Reservations"][0]["Instances"]
 for b in a:
