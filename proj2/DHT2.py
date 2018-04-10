@@ -33,6 +33,8 @@ uwaitList={}
 uwaitListL=Lock()
 waitList={}
 waitListL=Lock()
+cls=0
+clsL=Lock()
 def start_up():
     print("starting")
     global slist
@@ -77,10 +79,19 @@ def start_up():
     s.close()
 
 def listen(s):
+    global cls
     print("listening on "+str(s))
-    while True:
-        l=int_from_bytes(s.recv(1))
+    flag=True
+    s.settimeout(1)
+    while flag:
+        try:
+            l=int_from_bytes(s.recv(1))
+        except:
+            if not cls<slistlen():
+                flag=False
+            continue
         emsg=s.recv(l)
+            
         msg=emsg.decode('utf-8')
         if len(msg)==0:
             break
@@ -89,8 +100,13 @@ def listen(s):
         except:
             print("error:",msg,len(msg))
         if msg[:3]=="CLS":
-            break
-        parse(msg,id,s)
+            clsL.acquire()
+            cls=cls+1
+            clsL.release()
+            if not cls<slistlen():
+                flag=False
+            continue
+        thread.start_new_thread(parse,(msg,id,s,))
 def parse(msg,id,s):
     type=msg[:3]
     rest=msg[3:]
@@ -98,19 +114,21 @@ def parse(msg,id,s):
     v=None
     try:
         k,v=rest.split("_")
-        print(k,v,id,casehandler[type])
+        print(k,v,id,casehandler[type],keyLocs)
         casehandler[type](k,v,s,id) 
     except ValueError:
         k=rest
-        print(k,id,casehandler[type])
+        print(k,id,casehandler[type],keyLocs)
         casehandler[type](k,s,id)
     
 def done():
     msg="CLS"
     id=getid()
     send(msg,-1,id)
-    for t in LTL:
-        t.join()
+    while cls<slistlen():
+        print(cls)
+        time.sleep(1)
+    print("WERE DONE NOW")
     
 def gencmds():
     tlist=[]
@@ -119,8 +137,12 @@ def gencmds():
         t.start()
         #t.join()
         tlist.append(t)
+    counter=ops
     for t in tlist:
         t.join()
+        print("JOINED UP BOI",counter)
+        counter=counter-1
+    print("all cmds done")
 def cmds(i):
     #print("this is command:",i)
     a=randint(0,100)
@@ -144,9 +166,10 @@ def main():
     start_up()
     gencmds()
     #print(slist)
-    done()
     time.sleep(1)
+    done()
     closeall()
+    print("main finished")
 def hashf(key):
     if key==-1:
         return slist.keys()
@@ -159,11 +182,17 @@ def hashf(key):
         lis.append(num)
     return lis
 def sendself(msg,id):
+    global cls
     if msg[:3]=="CLS":
-        pass
+        clsL.acquire()
+        cls=cls+1
+        clsL.release()
     else:
-        parse(msg,id,sendself)
+        thread.start_new_thread(parse,(msg,id,sendself,))
 def send(msg,key,id,s=None):
+    if msg[:3]=="ULD":
+        #print("Unlocking",key,id,s)
+        print(msg)
     if not s:
         lis=hashf(key)
         socs=[]
@@ -214,6 +243,8 @@ def getid():
     IDLOC.acquire()
     id=MSGID
     MSGID=MSGID+1
+    id=id*slistlen()
+    id=id+iplist[pub_ip]
     IDLOC.release()
     return str(id)
 
@@ -224,6 +255,7 @@ def put():#handles none,sends put
     id=getid()
     msg="PUT"+str(key)+"_"+str(value)
     while not lock(key,id):
+        #print(1)
         unlock(key,id)
         id=getid()
     send(msg,key,id)
@@ -239,8 +271,10 @@ def lock(k,id):#handles none, sends lck
     waitListL.release()
     send(msg,k,id)
     while id in waitList and waitList[id]<NPut:
+        #print(2,id,waitList)
         time.sleep(.1)
     if id in waitList:
+        waitList.pop(id)
         return True
     else:
         return False
@@ -251,11 +285,14 @@ def unlock(k,id):#handles none, sends ulk
     uwaitListL.release()
     send(msg,k,id)
     while uwaitList[id]<NPut:
+        #print(3,id,uwaitList)
         time.sleep(.1)
     uwaitList.pop(id)
 def puth(k,v,s,id):#handles put, sends nothing
     if k in keyLocs and keyLocs[k]==id:
         keyLocs.pop(k)
+    else:
+        print("BAD PUT BAD PUT")
     pass
 def geth(k,s,id):#handles get,sends got
     pass
@@ -304,3 +341,5 @@ def print(*string):
     outfile.write('\n')
     outfile.flush()
 main()
+print("We out")
+#outfile.close()
