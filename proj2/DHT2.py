@@ -27,6 +27,10 @@ IDLOC=Lock()
 MSGID=0
 LTL=[]
 SOCLOCL={}
+keyLocs={}
+keyLocL=Lock()
+uwaitList={}
+uwaitListL=Lock()
 waitList={}
 waitListL=Lock()
 def start_up():
@@ -84,9 +88,9 @@ def listen(s):
             msg,id=msg.split("/x00")
         except:
             print("error:",msg,len(msg))
-        if msg=="CLS":
+        if msg[:3]=="CLS":
             break
-        parse(msg,id)
+        parse(msg,id,s)
 def parse(msg,id,s):
     type=msg[:3]
     rest=msg[3:]
@@ -113,6 +117,7 @@ def gencmds():
     for i in range(0,ops):
         t=Thread(target=cmds,args=(i,))
         t.start()
+        #t.join()
         tlist.append(t)
     for t in tlist:
         t.join()
@@ -140,6 +145,7 @@ def main():
     gencmds()
     #print(slist)
     done()
+    time.sleep(1)
     closeall()
 def hashf(key):
     if key==-1:
@@ -153,8 +159,10 @@ def hashf(key):
         lis.append(num)
     return lis
 def sendself(msg,id):
-    parse(msg,id,sendself)
-    pass
+    if msg[:3]=="CLS":
+        pass
+    else:
+        parse(msg,id,sendself)
 def send(msg,key,id,s=None):
     if not s:
         lis=hashf(key)
@@ -215,7 +223,9 @@ def put():#handles none,sends put
     value=randint(0,100000000)
     id=getid()
     msg="PUT"+str(key)+"_"+str(value)
-    lock(key,id)
+    while not lock(key,id):
+        unlock(key,id)
+        id=getid()
     send(msg,key,id)
 def get():#handles none, sends get    
     key=randint(0,keyrange)
@@ -224,29 +234,73 @@ def get():#handles none, sends get
     send(msg,key,id)
 def lock(k,id):#handles none, sends lck
     msg="LCK"+str(k)
+    waitListL.acquire()
+    waitList[id]=0
+    waitListL.release()
     send(msg,k,id)
-def unlock(k):#handles none, sends ulk
-    pass
+    while id in waitList and waitList[id]<NPut:
+        time.sleep(.1)
+    if id in waitList:
+        return True
+    else:
+        return False
+def unlock(k,id):#handles none, sends ulk
+    msg="ULK"+str(k)
+    uwaitListL.acquire()
+    uwaitList[id]=0
+    uwaitListL.release()
+    send(msg,k,id)
+    while uwaitList[id]<NPut:
+        time.sleep(.1)
+    uwaitList.pop(id)
 def puth(k,v,s,id):#handles put, sends nothing
+    if k in keyLocs and keyLocs[k]==id:
+        keyLocs.pop(k)
     pass
 def geth(k,s,id):#handles get,sends got
     pass
 def lckh(k,s,id):#handles lck, sends lkd,nlk
+    keyLocL.acquire()
+    if k in keyLocs:
+        msg="NLK"+str(k)
+        pass
+    else:
+        msg="LKD"+str(k)
+        keyLocs[k]=id
+        pass
+    keyLocL.release()
+    send(msg,k,id,s)
     pass
-def ulkh(k,s,id):#handles ulk, sends nothing
+def ulkh(k,s,id):#handles ulk, sends uld
+    msg="ULD"+str(k)
+    if k in keyLocs and keyLocs[k]==id:
+        keyLocs.pop(k)
+    send(msg,k,id,s)
     pass
+def uldh(k,s,id):#handles uld, sends nothing
+    uwaitListL.acquire()
+    uwaitList[id]=uwaitList[id]+1
+    uwaitListL.release()
 def goth(v,s,id):#handles got, sends nothig
     pass
 def lkdh(k,s,id):#handles lkd, sends nothing
+    waitListL.acquire()
+    if id in waitList:
+        waitList[id]=waitList[id]+1
+    waitListL.release()
     pass
 def nlkh(k,s,id):#handles nlk, sends nothing
+    waitListL.acquire()
+    waitList.pop(id)
+    waitListL.release()
     pass
 #send put get lck ulk got lkd nlk
 #hand put get lck ulk got lkd nlk
-casehandler={"PUT":puth,"GET":geth,"LCK":lckh,"ULK":ulkh,"GOT":goth,"LKD":lkdh,"NLK":nlkh}
+casehandler={"PUT":puth,"GET":geth,"LCK":lckh,"ULK":ulkh,"GOT":goth,"LKD":lkdh,"NLK":nlkh,"ULD":uldh}
 def print(*string):
     for s in string:
         outfile.write(str(s))
         outfile.write(" ")
     outfile.write('\n')
+    outfile.flush()
 main()

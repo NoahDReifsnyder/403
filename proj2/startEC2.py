@@ -36,7 +36,7 @@ with open("cluster","w") as f:
     for DNS in publicDNS:
         f.write(DNS)
         f.write(" ")
-data={"ip":ip,"ops":100,"keyrange":10000,"closeable":False}
+data={"ip":ip,"ops":10,"keyrange":5,"closeable":False}
 with open("config.txt","w") as f:
     json.dump(data,f)
 print("All ready to run")
