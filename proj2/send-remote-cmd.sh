@@ -3,6 +3,7 @@
 
 identity_file="403.pem"
 python3 startEC2.py
+sleep 10
 for server in $(cat cluster); do
     echo $server
     scp -i $identity_file ./DHT2.py ec2-user@$server:~/    

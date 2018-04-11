@@ -165,7 +165,7 @@ def main():
     global NPut
     print("\n\n\n\n\n\n\n\n\n\nThis is the output for node",priv_ip,pub_ip)
     readfile()
-    if NPut>slistlen():
+    if NPut>iplistlen():
         NPut=iplistlen()+1
     print(NPut)
     start_up()
